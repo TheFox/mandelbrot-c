@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]){
 			const float blue = COLOR_MIN + depth_color;
 			imlib_context_set_color(0, 0, blue, 255);
 			
-			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, DEPTH, color_diff, depth_color);
+			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, DEPTH_MAX, color_diff, depth_color);
 			
 			for(int pos_x = 0; pos_x < PICTURE_WIDTH; pos_x++){
 				const float val_x = width_org + pos_x * width_step;
@@ -59,8 +59,8 @@ int main(int argc, char const *argv[]){
 				}
 			}
 			
-			if(depth_i % 20 == 0)
-				imlib_save_image("pic.png");
+			//if(depth_i % 20 == 0)
+			//imlib_save_image("pic.png");
 		}
 		
 		puts("save image");
