@@ -1,0 +1,26 @@
+{
+	"folders":[
+		{
+			"path": ".",
+			"name": "MandelbrotC",
+			"folder_exclude_patterns": [ ],
+			"file_exclude_patterns": [ ]
+		}
+	],
+	"build_systems":[
+		{
+			"name": "CMake",
+			"cmd": [ "rm -rf build; mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test" ],
+			"working_dir": "${project_path:${folder}}",
+			"shell": true,
+			"path": "$PATH:/usr/local/bin"
+		},
+		{
+			"name": "Make",
+			"cmd": [ "cd build && make VERBOSE=1 && bin/mandelbrot" ],
+			"working_dir": "${project_path:${folder}}",
+			"shell": true,
+			"path": "$PATH:/usr/local/bin"
+		}
+	]
+}
