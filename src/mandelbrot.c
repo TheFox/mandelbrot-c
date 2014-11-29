@@ -7,6 +7,8 @@ int main(int argc, char const *argv[]){
 	Imlib_Image image;
 	const int color_diff = COLOR_MAX - COLOR_MIN;
 	
+	printf("color_diff: %d\n", color_diff);
+	
 	puts("create image...");
 	image = imlib_create_image(PICTURE_WIDTH, PICTURE_HEIGHT);
 	if(image){
@@ -33,12 +35,13 @@ int main(int argc, char const *argv[]){
 		printf("width:  o=%.2f s=%.2f m=%.2f\n", width_org, width_step, width_max);
 		printf("height: o=%.2f s=%.2f m=%.2f\n", height_org, height_step, height_max);
 		
-		for(int depth_i = 1; depth_i < DEPTH; depth_i++){
-			printf("depth_i: %d\n", depth_i);
-			
-			const float depth_color = depth_i / DEPTH * color_diff;
-			const int blue = COLOR_MIN + depth_color;
+		for(int depth_i = 1; depth_i <= DEPTH; depth_i++){
+			const float depth_percent = (float)((float)depth_i / (float)DEPTH);
+			const float depth_color = depth_percent * color_diff;
+			const float blue = COLOR_MIN + depth_color;
 			imlib_context_set_color(0, 0, blue, 255);
+			
+			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, DEPTH, color_diff, depth_color);
 			
 			for(int pos_x = 0; pos_x < PICTURE_WIDTH; pos_x++){
 				const float val_x = width_org + pos_x * width_step;
@@ -48,16 +51,16 @@ int main(int argc, char const *argv[]){
 					
 					//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, val_x, val_y);
 					
-					int point_depth = point_iteration(val_x, val_y);
-					if(point_depth > depth_i){
-						printf("\t%d %d = %d\n", pos_x, pos_y, point_depth);
-						imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 0);
-					}
+					const int point_depth = point_iteration(val_x, val_y);
+					if(point_depth > depth_i)
+						//printf("\t%d %d = %d\n", pos_x, pos_y, point_depth);
+						imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 255);
+					
 				}
 			}
 			
-			imlib_save_image("pic.png");
-			
+			if(depth_i % 20 == 0)
+				imlib_save_image("pic.png");
 		}
 		
 		puts("save image");
