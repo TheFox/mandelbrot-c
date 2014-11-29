@@ -35,8 +35,8 @@ int main(int argc, char const *argv[]){
 		printf("width:  o=%.2f s=%.2f m=%.2f\n", width_org, width_step, width_max);
 		printf("height: o=%.2f s=%.2f m=%.2f\n", height_org, height_step, height_max);
 		
-		for(int depth_i = 1; depth_i <= DEPTH; depth_i++){
-			const float depth_percent = (float)((float)depth_i / (float)DEPTH);
+		for(int depth_i = DEPTH_MIN; depth_i <= DEPTH_MAX; depth_i++){
+			const float depth_percent = (float)((float)depth_i / (float)DEPTH_MAX);
 			const float depth_color = depth_percent * color_diff;
 			const float blue = COLOR_MIN + depth_color;
 			imlib_context_set_color(0, 0, blue, 255);
@@ -44,10 +44,10 @@ int main(int argc, char const *argv[]){
 			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, DEPTH_MAX, color_diff, depth_color);
 			
 			for(int pos_x = 0; pos_x < PICTURE_WIDTH; pos_x++){
-				const float val_x = width_org + pos_x * width_step;
+				const float val_x = width_org + width_step * pos_x;
 				
 				for(int pos_y = 0; pos_y < PICTURE_HEIGHT; pos_y++){
-					const float val_y = height_org + pos_y * height_step;
+					const float val_y = height_org + height_step * pos_y;
 					
 					//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, val_x, val_y);
 					
@@ -79,7 +79,7 @@ int point_iteration(const float cx, const float cy){
 	float x = 0, y = 0;
 	int step = 0;
 	
-	while(iter_val <= 4.0 && step < DEPTH){
+	while(iter_val <= 4.0 && step < DEPTH_MAX){
 		float tx = x * x - y * y + cx;
 		float ty = 2 * x * y + cy;
 		x = tx;

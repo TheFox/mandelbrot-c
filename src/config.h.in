@@ -10,6 +10,7 @@
 //#define PICTURE_HEIGHT 1080
 #define PICTURE_HEIGHT 2160
 
-#define DEPTH 800
+#define DEPTH_MIN 800
+#define DEPTH_MAX 900
 #define COLOR_MIN 1
 #define COLOR_MAX 255
