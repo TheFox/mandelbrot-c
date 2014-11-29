@@ -11,4 +11,6 @@
 #include <X11/Xlib.h>
 #include <Imlib2.h>
 
+int point_iteration(const float cx, const float cy);
+
 #endif /* !_MANDELBROT_H */

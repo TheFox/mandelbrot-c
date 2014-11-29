@@ -5,9 +5,9 @@
 #define Mandelbrot_VERSION_PATCH @Mandelbrot_VERSION_PATCH@
 #define Mandelbrot_COPYRIGHT "Copyright (C) 2014 Christian Mayer <http://fox21.at>"
 
-#define PICTURE_WIDTH  400
-#define PICTURE_HEIGHT 300
+#define PICTURE_WIDTH  5
+#define PICTURE_HEIGHT 5
 
-#define DEPTH 10
+#define DEPTH 5
 #define COLOR_MIN 1
-#define COLOR_MAX 1
+#define COLOR_MAX 255
