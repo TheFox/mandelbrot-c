@@ -7,6 +7,11 @@ set(Mandelbrot_VERSION_PATCH 0)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
+execute_process(COMMAND imlib2-config --cflags OUTPUT_VARIABLE IMLIB_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND imlib2-config --libs OUTPUT_VARIABLE IMLIB_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND pkg-config --cflags glib-2.0 OUTPUT_VARIABLE GLIB_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND pkg-config --libs glib-2.0 OUTPUT_VARIABLE GLIB_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h")
 
 MESSAGE(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
@@ -29,19 +34,35 @@ include_directories(${Mandelbrot_INCLUDE_DIRS})
 include_directories(${STDIO_INCLUDE_PATH})
 include_directories("/opt/X11/include")
 include_directories("/usr/local/Cellar/imlib2/1.4.6_1/include")
+include_directories("/usr/local/Cellar/glib/2.42.0/include/glib-2.0")
+#include_directories("/usr/local/Cellar/glib/2.42.0/lib/glib-2.0/include")
+#include_directories("/usr/local/opt/gettext/include")
 link_directories("/usr/local/Cellar/imlib2/1.4.6_1/lib")
+#link_directories("/usr/local/Cellar/glib/2.42.0/lib")
+#link_directories("/usr/local/opt/gettext/lib")
+
+#-lglib-2.0 -lintl
+
 
 add_definitions(-Wall)
 add_definitions(-O3)
+add_definitions(${GLIB_CFLAGS})
 
 add_executable(mandelbrot ${Mandelbrot_SOURCES})
+#target_link_libraries(mandelbrot m)
 target_link_libraries(mandelbrot Imlib2)
+target_link_libraries(mandelbrot ${GLIB_LIBS})
 
 add_executable(mandelbrot_test tests/mandelbrot_test.c)
+#target_link_libraries(mandelbrot m)
 target_link_libraries(mandelbrot_test Imlib2)
+target_link_libraries(mandelbrot ${GLIB_LIBS})
 
 
 enable_testing()
+
+add_test(NAME StdRuns COMMAND mandelbrot)
+set_tests_properties(StdRuns PROPERTIES WILL_FAIL true)
 
 add_test(NAME TestRuns COMMAND mandelbrot_test)
 
@@ -53,4 +74,12 @@ MESSAGE("")
 
 MESSAGE(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 MESSAGE(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+MESSAGE("")
+
+MESSAGE(STATUS "IMLIB_CFLAGS: ${IMLIB_CFLAGS}")
+MESSAGE(STATUS "IMLIB_LIBS: ${IMLIB_LIBS}")
+MESSAGE("")
+
+MESSAGE(STATUS "GLIB_CFLAGS: ${GLIB_CFLAGS}")
+MESSAGE(STATUS "GLIB_LIBS: ${GLIB_LIBS}")
 MESSAGE("")
