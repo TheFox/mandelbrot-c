@@ -4,18 +4,39 @@
 #include "mandelbrot.h"
 
 int main(int argc, char const *argv[]){
-	if(argc <= 8){
-		printf("Usage: %s P_WIDTH P_HEIGHT depth_min depth_max MB_WIDTH_MIN MB_WIDTH_MAX MB_HEIGHT_MIN MB_HEIGHT_MAX\n", *argv);
-		return 1;
-	}
-	
+	/*
 	GHashTable *table = g_hash_table_new(g_str_hash, g_str_equal);
 	g_hash_table_insert(table, "SOME_KEY", "SOME_VALUE");
 	gchar *value = (gchar *)g_hash_table_lookup(table, "SOME_KEY");
 	
-	printf("'%s'\n", value);
+	float val_x = 3.14;
+	printf("%f\n", val_x >> 1);
 	
 	return 0;
+	
+	
+	float val_x = 3.10000000;
+	
+	printf("%f\n", val_x * val_x * val_x * val_x * val_x * val_x);
+	printf("%f\n", (val_x * val_x * val_x) * (val_x * val_x * val_x));
+	printf("%f\n", (val_x * val_x * val_x) * (val_x * val_x) * val_x);
+	
+	return 0;
+	*/
+	
+	#pragma omp parallel
+	
+	omp_set_num_threads(4);
+	
+	const int id = omp_get_thread_num();
+	printf("Hello World from thread %d\n", id);
+	
+	return 0;
+	
+	if(argc <= 8){
+		printf("Usage: %s P_WIDTH P_HEIGHT depth_min depth_max MB_WIDTH_MIN MB_WIDTH_MAX MB_HEIGHT_MIN MB_HEIGHT_MAX\n", *argv);
+		return 1;
+	}
 	
 	//const int image_width = 0;
 	//const int image_height = 0;
@@ -87,7 +108,9 @@ int main(int argc, char const *argv[]){
 			//imlib_context_set_color(0, 0, 255, blue);
 			imlib_context_set_color(0, 0, blue, 255);
 			
+#ifdef DEBUG
 			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
+#endif
 			
 			for(int pos_x = 0; pos_x < image_width; pos_x++){
 				const float val_x = mb_width_min + mb_width_step * pos_x;
@@ -151,6 +174,7 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 	}
 	*/
 	
+	/*
 	float x_sqr = x * x;
 	float y_sqr = y * y;
 	while(x_sqr + y_sqr < 4.0 && step < depth_max){
@@ -158,18 +182,7 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 		y += y;
 		y += cy;
 		
-		
-		//y = sqr(x + y) - x_sqr - y_sqr;
-		
 		x = x_sqr - y_sqr + cx;
-		
-		/*
-		x_sqr = x * x;
-		y_sqr = y * y;
-		
-		x_sqr = pow(x, 2);
-		y_sqr = pow(y, 2);
-		*/
 		
 		x_sqr = sqr(x);
 		y_sqr = sqr(y);
@@ -177,6 +190,19 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 		step++;
 		
 		//printf("\t %d %f %f  \n", step, x, y);
+	}*/
+	
+	float x_sqr = x * x;
+	float y_sqr = y * y;
+	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
+		y = x * y;
+		y += y;
+		y += cy;
+		
+		x = x_sqr - y_sqr + cx;
+		
+		x_sqr = sqr(x);
+		y_sqr = sqr(y);
 	}
 	
 	

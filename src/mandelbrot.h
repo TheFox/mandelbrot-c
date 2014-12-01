@@ -13,6 +13,8 @@
 #include <Imlib2.h>
 #include <glib.h>
 
+#include <omp.h>
+
 float sqr(const float x);
 int point_iteration(const float cx, const float cy, const int depth_max);
 
