@@ -90,8 +90,45 @@ int main(int argc, char const *argv[]){
 	printf("item[9] %d %p\n", arr1[9][0], arr1[9]);
 	
 	//return 0;
+	
+	
+	char a = 250;
+	unsigned char b = (unsigned char)a;
+	
+	printf("'%x' '%d'\n", a, a);
+	printf("'%x' '%d'\n", b, b);
+	
+	return 0;
 	*/
 	
+	/*
+	Imlib_Image img1;
+	img1 = imlib_create_image(15, 15);
+	imlib_context_set_image(img1);
+	//imlib_image_set_has_alpha(1);
+	
+	imlib_context_set_color(0, 0, 255, 1);
+	imlib_image_draw_line(0, 0, 3, 0, 0);
+	
+	imlib_context_set_color(0, 0, 255, 128);
+	imlib_image_draw_line(1, 0, 3, 0, 0);
+	
+	imlib_context_set_color(0, 0, 255, 128);
+	imlib_image_draw_line(3, 0, 3, 0, 0);
+	
+	imlib_context_set_color(0, 0, 255, 128);
+	imlib_image_draw_line(3, 0, 0, 0, 0);
+	
+	
+	Imlib_Color color;
+	imlib_image_query_pixel(0, 0, &color);
+	
+	printf("pix: %d %d %d %d\n", color.red, color.green, color.blue, color.alpha);
+	
+	imlib_save_image("pic.png");
+	
+	return 0;
+	*/
 	
 	if(argc <= 8){
 		printf("Usage: %s P_WIDTH P_HEIGHT depth_min depth_max MB_WIDTH_MIN MB_WIDTH_MAX MB_HEIGHT_MIN MB_HEIGHT_MAX\n", *argv);
@@ -120,6 +157,7 @@ int main(int argc, char const *argv[]){
 	const float mb_height_step = (mb_height_max - mb_width_min) / image_height;
 	
 	const int depth_diff = depth_max - depth_min;
+	const int color_diff = COLOR_MAX - COLOR_MIN;
 	
 	printf("PID: %d\n", getpid());
 	printf("image_width: %d\n", image_width);
@@ -127,6 +165,8 @@ int main(int argc, char const *argv[]){
 	printf("depth_min: %d\n", depth_min);
 	printf("depth_max: %d\n", depth_max);
 	printf("depth_diff: %d\n", depth_diff);
+	printf("color_diff: %d\n", color_diff);
+	
 	printf("mb_width_min: %f\n", mb_width_min);
 	printf("mb_width_max: %f\n", mb_width_max);
 	printf("mb_height_min: %f\n", mb_height_min);
@@ -154,16 +194,16 @@ int main(int argc, char const *argv[]){
 	
 	const size_t voidp_s = sizeof(voidp);
 	const size_t voidpp_s = sizeof(voidpp);
-	//const size_t ucharp_s = sizeof(unsigned char *);
-	const size_t ucharp_s = sizeof(ucharp);
+	const size_t ucharp_s = sizeof(unsigned char *);
+	//const size_t ucharp_s = sizeof(ucharp);
 	const size_t uchar_s = sizeof(unsigned char);
-	const size_t image_plain_s        = image_width * voidp_s;
-	const size_t image_plain_width_s  = image_height * voidp_s;
+	const size_t image_plain_s        = image_width * ucharp_s;
+	const size_t image_plain_width_s  = image_height * ucharp_s;
 	const size_t image_plain_height_s = 4 * uchar_s;
 	//const size_t image_plain_item_s   = 4            * ucharp_s;
 	const size_t image_plain_s_total = 
-		image_width * voidp_s
-		+ image_width * image_height * voidp_s
+		image_width * ucharp_s
+		+ image_width * image_height * ucharp_s
 		+ image_width * image_height * 4;
 	// 8192 * 8 + 8192 * 8192 * 8 + 8192 * 8192 * 4
 	
@@ -171,117 +211,131 @@ int main(int argc, char const *argv[]){
 	printf("\t voidp_s:  %lu\n", voidp_s);
 	printf("\t voidpp_s: %lu\n", voidpp_s);
 	printf("\t ucharp_s: %lu\n", ucharp_s);
-	printf("\t uchar **: %lu\n", sizeof(unsigned char **));
+	printf("\t uchar ***: %lu\n", sizeof(unsigned char ***));
 	
-	printf("alloc image pixs: %.2f MB\n", (float)image_plain_s_total / (float)1024 / (float)1024);
+	printf("image pixs: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
 	printf("\t image_plain_s:        %lu\n", image_plain_s);
 	printf("\t image_plain_width_s:  %lu\n", image_plain_width_s);
 	printf("\t image_plain_height_s: %lu\n", image_plain_height_s);
 	//printf("\t item_s:   %lu\n", image_plain_item_s);
 	
-	
-	voidpp image_plain = (voidpp)malloc(image_plain_width_s);
-	memset(image_plain, 0, image_plain_width_s);
-	
-	image_plain[0] = (ucharp)malloc(image_plain_height_s);
-	memset(image_plain[0], 0, image_plain_height_s);
-	
-	
-	//strcpy(image_plain[0], "ABC");
-	
-	char str1[100];
-	memset(str1, 0, 100);
-	strcpy(str1, "hello");
-	printf("'%s'\n", str1);
-	
 	/*
-	int x = 0;
-	int y = 0;
-	for(x = 0; x < image_width; x++){
-		(*image_plain)[x] = (ucharp)malloc(image_plain_height_s);
-		memset((*image_plain)[x], 0, image_plain_height_s);
-		
-		//for(y = 0; y < image_height; y++){
-		//	(*image_plain)[x][y] = (ucharp)malloc(image_plain_item_s);
-		//	memset((*image_plain)[x][y], 0, image_plain_item_s);
-		//}
-		
-	}
+	void **image_plain = (void **)malloc(image_plain_s);
+	memset(image_plain, 0, image_plain_s);
+	
+	void *image_plain_ip0 = (void *)malloc(image_plain_width_s);
+	image_plain[0] = image_plain_ip0;
+	memset(image_plain_ip0, 0, image_plain_width_s);
+	
+	void *image_plain_ip00 = (void *)malloc(image_plain_height_s);
+	image_plain_ip0[0] = image_plain_ip00;
+	memset(image_plain_ip00, 0, image_plain_height_s);
 	*/
 	
-	printf("\t image pixs:     %p\n", image_plain);
-	printf("\t image pixs: 0 = %p\n", image_plain[0]);
-	printf("\t image pixs: 00 = %p\n", (*image_plain[0])[0]);
-	printf("\t image pixs: 1 = %p\n", image_plain[1]);
-	printf("\t image pixs: 2 = %p\n", image_plain[2]);
-	printf("\t image pixs: 3 = %p\n", image_plain[3]);
+	size_t size = 0;
 	
-	sleep(10);
+	printf("alloc image_plain\n");
+	char ***image_plain = (char ***)malloc(image_plain_s);
+	memset(image_plain, 0, image_plain_s);
+	size += image_plain_s;
+	int x;
+	int y;
+	for(x = 0; x < image_width; x++){
+		//printf("\t alloc image_plain[%d]\n", x);
+		image_plain[x] = (char **)malloc(image_plain_width_s);
+		memset(image_plain[x], 0, image_plain_width_s);
+		size += image_plain_width_s;
+		
+		for(y = 0; y < image_height; y++){
+			//printf("\t\t alloc image_plain[%d][%d]\n", x, y);
+			image_plain[x][y] = (char *)malloc(image_plain_height_s);
+			memset(image_plain[x][y], 0, image_plain_height_s);
+			size += image_plain_height_s;
+		}
+	}
+	printf("alloc image_plain done\n");
+	printf("size: %lu\n", size);
+	
+	/*
+	strcpy(image_plain[0][0], "ABC");
+	strcpy(image_plain[0][1], "DEF");
+	
+	printf("ip[0]    %p\n", image_plain[0]);
+	printf("ip[0][0] %p '%s'\n", image_plain[0][0], image_plain[0][0]);
+	printf("ip[0][1] %p '%s'\n", image_plain[0][1], image_plain[0][1]);
+	
+	printf("ip[1]    %p\n", image_plain[1]);
+	printf("ip[1][0] %p '%s'\n", image_plain[1][0], image_plain[1][0]);
+	printf("ip[1][1] %p '%s'\n", image_plain[1][1], image_plain[1][1]);
 	
 	return 0;
+	*/
 	
 	puts("start");
 	
-	Imlib_Image image;
-	const int color_diff = COLOR_MAX - COLOR_MIN;
+	/*
+	imlib_context_set_color(255, 255, 0, 255);
+	imlib_image_draw_line(0, 0, 1, 1, 0);
+	return 0;*/
 	
-	printf("color_diff: %d\n", color_diff);
-	
-	puts("create image...");
-	image = imlib_create_image(image_width, image_height);
-	if(image){
-		puts("image ok");
-		imlib_context_set_image(image);
+	//for(int depth_i = depth_min; depth_i <= depth_max; depth_i++){
+	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
+		const int depth_base = depth_min + depth_i;
+		//const float depth_percent = (float)((float)depth_i / (float)depth_max);
+		const float depth_percent = (float)((float)depth_i / (float)depth_diff);
+		const float depth_color = depth_percent * color_diff;
+		const float blue = COLOR_MIN + depth_color;
+		//imlib_context_set_color(0, 0, 255, blue);
+		//imlib_context_set_color(0, 0, blue, 255);
 		
-		//imlib_context_set_mask_alpha_threshold();
-		
-		imlib_image_set_has_alpha(1);
-		char alpha = imlib_image_has_alpha();
-		printf("alpha: %s\n", alpha ? "OK" : "N/A");
-		
-		imlib_context_set_color(255, 255, 0, 255);
-		imlib_image_draw_line(0, 0, 1, 1, 0);
-		
-		return 0;
-		
-		//for(int depth_i = depth_min; depth_i <= depth_max; depth_i++){
-		for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
-			const int depth_base = depth_min + depth_i;
-			//const float depth_percent = (float)((float)depth_i / (float)depth_max);
-			const float depth_percent = (float)((float)depth_i / (float)depth_diff);
-			const float depth_color = depth_percent * color_diff;
-			const float blue = COLOR_MIN + depth_color;
-			//imlib_context_set_color(0, 0, 255, blue);
-			imlib_context_set_color(0, 0, blue, 255);
-			
 #ifdef DEBUG
-			printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
+		printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
 #endif
+		
+		for(int pos_x = 0; pos_x < image_width; pos_x++){
+			const float val_x = mb_width_min + mb_width_step * pos_x;
 			
-			for(int pos_x = 0; pos_x < image_width; pos_x++){
-				const float val_x = mb_width_min + mb_width_step * pos_x;
+			for(int pos_y = 0; pos_y < image_height; pos_y++){
+				const float val_y = mb_height_min + mb_height_step * pos_y;
 				
-				for(int pos_y = 0; pos_y < image_height; pos_y++){
-					const float val_y = mb_height_min + mb_height_step * pos_y;
-					
-					//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, val_x, val_y);
-					
-					const int point_depth = point_iteration(val_x, val_y, depth_max);
-					if(point_depth > depth_base)
-						//printf("\t%d %d = %d\n", pos_x, pos_y, point_depth);
-						//imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 255);
-						;
-				}
+				//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, val_x, val_y);
+				
+				const int point_depth = point_iteration(val_x, val_y, depth_max);
+				if(point_depth > depth_base)
+					image_plain[pos_x][pos_y][2] = blue;
 			}
+		}
 
 #ifdef SAVE_DEPTH_STEP
-			imlib_save_image("pic.png");
+		//imlib_save_image("pic.png");
 #endif			
+		
+	}
+	
+	Imlib_Image image;
+	image = imlib_create_image(image_width, image_height);
+	if(image){
+		puts("create image...");
+		
+		imlib_context_set_image(image);
+		imlib_image_set_has_alpha(1);
+		
+		for(x = 0; x < image_width; x++){
+			//printf("\t x = %d\n", x);
 			
+			for(y = 0; y < image_height; y++){
+				//printf("\t y = %d\n", y);
+				
+				//imlib_context_set_color(image_plain[x][y][0], image_plain[x][y][1], image_plain[x][y][2], image_plain[x][y][3]);
+				imlib_context_set_color(0, 0, image_plain[x][y][2], 255);
+				imlib_image_draw_line(x, y, x, y, 0);
+			}
 		}
 		
-		char file_name[100];
+		int image_size = imlib_get_cache_size();
+		printf("size: %d\n", image_size);
 		
+		char file_name[100];
 		sprintf(file_name, "pics/pic_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png", image_width, image_height, depth_min, depth_max, mb_width_min, mb_width_max, mb_height_min, mb_height_max);
 		
 		puts("save image 1");
@@ -290,6 +344,8 @@ int main(int argc, char const *argv[]){
 		puts("save image 2");
 		imlib_save_image(file_name);
 	}
+	
+	//sleep(10);
 	
 	puts("end");
 	return EXIT_SUCCESS;
