@@ -49,7 +49,7 @@ link_directories("/usr/local/lib")
 #link_directories("/usr/local/opt/gettext/lib")
 
 
-add_definitions(-v)
+#add_definitions(-v)
 add_definitions(-Wall)
 add_definitions(-O3)
 #add_definitions(-msse4)

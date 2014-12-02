@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]){
 	printf("%f\n", (val_x * val_x * val_x) * (val_x * val_x) * val_x);
 	
 	return 0;
-	*/
+	
 	
 	#pragma omp parallel
 	
@@ -32,6 +32,8 @@ int main(int argc, char const *argv[]){
 	printf("Hello World from thread %d\n", id);
 	
 	return 0;
+	*/
+	
 	
 	if(argc <= 8){
 		printf("Usage: %s P_WIDTH P_HEIGHT depth_min depth_max MB_WIDTH_MIN MB_WIDTH_MAX MB_HEIGHT_MIN MB_HEIGHT_MAX\n", *argv);
@@ -158,40 +160,6 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 	float x = 0;
 	float y = 0;
 	
-	/*
-	float iter_val = 0;
-	float tx = 0;
-	float ty = 0;
-	while(iter_val <= 4.0 && step < depth_max){
-		tx = x * x - y * y + cx;
-		ty = 2 * x * y + cy;
-		x = tx;
-		y = ty;
-		iter_val = x * x + y * y;
-		step++;
-		
-		//printf("\t %d %f %f\n", step, x, y);
-	}
-	*/
-	
-	/*
-	float x_sqr = x * x;
-	float y_sqr = y * y;
-	while(x_sqr + y_sqr < 4.0 && step < depth_max){
-		y = x * y;
-		y += y;
-		y += cy;
-		
-		x = x_sqr - y_sqr + cx;
-		
-		x_sqr = sqr(x);
-		y_sqr = sqr(y);
-		
-		step++;
-		
-		//printf("\t %d %f %f  \n", step, x, y);
-	}*/
-	
 	float x_sqr = x * x;
 	float y_sqr = y * y;
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
@@ -204,7 +172,6 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 		x_sqr = sqr(x);
 		y_sqr = sqr(y);
 	}
-	
 	
 	return step;
 }
