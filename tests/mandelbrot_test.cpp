@@ -9,6 +9,7 @@ int main(int argc, char **argv){
 	printf("%s\n", Mandelbrot_COPYRIGHT);
 	printf("\n");
 	
+	printf("strcpy: %p\n", strcpy);
 	printf("sqrt: %p\n", sqrt);
 	
 	printf("imlib_create_image: %p\n", imlib_create_image);
@@ -20,7 +21,7 @@ int main(int argc, char **argv){
 	
 	printf("g_hash_table_new: %p\n", g_hash_table_new);
 	
-	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
+	//printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	//printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	//printf("omp_get_thread_num: %p\n", omp_get_thread_num);
 	

@@ -32,6 +32,64 @@ int main(int argc, char const *argv[]){
 	printf("Hello World from thread %d\n", id);
 	
 	return 0;
+	
+	
+	printf("My process ID : %d\n", getpid());
+	
+	
+	
+	float y = 0.1;
+	
+	printf("%e\n", y);
+	printf("%.255f\n", y);
+	printf("float %lu\n", sizeof(float));
+	printf("double %lu\n", sizeof(double));
+	
+	return x;
+	
+	omp_set_num_threads(32);
+	
+	int i = 0;
+	#pragma omp parallel for
+	for(i = 0; i < 32; i++){
+		const int id = omp_get_thread_num();
+		printf("A i=%d ID=%d\n", i, id);
+	}
+	
+	
+	unsigned char x = 65;
+	unsigned char *x_p = &x;
+	printf("x %lu\n", sizeof(x));
+	printf("x %d\n", x);
+	printf("x_p %lu\n", sizeof(x_p));
+	printf("x_p %p\n", x_p);
+	printf("x_p %s\n", x_p);
+	
+	printf("alloc\n");
+	int arr1[10][3];
+	printf("alloc ok\n");
+	
+	printf("char %lu\n", sizeof(char));
+	printf("int %lu\n", sizeof(int));
+	printf("int* %lu\n", sizeof(int*));
+	printf("array %lu\n", sizeof(arr1));
+	printf("items %lu\n", sizeof(arr1) / sizeof(arr1[0]));
+	printf("items[0] %lu\n", sizeof(arr1[0]));
+	printf("items[0] %lu\n", sizeof(arr1[0]) / sizeof(arr1[0][0]));
+	
+	memset(arr1, 0, 120);
+	printf("item[0] %d %p\n", arr1[0][0], arr1[0]);
+	printf("item[1] %d %p\n", arr1[1][0], arr1[1]);
+	printf("item[2] %d %p\n", arr1[2][0], arr1[2]);
+	printf("item[3] %d %p\n", arr1[3][0], arr1[3]);
+	printf("item[4] %d %p\n", arr1[4][0], arr1[4]);
+	printf("item[5] %d %p\n", arr1[5][0], arr1[5]);
+	printf("item[6] %d %p\n", arr1[6][0], arr1[6]);
+	printf("item[7] %d %p\n", arr1[7][0], arr1[7]);
+	printf("item[8] %d %p\n", arr1[8][0], arr1[8]);
+	printf("item[9] %d %p\n", arr1[9][0], arr1[9]);
+	
+	//return 0;
 	*/
 	
 	
@@ -63,6 +121,7 @@ int main(int argc, char const *argv[]){
 	
 	const int depth_diff = depth_max - depth_min;
 	
+	printf("PID: %d\n", getpid());
 	printf("image_width: %d\n", image_width);
 	printf("image_height: %d\n", image_height);
 	printf("depth_min: %d\n", depth_min);
@@ -76,7 +135,90 @@ int main(int argc, char const *argv[]){
 	printf("mb width:  %.2f-%.2f s=%.2f\n", mb_width_min, mb_width_max, mb_width_step);
 	printf("mb height: %.2f-%.2f s=%.2f\n", mb_height_min, mb_height_max, mb_height_step);
 	
+	printf("OMP: ");
+#ifdef _OMP_H
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
 	
+	printf("SAVE_DEPTH_STEP: ");
+#ifdef SAVE_DEPTH_STEP
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
+	
+	const size_t voidp_s = sizeof(voidp);
+	const size_t voidpp_s = sizeof(voidpp);
+	//const size_t ucharp_s = sizeof(unsigned char *);
+	const size_t ucharp_s = sizeof(ucharp);
+	const size_t uchar_s = sizeof(unsigned char);
+	const size_t image_plain_s        = image_width * voidp_s;
+	const size_t image_plain_width_s  = image_height * voidp_s;
+	const size_t image_plain_height_s = 4 * uchar_s;
+	//const size_t image_plain_item_s   = 4            * ucharp_s;
+	const size_t image_plain_s_total = 
+		image_width * voidp_s
+		+ image_width * image_height * voidp_s
+		+ image_width * image_height * 4;
+	// 8192 * 8 + 8192 * 8192 * 8 + 8192 * 8192 * 4
+	
+	printf("size\n");
+	printf("\t voidp_s:  %lu\n", voidp_s);
+	printf("\t voidpp_s: %lu\n", voidpp_s);
+	printf("\t ucharp_s: %lu\n", ucharp_s);
+	printf("\t uchar **: %lu\n", sizeof(unsigned char **));
+	
+	printf("alloc image pixs: %.2f MB\n", (float)image_plain_s_total / (float)1024 / (float)1024);
+	printf("\t image_plain_s:        %lu\n", image_plain_s);
+	printf("\t image_plain_width_s:  %lu\n", image_plain_width_s);
+	printf("\t image_plain_height_s: %lu\n", image_plain_height_s);
+	//printf("\t item_s:   %lu\n", image_plain_item_s);
+	
+	
+	voidpp image_plain = (voidpp)malloc(image_plain_width_s);
+	memset(image_plain, 0, image_plain_width_s);
+	
+	image_plain[0] = (ucharp)malloc(image_plain_height_s);
+	memset(image_plain[0], 0, image_plain_height_s);
+	
+	
+	//strcpy(image_plain[0], "ABC");
+	
+	char str1[100];
+	memset(str1, 0, 100);
+	strcpy(str1, "hello");
+	printf("'%s'\n", str1);
+	
+	/*
+	int x = 0;
+	int y = 0;
+	for(x = 0; x < image_width; x++){
+		(*image_plain)[x] = (ucharp)malloc(image_plain_height_s);
+		memset((*image_plain)[x], 0, image_plain_height_s);
+		
+		//for(y = 0; y < image_height; y++){
+		//	(*image_plain)[x][y] = (ucharp)malloc(image_plain_item_s);
+		//	memset((*image_plain)[x][y], 0, image_plain_item_s);
+		//}
+		
+	}
+	*/
+	
+	printf("\t image pixs:     %p\n", image_plain);
+	printf("\t image pixs: 0 = %p\n", image_plain[0]);
+	printf("\t image pixs: 00 = %p\n", (*image_plain[0])[0]);
+	printf("\t image pixs: 1 = %p\n", image_plain[1]);
+	printf("\t image pixs: 2 = %p\n", image_plain[2]);
+	printf("\t image pixs: 3 = %p\n", image_plain[3]);
+	
+	sleep(10);
+	
+	return 0;
 	
 	puts("start");
 	
@@ -97,8 +239,10 @@ int main(int argc, char const *argv[]){
 		char alpha = imlib_image_has_alpha();
 		printf("alpha: %s\n", alpha ? "OK" : "N/A");
 		
-		//imlib_context_set_color(255, 255, 0, 255);
-		//imlib_image_draw_line(0, 0, image_width, image_height, 0);
+		imlib_context_set_color(255, 255, 0, 255);
+		imlib_image_draw_line(0, 0, 1, 1, 0);
+		
+		return 0;
 		
 		//for(int depth_i = depth_min; depth_i <= depth_max; depth_i++){
 		for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
@@ -125,8 +269,8 @@ int main(int argc, char const *argv[]){
 					const int point_depth = point_iteration(val_x, val_y, depth_max);
 					if(point_depth > depth_base)
 						//printf("\t%d %d = %d\n", pos_x, pos_y, point_depth);
-						imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 255);
-					
+						//imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 255);
+						;
 				}
 			}
 
