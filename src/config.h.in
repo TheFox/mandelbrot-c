@@ -16,4 +16,4 @@
 #define COLOR_MAX 255
 
 // Save each depth step.
-//#define SAVE_DEPTH_STEP
+#define SAVE_DEPTH_STEP
