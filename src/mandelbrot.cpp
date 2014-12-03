@@ -129,6 +129,11 @@ int main(int argc, char const *argv[]){
 	
 	return 0;
 	*/
+	printf("%s %d.%d.%d (%s %s)\n", Mandelbrot_NAME,
+		Mandelbrot_VERSION_MAJOR, Mandelbrot_VERSION_MINOR, Mandelbrot_VERSION_PATCH,
+		__DATE__, __TIME__);
+	printf("%s\n", Mandelbrot_COPYRIGHT);
+	printf("\n");
 	
 	if(argc <= 8){
 		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
@@ -149,48 +154,81 @@ int main(int argc, char const *argv[]){
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
 	const float mb_width_mid = atof(argv[5]);
-	const float mb_width_zoom = atof(argv[6]) / 2;
+	const float mb_width_zoom = atof(argv[6]) / 2.0;
 	//const float mb_width_min = atof(argv[5]);
 	//const float mb_width_max = atof(argv[6]);
 	const float mb_height_mid = atof(argv[7]);
-	const float mb_height_zoom = atof(argv[8]) / 2;
+	const float mb_height_zoom = atof(argv[8]) / 2.0;
 	//const float mb_height_min = atof(argv[7]);
 	//const float mb_height_max = atof(argv[8]);
 	
 	const int image_width_mid = image_width / 2;
 	const int image_height_mid = image_height / 2;
+	const int color_diff = COLOR_MAX - COLOR_MIN;
 	
 	const float mb_width_min = mb_width_mid - mb_width_zoom;
 	const float mb_width_max = mb_width_mid + mb_width_zoom;
-	const float mb_height_min = mb_height_mid + mb_height_zoom;
-	const float mb_height_max = mb_height_mid - mb_height_zoom;
+	
+	const float mb_height_min = mb_height_mid - mb_height_zoom;
+	const float mb_height_max = mb_height_mid + mb_height_zoom;
+	
 	const float mb_width_step = (mb_width_max - mb_width_min) / image_width;
-	const float mb_height_step = (mb_height_max + mb_width_min) / image_height;
+	const float mb_height_step = (mb_height_max - mb_width_min) / image_height;
 	
 	const int depth_diff = depth_max - depth_min;
 	const float depth_step = 1.0 / (float)depth_diff;
-	const int color_diff = COLOR_MAX - COLOR_MIN;
+	
 	
 	printf("PID: %d\n", getpid());
+	
+	printf("DEBUG: ");
+#ifdef DEBUG
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
+	printf("USE_MB_XY_GRID: ");
+#ifdef USE_MB_XY_GRID
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
+	printf("OMP: ");
+#ifdef _OMP_H
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
 	printf("image_width: %d (%d)\n", image_width, image_width_mid);
 	printf("image_height: %d (%d)\n", image_height, image_height_mid);
+	printf("color_diff: %d\n", color_diff);
+	printf("\n");
+	
 	printf("depth_min:  %d\n", depth_min);
 	printf("depth_max:  %d\n", depth_max);
 	printf("depth_diff: %d\n", depth_diff);
 	printf("depth_step: %f\n", depth_step);
-	printf("color_diff: %d\n", color_diff);
+	printf("\n");
 	
-	printf("mb_width_mid:   %f\n", mb_width_mid);
-	printf("mb_width_zoom:  %f\n", mb_width_zoom);
-	printf("mb_width_min:   %f\n", mb_width_min);
-	printf("mb_width_max:   %f\n", mb_width_max);
-	printf("mb_width_step:  %f\n", mb_width_step);
-	printf("mb_height_mid:  %f\n", mb_height_mid);
-	printf("mb_height_zoom: %f\n", mb_height_zoom);
-	printf("mb_height_min:  %f\n", mb_height_min);
-	printf("mb_height_max:  %f\n", mb_height_max);
-	printf("mb_height_step: %f\n", mb_height_step);
+	printf("mb_width mid:   %f\n", mb_width_mid);
+	printf("mb_width zoom:  %f\n", mb_width_zoom);
+	printf("mb_width min:   %f\n", mb_width_min);
+	printf("mb_width max:   %f\n", mb_width_max);
+	printf("mb_width step:  %f\n", mb_width_step);
+	printf("\n");
 	
+	printf("mb_height mid:  %f\n", mb_height_mid);
+	printf("mb_height zoom: %f\n", mb_height_zoom);
+	printf("mb_height min:  %f\n", mb_height_min);
+	printf("mb_height max:  %f\n", mb_height_max);
+	printf("mb_height step: %f\n", mb_height_step);
+	printf("\n");
 	
 	float image_width_mb_0_iter = 0;
 	int image_width_mb_0 = 0;
@@ -213,21 +251,6 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
 	
 	
-	printf("OMP: ");
-#ifdef _OMP_H
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("SAVE_DEPTH_STEP: ");
-#ifdef SAVE_DEPTH_STEP
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
 	
 	
 	const size_t voidp_s = sizeof(voidp);
@@ -254,7 +277,7 @@ int main(int argc, char const *argv[]){
 	printf("\t uchar_s:  %lu\n", uchar_s);
 	printf("\t uchar ***: %lu\n", sizeof(unsigned char ***));
 	
-	printf("image pixs: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
+	printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
 	printf("\t image_plain_s:        %lu\n", image_plain_s);
 	printf("\t image_plain_width_s:  %lu\n", image_plain_width_s);
 	//printf("\t image_plain_height_s: %lu\n", image_plain_height_s);
@@ -319,17 +342,47 @@ int main(int argc, char const *argv[]){
 	return 0;
 	*/
 	
-	puts("start");
+	
 	
 	/*
 	imlib_context_set_color(255, 255, 0, 255);
 	imlib_image_draw_line(0, 0, 1, 1, 0);
 	return 0;*/
 	
+	int pos_x = 0;
+	int pos_y = 0;
+
+#ifdef USE_MB_XY_GRID
+	size_t mb_x_grid_s = image_width * float_s;
+	size_t mb_y_grid_s = image_height * float_s;
+	float *mb_x_grid_w = (float *)malloc(mb_x_grid_s);
+	float *mb_y_grid_w = (float *)malloc(mb_y_grid_s);
+	printf("mb_x_grid_s: %lu\n", mb_x_grid_s);
+	printf("mb_y_grid_s: %lu\n", mb_y_grid_s);
+	
+	for(pos_x = 0; pos_x < image_width; pos_x++)
+		mb_x_grid_w[pos_x] = mb_width_min + mb_width_step * pos_x;
+	
+	for(pos_y = 0; pos_y < image_height; pos_y++)
+		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * pos_y;
+	
+	const float *mb_x_grid_r = (const float *)mb_x_grid_w;
+	const float *mb_y_grid_r = (const float *)mb_y_grid_w;
+#endif
+	
+	//for(pos_x = 0; pos_x < image_width; pos_x++) printf("x: %d %f\n", pos_x, mb_x_grid_r[pos_x]);
+	//for(pos_y = 0; pos_y < image_width; pos_y++) printf("y: %d %f\n", pos_y, mb_y_grid_r[pos_y]);
+	
+	//return 0;
+	
+	puts("start");
+	
 	float depth_percent = 0.0;
+	int depth_base = depth_min;
 	//for(int depth_i = depth_min; depth_i <= depth_max; depth_i++){
 	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
-		const int depth_base = depth_min + depth_i;
+		depth_base++;
+		//const int depth_base = depth_min + depth_i;
 		//const float depth_percent = (float)((float)depth_i / (float)depth_max);
 		//const float depth_percent = (float)((float)depth_i / (float)depth_diff);
 		//const char depth_percent = (char)((float)depth_i / (float)depth_diff * 100.0);
@@ -341,18 +394,27 @@ int main(int argc, char const *argv[]){
 		
 #ifdef DEBUG
 		//printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
-		printf("depth_i: %d/%d %f\n", depth_i, depth_diff, depth_percent);
+		printf("\rdepth_i: %d/%d %f   ", depth_i, depth_diff, depth_percent);
+		fflush(stdout);
 #endif
 		
-		for(int pos_x = 0; pos_x < image_width; pos_x++){
+		for(pos_x = 0; pos_x < image_width; pos_x++){
+#ifdef USE_MB_XY_GRID
+			const float mb_x = mb_x_grid_r[pos_x];
+#else
 			const float mb_x = mb_width_min + mb_width_step * pos_x;
+#endif
 			
-			//printf("mb_x: %d %f\n", pos_x, mb_x);
+			//printf("\t mb_x: %d %f\n", pos_x, mb_x);
 			
-			for(int pos_y = 0; pos_y < image_height; pos_y++){
+			for(pos_y = 0; pos_y < image_height; pos_y++){
+#ifdef USE_MB_XY_GRID
+				const float mb_y = mb_y_grid_r[pos_y];
+#else
 				const float mb_y = mb_height_min + mb_height_step * pos_y;
+#endif
 				
-				//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, mb_x, mb_y);
+				//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
 				
 				const int point_depth = point_iteration(mb_x, mb_y, depth_max);
 				if(point_depth > depth_base)
@@ -361,10 +423,6 @@ int main(int argc, char const *argv[]){
 					image_plain[pos_x][pos_y] = depth_percent;
 			}
 		}
-		
-#ifdef SAVE_DEPTH_STEP
-		//imlib_save_image("pic.png");
-#endif
 		
 		depth_percent += depth_step;
 	}
@@ -414,7 +472,11 @@ int main(int argc, char const *argv[]){
 		printf("size: %d\n", image_size);
 		
 		char file_name[100];
-		sprintf(file_name, "pics/pic_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png", image_width, image_height, depth_min, depth_max, mb_width_min, mb_width_max, mb_height_min, mb_height_max);
+		sprintf(file_name, "pics/pic_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
+			image_width, image_height,
+			depth_min, depth_max,
+			mb_width_min, mb_width_max,
+			mb_height_min, mb_height_max);
 		
 		puts("save image 1");
 		imlib_save_image("pic.png");
