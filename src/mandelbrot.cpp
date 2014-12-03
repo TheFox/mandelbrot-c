@@ -478,10 +478,11 @@ int main(int argc, char const *argv[]){
 			mb_width_min, mb_width_max,
 			mb_height_min, mb_height_max);
 		
-		puts("save image 1");
+		
+		puts("save image: pic.png");
 		imlib_save_image("pic.png");
 		
-		puts("save image 2");
+		printf("save image: %s\n", file_name);
 		imlib_save_image(file_name);
 	}
 	
