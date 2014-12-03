@@ -3,3 +3,5 @@ src/config.h
 libs
 *.png
 pics
+mandelbrot
+test1*
