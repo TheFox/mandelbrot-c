@@ -168,12 +168,11 @@ int main(int argc, char const *argv[]){
 	
 	const float mb_width_min = mb_width_mid - mb_width_zoom;
 	const float mb_width_max = mb_width_mid + mb_width_zoom;
+	const float mb_width_step = (mb_width_max - mb_width_min) / image_width;
 	
 	const float mb_height_min = mb_height_mid - mb_height_zoom;
 	const float mb_height_max = mb_height_mid + mb_height_zoom;
-	
-	const float mb_width_step = (mb_width_max - mb_width_min) / image_width;
-	const float mb_height_step = (mb_height_max - mb_width_min) / image_height;
+	const float mb_height_step = (mb_height_max - mb_height_min) / image_height;
 	
 	const int depth_diff = depth_max - depth_min;
 	const float depth_step = 1.0 / (float)depth_diff;
