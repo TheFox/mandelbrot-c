@@ -148,11 +148,22 @@ int main(int argc, char const *argv[]){
 	const int image_height = atof(argv[2]);
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
-	const float mb_width_min = atof(argv[5]);
-	const float mb_width_max = atof(argv[6]);
-	const float mb_height_min = atof(argv[7]);
-	const float mb_height_max = atof(argv[8]);
+	const float mb_width_mid = atof(argv[5]);
+	const float mb_width_zoom = atof(argv[6]) / 2;
+	//const float mb_width_min = atof(argv[5]);
+	//const float mb_width_max = atof(argv[6]);
+	const float mb_height_mid = atof(argv[7]);
+	const float mb_height_zoom = atof(argv[8]) / 2;
+	//const float mb_height_min = atof(argv[7]);
+	//const float mb_height_max = atof(argv[8]);
 	
+	const int image_width_mid = image_width / 2;
+	const int image_height_mid = image_height / 2;
+	
+	const float mb_width_min = mb_width_mid - mb_width_zoom;
+	const float mb_width_max = mb_width_mid + mb_width_zoom;
+	const float mb_height_min = mb_height_mid - mb_height_zoom;
+	const float mb_height_max = mb_height_mid + mb_height_zoom;
 	const float mb_width_step = (mb_width_max - mb_width_min) / image_width;
 	const float mb_height_step = (mb_height_max - mb_width_min) / image_height;
 	
@@ -161,21 +172,46 @@ int main(int argc, char const *argv[]){
 	const int color_diff = COLOR_MAX - COLOR_MIN;
 	
 	printf("PID: %d\n", getpid());
-	printf("image_width: %d\n", image_width);
-	printf("image_height: %d\n", image_height);
+	printf("image_width: %d (%d)\n", image_width, image_width_mid);
+	printf("image_height: %d (%d)\n", image_height, image_height_mid);
 	printf("depth_min:  %d\n", depth_min);
 	printf("depth_max:  %d\n", depth_max);
 	printf("depth_diff: %d\n", depth_diff);
 	printf("depth_step: %f\n", depth_step);
 	printf("color_diff: %d\n", color_diff);
 	
+	printf("mb_width_mid:  %f\n", mb_width_mid);
+	printf("mb_width_zoom:  %f\n", mb_width_zoom);
 	printf("mb_width_min:  %f\n", mb_width_min);
 	printf("mb_width_max:  %f\n", mb_width_max);
+	printf("mb_width_step:  %f\n", mb_width_step);
+	printf("mb_height_mid: %f\n", mb_height_mid);
+	printf("mb_height_zoom: %f\n", mb_height_zoom);
 	printf("mb_height_min: %f\n", mb_height_min);
 	printf("mb_height_max: %f\n", mb_height_max);
+	printf("mb_height_step: %f\n", mb_height_step);
 	
-	printf("mb width:  %.2f-%.2f s=%.2f\n", mb_width_min, mb_width_max, mb_width_step);
-	printf("mb height: %.2f-%.2f s=%.2f\n", mb_height_min, mb_height_max, mb_height_step);
+	
+	float image_width_mb_0_iter = 0;
+	int image_width_mb_0 = 0;
+	if(mb_width_max > 0)
+		for(image_width_mb_0_iter = mb_width_min; image_width_mb_0_iter <= 0; image_width_mb_0_iter += mb_width_step){
+			//printf("image_width_mb_0_iter: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
+			image_width_mb_0++;
+		}
+	
+	float image_height_mb_0_iter = 0;
+	int image_height_mb_0 = 0;
+	if(mb_height_max > 0)
+		for(image_height_mb_0_iter = mb_height_min; image_height_mb_0_iter <= 0; image_height_mb_0_iter += mb_height_step){
+			//printf("image_height_mb_0_iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+			image_height_mb_0++;
+		}
+	//return 0;
+	
+	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
+	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+	
 	
 	printf("OMP: ");
 #ifdef _OMP_H
@@ -309,24 +345,26 @@ int main(int argc, char const *argv[]){
 #endif
 		
 		for(int pos_x = 0; pos_x < image_width; pos_x++){
-			const float val_x = mb_width_min + mb_width_step * pos_x;
+			const float mb_x = mb_width_min + mb_width_step * pos_x;
+			
+			//printf("mb_x: %d %f\n", pos_x, mb_x);
 			
 			for(int pos_y = 0; pos_y < image_height; pos_y++){
-				const float val_y = mb_height_min + mb_height_step * pos_y;
+				const float mb_y = mb_height_min + mb_height_step * pos_y;
 				
-				//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, val_x, val_y);
+				//printf("\txy: %d %d (%.2f %.2f)\n", pos_x, pos_y, mb_x, mb_y);
 				
-				const int point_depth = point_iteration(val_x, val_y, depth_max);
+				const int point_depth = point_iteration(mb_x, mb_y, depth_max);
 				if(point_depth > depth_base)
 					//image_plain[pos_x][pos_y][0] = blue;
 					//image_plain[pos_x][pos_y][0] = depth_percent;
 					image_plain[pos_x][pos_y] = depth_percent;
 			}
 		}
-
+		
 #ifdef SAVE_DEPTH_STEP
 		//imlib_save_image("pic.png");
-#endif			
+#endif
 		
 		depth_percent += depth_step;
 	}
@@ -345,10 +383,10 @@ int main(int argc, char const *argv[]){
 		char blue = 0;
 		
 		for(x = 0; x < image_width; x++){
-			printf("\t x = %d\n", x);
+			//printf("\t x = %d\n", x);
 			
 			for(y = 0; y < image_height; y++){
-				printf("\t\t y = %d %f\n", y, image_plain[x][y]);
+				//printf("\t\t y = %d %f\n", y, image_plain[x][y]);
 				
 				red   = (int)(image_plain[x][y] * 255.0);
 				green = (int)(image_plain[x][y] * 255.0);
@@ -359,6 +397,18 @@ int main(int argc, char const *argv[]){
 				imlib_image_draw_line(x, y, x, y, 0);
 			}
 		}
+		
+		imlib_context_set_color(255, 0, 0, 255);
+		imlib_image_draw_line(image_width_mb_0, 0, image_width_mb_0, image_height, 0);
+		imlib_image_draw_line(0, image_height_mb_0, image_width, image_height_mb_0, 0);
+		//imlib_image_draw_line(0, imag, image_height, imag, 0);
+		
+		imlib_context_set_color(0, 255, 0, 255);
+		imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
+		imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
+		
+		
+		
 		
 		int image_size = imlib_get_cache_size();
 		printf("size: %d\n", image_size);
