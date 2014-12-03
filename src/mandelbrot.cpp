@@ -359,7 +359,7 @@ int main(int argc, char const *argv[]){
 		mb_x_grid_w[pos_x] = mb_width_min + mb_width_step * pos_x;
 	
 	for(pos_y = 0; pos_y < image_height; pos_y++)
-		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * pos_y;
+		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * (image_height - pos_y);
 	
 	const float *mb_x_grid_r = (const float *)mb_x_grid_w;
 	const float *mb_y_grid_r = (const float *)mb_y_grid_w;
@@ -406,7 +406,7 @@ int main(int argc, char const *argv[]){
 #ifdef USE_MB_XY_GRID
 				const float mb_y = mb_y_grid_r[pos_y];
 #else
-				const float mb_y = mb_height_min + mb_height_step * pos_y;
+				const float mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
 #endif
 				
 				//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
