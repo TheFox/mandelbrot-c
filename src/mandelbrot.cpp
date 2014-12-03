@@ -107,17 +107,11 @@ int main(int argc, char const *argv[]){
 	imlib_context_set_image(img1);
 	//imlib_image_set_has_alpha(1);
 	
-	imlib_context_set_color(0, 0, 255, 1);
-	imlib_image_draw_line(0, 0, 3, 0, 0);
+	int o = 2;
+	int test_y = 15-o;
 	
-	imlib_context_set_color(0, 0, 255, 128);
-	imlib_image_draw_line(1, 0, 3, 0, 0);
-	
-	imlib_context_set_color(0, 0, 255, 128);
-	imlib_image_draw_line(3, 0, 3, 0, 0);
-	
-	imlib_context_set_color(0, 0, 255, 128);
-	imlib_image_draw_line(3, 0, 0, 0, 0);
+	imlib_context_set_color(255, 0, 0, 255);
+	imlib_image_draw_line(0, test_y, 0, test_y, 0);
 	
 	
 	Imlib_Color color;
@@ -129,6 +123,8 @@ int main(int argc, char const *argv[]){
 	
 	return 0;
 	*/
+	
+	
 	printf("%s %d.%d.%d (%s %s)\n", Mandelbrot_NAME,
 		Mandelbrot_VERSION_MAJOR, Mandelbrot_VERSION_MINOR, Mandelbrot_VERSION_PATCH,
 		__DATE__, __TIME__);
