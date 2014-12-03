@@ -236,8 +236,8 @@ int main(int argc, char const *argv[]){
 	float image_height_mb_0_iter = 0;
 	int image_height_mb_0 = 0;
 	if(mb_height_max > 0)
-		for(image_height_mb_0_iter = mb_height_min; image_height_mb_0_iter <= 0; image_height_mb_0_iter += mb_height_step){
-			//printf("image_height_mb_0_iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+		for(image_height_mb_0_iter = mb_height_max; image_height_mb_0_iter >= 0; image_height_mb_0_iter -= mb_height_step){
+			printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
 			image_height_mb_0++;
 		}
 	//return 0;
@@ -245,7 +245,7 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
 	
-	
+	//return 0;
 	
 	
 	const size_t voidp_s = sizeof(voidp);
