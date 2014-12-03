@@ -237,7 +237,7 @@ int main(int argc, char const *argv[]){
 	int image_height_mb_0 = 0;
 	if(mb_height_max > 0)
 		for(image_height_mb_0_iter = mb_height_max; image_height_mb_0_iter >= 0; image_height_mb_0_iter -= mb_height_step){
-			printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+			//printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
 			image_height_mb_0++;
 		}
 	//return 0;
