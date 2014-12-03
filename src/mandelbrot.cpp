@@ -131,7 +131,7 @@ int main(int argc, char const *argv[]){
 	*/
 	
 	if(argc <= 8){
-		printf("Usage: %s P_WIDTH P_HEIGHT depth_min depth_max MB_WIDTH_MIN MB_WIDTH_MAX MB_HEIGHT_MIN MB_HEIGHT_MAX\n", *argv);
+		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
 		return 1;
 	}
 	
@@ -180,15 +180,15 @@ int main(int argc, char const *argv[]){
 	printf("depth_step: %f\n", depth_step);
 	printf("color_diff: %d\n", color_diff);
 	
-	printf("mb_width_mid:  %f\n", mb_width_mid);
+	printf("mb_width_mid:   %f\n", mb_width_mid);
 	printf("mb_width_zoom:  %f\n", mb_width_zoom);
-	printf("mb_width_min:  %f\n", mb_width_min);
-	printf("mb_width_max:  %f\n", mb_width_max);
+	printf("mb_width_min:   %f\n", mb_width_min);
+	printf("mb_width_max:   %f\n", mb_width_max);
 	printf("mb_width_step:  %f\n", mb_width_step);
-	printf("mb_height_mid: %f\n", mb_height_mid);
+	printf("mb_height_mid:  %f\n", mb_height_mid);
 	printf("mb_height_zoom: %f\n", mb_height_zoom);
-	printf("mb_height_min: %f\n", mb_height_min);
-	printf("mb_height_max: %f\n", mb_height_max);
+	printf("mb_height_min:  %f\n", mb_height_min);
+	printf("mb_height_max:  %f\n", mb_height_max);
 	printf("mb_height_step: %f\n", mb_height_step);
 	
 	
