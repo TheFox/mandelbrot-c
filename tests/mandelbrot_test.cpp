@@ -11,6 +11,8 @@ int main(int argc, char **argv){
 	
 	printf("strcpy: %p\n", strcpy);
 	printf("sqrt: %p\n", sqrt);
+	printf("time: %p\n", time);
+	printf("localtime: %p\n", localtime);
 	
 	printf("imlib_create_image: %p\n", imlib_create_image);
 	printf("imlib_context_set_image: %p\n", imlib_context_set_image);
@@ -18,6 +20,10 @@ int main(int argc, char **argv){
 	printf("imlib_context_set_color: %p\n", imlib_context_set_color);
 	printf("imlib_image_draw_line: %p\n", imlib_image_draw_line);
 	printf("imlib_save_image: %p\n", imlib_save_image);
+	printf("imlib_add_path_to_font_path: %p\n", imlib_add_path_to_font_path);
+	printf("imlib_load_font: %p\n", imlib_load_font);
+	printf("imlib_context_set_font: %p\n", imlib_context_set_font);
+	printf("imlib_text_draw: %p\n", imlib_text_draw);
 	
 	//printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	//printf("omp_get_num_threads: %p\n", omp_get_num_threads);
