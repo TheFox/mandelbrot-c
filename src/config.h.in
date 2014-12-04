@@ -12,10 +12,5 @@
 #define TEXT_OFFSET_X 5
 #define TEXT_OFFSET_Y 5
 
-//#define IMAGE_WIDTH  1920
-//#define IMAGE_HEIGHT 1080
-
-//#define DEPTH_MIN 800
-//#define DEPTH_MAX 900
 #define COLOR_MIN 1
 #define COLOR_MAX 255

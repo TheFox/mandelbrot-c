@@ -59,14 +59,12 @@ add_executable(mandelbrot ${Mandelbrot_SOURCES})
 target_link_libraries(mandelbrot m)
 target_link_libraries(mandelbrot Imlib2)
 #target_link_libraries(mandelbrot ${IMLIB_LIBS})
-#target_link_libraries(mandelbrot glib-2.0)
 #target_link_libraries(mandelbrot intl)
 
 add_executable(mandelbrot_test tests/mandelbrot_test.cpp)
 target_link_libraries(mandelbrot m)
 target_link_libraries(mandelbrot_test Imlib2)
 #target_link_libraries(mandelbrot_test ${IMLIB_LIBS})
-#target_link_libraries(mandelbrot_test glib-2.0)
 #target_link_libraries(mandelbrot_test intl)
 
 
