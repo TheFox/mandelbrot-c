@@ -222,6 +222,7 @@ int main(int argc, char const *argv[]){
 	size += image_plain_s;
 	int x;
 	int y;
+	#pragma omp parallel for
 	for(x = 0; x < image_width; x++){
 		//printf("\t alloc image_plain[%d]\n", x);
 		//image_plain[x] = (char *)malloc(image_plain_width_s);
@@ -259,6 +260,8 @@ int main(int argc, char const *argv[]){
 	*/
 	
 	
+	omp_set_num_threads(8);
+	
 	
 	/*
 	imlib_context_set_color(255, 255, 0, 255);
@@ -276,9 +279,11 @@ int main(int argc, char const *argv[]){
 	printf("mb_x_grid_s: %lu\n", mb_x_grid_s);
 	printf("mb_y_grid_s: %lu\n", mb_y_grid_s);
 	
+	#pragma omp parallel for
 	for(pos_x = 0; pos_x < image_width; pos_x++)
 		mb_x_grid_w[pos_x] = mb_width_min + mb_width_step * pos_x;
 	
+	#pragma omp parallel for
 	for(pos_y = 0; pos_y < image_height; pos_y++)
 		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * (image_height - pos_y);
 	
@@ -323,6 +328,7 @@ int main(int argc, char const *argv[]){
 			
 			//printf("\t mb_x: %d %f\n", pos_x, mb_x);
 			
+			#pragma omp parallel for
 			for(pos_y = 0; pos_y < image_height; pos_y++){
 #ifdef USE_MB_XY_GRID
 				const float mb_y = mb_y_grid_r[pos_y];
@@ -359,6 +365,7 @@ int main(int argc, char const *argv[]){
 		for(x = 0; x < image_width; x++){
 			//printf("\t x = %d\n", x);
 			
+			#pragma omp parallel for
 			for(y = 0; y < image_height; y++){
 				//printf("\t\t y = %d %f\n", y, image_plain[x][y]);
 				
@@ -381,12 +388,19 @@ int main(int argc, char const *argv[]){
 		imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
 		imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
 		
+		#pragma omp parallel for
 		for(x = image_width_mid - GRID_STEP_PIXEL; x > 0; x -= GRID_STEP_PIXEL)
 			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		
+		#pragma omp parallel for
 		for(x = image_width_mid + GRID_STEP_PIXEL; x < image_width; x += GRID_STEP_PIXEL)
 			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		
+		#pragma omp parallel for
 		for(y = image_height_mid - GRID_STEP_PIXEL; y > 0; y -= GRID_STEP_PIXEL)
 			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
+		
+		#pragma omp parallel for
 		for(y = image_height_mid + GRID_STEP_PIXEL; y < image_height; y += GRID_STEP_PIXEL)
 			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
 #endif

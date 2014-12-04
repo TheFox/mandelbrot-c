@@ -25,10 +25,10 @@ int main(int argc, char **argv){
 	printf("imlib_context_set_font: %p\n", imlib_context_set_font);
 	printf("imlib_text_draw: %p\n", imlib_text_draw);
 	
-	//printf("omp_set_num_threads: %p\n", omp_set_num_threads);
-	//printf("omp_get_num_threads: %p\n", omp_get_num_threads);
-	//printf("omp_get_thread_num: %p\n", omp_get_thread_num);
 	
+	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
+	printf("omp_get_num_threads: %p\n", omp_get_num_threads);
+	printf("omp_get_thread_num: %p\n", omp_get_thread_num);
 	
 	return EXIT_SUCCESS;
 }
