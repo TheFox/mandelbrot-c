@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 #include <X11/Xlib.h>
 #include <Imlib2.h>

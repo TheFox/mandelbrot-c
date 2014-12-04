@@ -7,8 +7,10 @@
 
 #define DEBUG
 #define USE_MB_XY_GRID
-#define GRID_STEP_PIXEL 10
+#define GRID_STEP_PIXEL 50
 #define GRID_STEP_SIZE 5
+#define TEXT_OFFSET_X 5
+#define TEXT_OFFSET_Y 5
 
 //#define IMAGE_WIDTH  1920
 //#define IMAGE_HEIGHT 1080

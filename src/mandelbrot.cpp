@@ -172,6 +172,7 @@ int main(int argc, char const *argv[]){
 	
 	const int depth_diff = depth_max - depth_min;
 	const float depth_step = 1.0 / (float)depth_diff;
+	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
 	
 	
 	printf("PID: %d\n", getpid());
@@ -211,20 +212,23 @@ int main(int argc, char const *argv[]){
 	printf("depth_step: %f\n", depth_step);
 	printf("\n");
 	
-	printf("mb_width mid:   %f\n", mb_width_mid);
-	printf("mb_width zoom:  %f\n", mb_width_zoom);
-	printf("mb_width min:   %f\n", mb_width_min);
-	printf("mb_width max:   %f\n", mb_width_max);
-	printf("mb_width step:  %f\n", mb_width_step);
+	printf("mb_width mid:   %.32f\n", mb_width_mid);
+	printf("mb_width zoom:  %.32f\n", mb_width_zoom);
+	printf("mb_width min:   %.32f\n", mb_width_min);
+	printf("mb_width max:   %.32f\n", mb_width_max);
+	printf("mb_width step:  %.32f\n", mb_width_step);
 	printf("\n");
 	
-	printf("mb_height mid:  %f\n", mb_height_mid);
-	printf("mb_height zoom: %f\n", mb_height_zoom);
-	printf("mb_height min:  %f\n", mb_height_min);
-	printf("mb_height max:  %f\n", mb_height_max);
-	printf("mb_height step: %f\n", mb_height_step);
+	printf("mb_height mid:  %.32f\n", mb_height_mid);
+	printf("mb_height zoom: %.32f\n", mb_height_zoom);
+	printf("mb_height min:  %.32f\n", mb_height_min);
+	printf("mb_height max:  %.32f\n", mb_height_max);
+	printf("mb_height step: %.32f\n", mb_height_step);
 	printf("\n");
 	
+	//return 0;
+	
+	printf("find width 0 point\n");
 	float image_width_mb_0_iter = 0;
 	int image_width_mb_0 = 0;
 	if(mb_width_max > 0)
@@ -233,6 +237,7 @@ int main(int argc, char const *argv[]){
 			image_width_mb_0++;
 		}
 	
+	printf("find height 0 point\n");
 	float image_height_mb_0_iter = 0;
 	int image_height_mb_0 = 0;
 	if(mb_height_max > 0)
@@ -240,7 +245,7 @@ int main(int argc, char const *argv[]){
 			//printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
 			image_height_mb_0++;
 		}
-	//return 0;
+	//
 	
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
@@ -346,7 +351,7 @@ int main(int argc, char const *argv[]){
 	
 	int pos_x = 0;
 	int pos_y = 0;
-
+	
 #ifdef USE_MB_XY_GRID
 	size_t mb_x_grid_s = image_width * float_s;
 	size_t mb_y_grid_s = image_height * float_s;
@@ -472,11 +477,105 @@ int main(int argc, char const *argv[]){
 			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
 		
 		
+		
+		imlib_add_path_to_font_path("/usr/share/fonts");
+		imlib_add_path_to_font_path("/usr/local/share/fonts");
+		imlib_add_path_to_font_path("/Library/Fonts");
+		
+		Imlib_Font font = imlib_load_font("Arial/10");
+		//Imlib_Font font = imlib_load_font("notepad/30");
+		if(font){
+			imlib_context_set_color(255, 0, 0, 255);
+			
+			printf("font ok\n");
+			imlib_context_set_font(font);
+			
+			time_t current_time;
+			current_time = time(NULL);
+			//struct tm *current_time_tm = gmtime(&current_time);
+			struct tm *current_time_tm = localtime(&current_time);
+			
+			
+			char *text = (char *)malloc(128);
+			memset(text, 0, 128);
+			
+			strcpy(text, "TEST TEXT");
+			
+			int text_w, text_h;
+			imlib_get_text_size(text, &text_w, &text_h);
+			printf("font: '%d' '%d'\n", text_w, text_h);
+			//imlib_text_draw(320 - (text_w / 2) - up_x, 240 - (text_h / 2) - up_y, text);
+			//imlib_text_draw(TEXT_OFFSET_X, TEXT_OFFSET_Y, text);
+			
+			int text_offset_y = TEXT_OFFSET_Y;
+			strcpy(text, Mandelbrot_COPYRIGHT);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			strftime(text, 128, "%F %T %z %Z", current_time_tm);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "img wh: %d %d px", image_width, image_height);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "grid step xy: %f %f", mb_width_step * grid_step_pixel_f, mb_height_step * grid_step_pixel_f);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "cr(x): %f %f", mb_width_min, mb_width_max);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "cr zoom: %f", mb_width_zoom);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "cr mid: %f", mb_width_mid);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "cr step: %f", mb_width_step);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "ci(y): %f %f", mb_height_min, mb_height_max);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "ci mid: %f", mb_height_mid);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "ci step: %f", mb_height_step);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "ci zoom: %f", mb_height_zoom);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "depth: %d %d", depth_min, depth_max);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
+			sprintf(text, "depth step: %f", depth_step);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			
+			
+			imlib_free_font();
+		}
+		else
+			printf("font failed\n");
+		
+		
 		int image_size = imlib_get_cache_size();
 		printf("size: %d\n", image_size);
 		
 		char file_name[100];
-		sprintf(file_name, "pics/pic_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
+		sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
 			image_width, image_height,
 			depth_min, depth_max,
 			mb_width_min, mb_width_max,
