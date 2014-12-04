@@ -1,106 +1,7 @@
 
-// https://randomascii.wordpress.com/2011/08/13/faster-fractals-through-algebra/
-
 #include "mandelbrot.h"
 
 int main(int argc, char const *argv[]){
-	/*
-	GHashTable *table = g_hash_table_new(g_str_hash, g_str_equal);
-	g_hash_table_insert(table, "SOME_KEY", "SOME_VALUE");
-	gchar *value = (gchar *)g_hash_table_lookup(table, "SOME_KEY");
-	
-	float val_x = 3.14;
-	printf("%f\n", val_x >> 1);
-	
-	return 0;
-	
-	
-	float val_x = 3.10000000;
-	
-	printf("%f\n", val_x * val_x * val_x * val_x * val_x * val_x);
-	printf("%f\n", (val_x * val_x * val_x) * (val_x * val_x * val_x));
-	printf("%f\n", (val_x * val_x * val_x) * (val_x * val_x) * val_x);
-	
-	return 0;
-	
-	
-	#pragma omp parallel
-	
-	omp_set_num_threads(4);
-	
-	const int id = omp_get_thread_num();
-	printf("Hello World from thread %d\n", id);
-	
-	return 0;
-	
-	
-	printf("My process ID : %d\n", getpid());
-	
-	
-	
-	float y = 0.1;
-	
-	printf("%e\n", y);
-	printf("%.255f\n", y);
-	printf("float %lu\n", sizeof(float));
-	printf("double %lu\n", sizeof(double));
-	
-	return x;
-	
-	omp_set_num_threads(32);
-	
-	int i = 0;
-	#pragma omp parallel for
-	for(i = 0; i < 32; i++){
-		const int id = omp_get_thread_num();
-		printf("A i=%d ID=%d\n", i, id);
-	}
-	
-	
-	unsigned char x = 65;
-	unsigned char *x_p = &x;
-	printf("x %lu\n", sizeof(x));
-	printf("x %d\n", x);
-	printf("x_p %lu\n", sizeof(x_p));
-	printf("x_p %p\n", x_p);
-	printf("x_p %s\n", x_p);
-	
-	printf("alloc\n");
-	int arr1[10][3];
-	printf("alloc ok\n");
-	
-	printf("char %lu\n", sizeof(char));
-	printf("int %lu\n", sizeof(int));
-	printf("int* %lu\n", sizeof(int*));
-	printf("array %lu\n", sizeof(arr1));
-	printf("items %lu\n", sizeof(arr1) / sizeof(arr1[0]));
-	printf("items[0] %lu\n", sizeof(arr1[0]));
-	printf("items[0] %lu\n", sizeof(arr1[0]) / sizeof(arr1[0][0]));
-	
-	memset(arr1, 0, 120);
-	printf("item[0] %d %p\n", arr1[0][0], arr1[0]);
-	printf("item[1] %d %p\n", arr1[1][0], arr1[1]);
-	printf("item[2] %d %p\n", arr1[2][0], arr1[2]);
-	printf("item[3] %d %p\n", arr1[3][0], arr1[3]);
-	printf("item[4] %d %p\n", arr1[4][0], arr1[4]);
-	printf("item[5] %d %p\n", arr1[5][0], arr1[5]);
-	printf("item[6] %d %p\n", arr1[6][0], arr1[6]);
-	printf("item[7] %d %p\n", arr1[7][0], arr1[7]);
-	printf("item[8] %d %p\n", arr1[8][0], arr1[8]);
-	printf("item[9] %d %p\n", arr1[9][0], arr1[9]);
-	
-	//return 0;
-	
-	
-	char a = 250;
-	unsigned char b = (unsigned char)a;
-	
-	printf("'%x' '%d'\n", a, a);
-	printf("'%x' '%d'\n", b, b);
-	
-	return 0;
-	*/
-	
 	/*
 	Imlib_Image img1;
 	img1 = imlib_create_image(15, 15);
@@ -135,15 +36,6 @@ int main(int argc, char const *argv[]){
 		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
 		return 1;
 	}
-	
-	//const int image_width = 0;
-	//const int image_height = 0;
-	//const int depth_min = 0;
-	//const int depth_max = 0;
-	//const float mb_width_min = -2.0;
-	//const float mb_width_max = 0.5;
-	//const float mb_height_min = -1.25;
-	//const float mb_height_max = 1.25;
 	
 	const int image_width = atof(argv[1]);
 	const int image_height = atof(argv[2]);
