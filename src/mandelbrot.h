@@ -14,7 +14,6 @@
 
 #include <X11/Xlib.h>
 #include <Imlib2.h>
-#include <glib.h>
 
 #include <omp.h>
 

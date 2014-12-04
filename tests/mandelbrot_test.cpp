@@ -19,8 +19,6 @@ int main(int argc, char **argv){
 	printf("imlib_image_draw_line: %p\n", imlib_image_draw_line);
 	printf("imlib_save_image: %p\n", imlib_save_image);
 	
-	printf("g_hash_table_new: %p\n", g_hash_table_new);
-	
 	//printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	//printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	//printf("omp_get_thread_num: %p\n", omp_get_thread_num);
