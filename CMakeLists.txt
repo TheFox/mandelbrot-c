@@ -5,10 +5,10 @@ set(Mandelbrot_VERSION_MAJOR 1)
 set(Mandelbrot_VERSION_MINOR 0)
 set(Mandelbrot_VERSION_PATCH 0)
 
-#set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
+set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
 set(CMAKE_C_FLAGS "-Wall -O3 -funroll-loops -fopenmp")
 
-#set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-4.9")
+set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-4.9")
 set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
