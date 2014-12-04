@@ -172,8 +172,12 @@ int main(int argc, char const *argv[]){
 	
 	const int depth_diff = depth_max - depth_min;
 	const float depth_step = 1.0 / (float)depth_diff;
-	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
 	
+#ifdef TEXT
+#ifdef GRID
+	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
+#endif
+#endif
 	
 	printf("PID: %d\n", getpid());
 	
@@ -192,6 +196,26 @@ int main(int argc, char const *argv[]){
 	printf("no");
 #endif
 	printf("\n");
+	
+	printf("GRID: ");
+#ifdef GRID
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	printf("GRID_STEP_PIXEL: %d\n", GRID_STEP_PIXEL);
+	printf("GRID_STEP_SIZE: %d\n", GRID_STEP_SIZE);
+	
+	printf("TEXT: ");
+#ifdef TEXT
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	printf("TEXT_OFFSET_X: %d\n", TEXT_OFFSET_X);
+	printf("TEXT_OFFSET_Y: %d\n", TEXT_OFFSET_Y);
 	
 	printf("OMP: ");
 #ifdef _OMP_H
@@ -456,16 +480,14 @@ int main(int argc, char const *argv[]){
 			}
 		}
 		
+#ifdef GRID
 		imlib_context_set_color(255, 0, 0, 255);
 		imlib_image_draw_line(image_width_mb_0, 0, image_width_mb_0, image_height, 0);
 		imlib_image_draw_line(0, image_height_mb_0, image_width, image_height_mb_0, 0);
-		//imlib_image_draw_line(0, imag, image_height, imag, 0);
 		
 		imlib_context_set_color(0, 255, 0, 255);
 		imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
 		imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
-		
-		//imlib_image_draw_line(image_width_mid - GRID_STEP_PIXEL, image_height_mid - GRID_STEP_PIXEL, image_width_mid + GRID_STEP_PIXEL, image_height_mid - GRID_STEP_PIXEL, 0);
 		
 		for(x = image_width_mid - GRID_STEP_PIXEL; x > 0; x -= GRID_STEP_PIXEL)
 			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
@@ -475,9 +497,9 @@ int main(int argc, char const *argv[]){
 			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
 		for(y = image_height_mid + GRID_STEP_PIXEL; y < image_height; y += GRID_STEP_PIXEL)
 			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
+#endif
 		
-		
-		
+#ifdef TEXT
 		imlib_add_path_to_font_path("/usr/share/fonts");
 		imlib_add_path_to_font_path("/usr/local/share/fonts");
 		imlib_add_path_to_font_path("/Library/Fonts");
@@ -519,9 +541,11 @@ int main(int argc, char const *argv[]){
 			sprintf(text, "img wh: %d %d px", image_width, image_height);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
+#ifdef GRID
 			text_offset_y += text_h;
 			sprintf(text, "grid step xy: %f %f", mb_width_step * grid_step_pixel_f, mb_height_step * grid_step_pixel_f);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+#endif
 			
 			text_offset_y += text_h;
 			sprintf(text, "cr(x): %f %f", mb_width_min, mb_width_max);
@@ -569,7 +593,7 @@ int main(int argc, char const *argv[]){
 		}
 		else
 			printf("font failed\n");
-		
+#endif
 		
 		int image_size = imlib_get_cache_size();
 		printf("size: %d\n", image_size);
