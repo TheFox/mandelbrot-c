@@ -363,7 +363,7 @@ int main(int argc, char const *argv[]){
 		for(x = 0; x < image_width; x++){
 			//printf("\t x = %d\n", x);
 			
-			#pragma omp parallel for
+			//#pragma omp parallel for
 			for(y = 0; y < image_height; y++){
 				//printf("\t\t y = %d %f\n", y, image_plain[x][y]);
 				

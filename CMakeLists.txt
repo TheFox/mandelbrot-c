@@ -5,7 +5,7 @@ set(Mandelbrot_VERSION_MAJOR 1)
 set(Mandelbrot_VERSION_MINOR 0)
 set(Mandelbrot_VERSION_PATCH 0)
 
-set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
+#set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
 set(CMAKE_C_FLAGS "-Wall -O3 -funroll-loops -fopenmp")
 
 #set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-4.9")
@@ -47,6 +47,7 @@ link_directories("/usr/local/Cellar/gcc49/4.9.2/lib/gcc/x86_64-apple-darwin14.0.
 
 
 #add_definitions(-v)
+#add_definitions(-fopenmp)
 
 add_executable(mandelbrot ${Mandelbrot_SOURCES})
 target_link_libraries(mandelbrot m)
