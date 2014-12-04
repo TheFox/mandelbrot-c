@@ -6,7 +6,9 @@
 #define Mandelbrot_COPYRIGHT "Copyright (C) 2014 Christian Mayer <http://fox21.at>"
 
 #define DEBUG
-//#define USE_MB_XY_GRID
+#define USE_MB_XY_GRID
+#define GRID_STEP_PIXEL 10
+#define GRID_STEP_SIZE 5
 
 //#define IMAGE_WIDTH  1920
 //#define IMAGE_HEIGHT 1080

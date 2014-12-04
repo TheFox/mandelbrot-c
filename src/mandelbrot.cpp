@@ -460,7 +460,16 @@ int main(int argc, char const *argv[]){
 		imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
 		imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
 		
+		//imlib_image_draw_line(image_width_mid - GRID_STEP_PIXEL, image_height_mid - GRID_STEP_PIXEL, image_width_mid + GRID_STEP_PIXEL, image_height_mid - GRID_STEP_PIXEL, 0);
 		
+		for(x = image_width_mid - GRID_STEP_PIXEL; x > 0; x -= GRID_STEP_PIXEL)
+			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		for(x = image_width_mid + GRID_STEP_PIXEL; x < image_width; x += GRID_STEP_PIXEL)
+			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		for(y = image_height_mid - GRID_STEP_PIXEL; y > 0; y -= GRID_STEP_PIXEL)
+			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
+		for(y = image_height_mid + GRID_STEP_PIXEL; y < image_height; y += GRID_STEP_PIXEL)
+			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
 		
 		
 		int image_size = imlib_get_cache_size();
