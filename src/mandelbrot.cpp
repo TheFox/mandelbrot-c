@@ -145,26 +145,23 @@ int main(int argc, char const *argv[]){
 	//return 0;
 	
 	printf("find width 0 point\n");
-	float image_width_mb_0_iter = 0;
+	float image_width_mb_iter = 0;
 	int image_width_mb_0 = 0;
 	if(mb_width_max > 0)
-		for(image_width_mb_0_iter = mb_width_min; image_width_mb_0_iter <= 0; image_width_mb_0_iter += mb_width_step){
-			//printf("image_width_mb_0_iter: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
+		for(image_width_mb_iter = mb_width_min; image_width_mb_iter <= 0; image_width_mb_iter += mb_width_step)
+			//printf("image_width_mb_iter: %d %f\n", image_width_mb_0, image_width_mb_iter);
 			image_width_mb_0++;
-		}
 	
 	printf("find height 0 point\n");
-	float image_height_mb_0_iter = 0;
+	float image_height_mb_iter = 0;
 	int image_height_mb_0 = 0;
 	if(mb_height_max > 0)
-		for(image_height_mb_0_iter = mb_height_max; image_height_mb_0_iter >= 0; image_height_mb_0_iter -= mb_height_step){
-			//printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+		for(image_height_mb_iter = mb_height_max; image_height_mb_iter >= 0; image_height_mb_iter -= mb_height_step)
+			//printf("y iter: %d %f\n", image_height_mb_0, image_height_mb_iter);
 			image_height_mb_0++;
-		}
-	//
 	
-	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_0_iter);
-	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_0_iter);
+	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
+	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
 	//return 0;
 	
@@ -315,7 +312,7 @@ int main(int argc, char const *argv[]){
 		
 #ifdef DEBUG
 		//printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
-		printf("\rdepth_i: %d/%d %f   ", depth_i, depth_diff, depth_percent);
+		printf("\rdepth_i: %d/%d %f ", depth_i, depth_diff, depth_percent);
 		fflush(stdout);
 #endif
 		
@@ -348,11 +345,12 @@ int main(int argc, char const *argv[]){
 		
 		depth_percent += depth_step;
 	}
+	puts("");
 	
 	Imlib_Image image;
 	image = imlib_create_image(image_width, image_height);
 	if(image){
-		puts("create image...");
+		puts("create image");
 		
 		imlib_context_set_image(image);
 		imlib_image_set_has_alpha(1);
@@ -455,12 +453,9 @@ int main(int argc, char const *argv[]){
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 #endif
 			
-			text_offset_y += text_h;
-			sprintf(text, "cr(x): %f %f", mb_width_min, mb_width_max);
-			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
-			sprintf(text, "cr zoom: %f", mb_width_zoom);
+			sprintf(text, "cr(x): %f %f", mb_width_min, mb_width_max);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
@@ -468,8 +463,13 @@ int main(int argc, char const *argv[]){
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
+			sprintf(text, "cr zoom: %f", mb_width_zoom);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
+			text_offset_y += text_h;
 			sprintf(text, "cr step: %f", mb_width_step);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
 			
 			text_offset_y += text_h;
 			sprintf(text, "ci(y): %f %f", mb_height_min, mb_height_max);
@@ -480,12 +480,13 @@ int main(int argc, char const *argv[]){
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
-			sprintf(text, "ci step: %f", mb_height_step);
+			sprintf(text, "ci zoom: %f", mb_height_zoom);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
-			sprintf(text, "ci zoom: %f", mb_height_zoom);
+			sprintf(text, "ci step: %f", mb_height_step);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+			
 			
 			text_offset_y += text_h;
 			sprintf(text, "depth: %d %d", depth_min, depth_max);
