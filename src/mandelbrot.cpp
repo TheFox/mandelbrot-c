@@ -381,8 +381,10 @@ int main(int argc, char const *argv[]){
 		
 #ifdef GRID
 		imlib_context_set_color(255, 0, 0, 255);
-		imlib_image_draw_line(image_width_mb_0, 0, image_width_mb_0, image_height, 0);
-		imlib_image_draw_line(0, image_height_mb_0, image_width, image_height_mb_0, 0);
+		if(image_width_mb_0 > 0 && image_width_mb_0 < image_width)
+			imlib_image_draw_line(image_width_mb_0, 0, image_width_mb_0, image_height, 0);
+		if(image_height_mb_0 > 0 && image_height_mb_0 < image_height)
+			imlib_image_draw_line(0, image_height_mb_0, image_width, image_height_mb_0, 0);
 		
 		imlib_context_set_color(0, 255, 0, 255);
 		imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
