@@ -1,9 +1,21 @@
 cmake_minimum_required(VERSION 2.6)
 project(Mandelbrot)
 
-set(Mandelbrot_VERSION_MAJOR 1)
-set(Mandelbrot_VERSION_MINOR 0)
-set(Mandelbrot_VERSION_PATCH 0)
+set(PROJECT_VERSION_MAJOR 1)
+set(PROJECT_VERSION_MINOR 0)
+set(PROJECT_VERSION_PATCH 0)
+set(DEBUG 1)
+set(USE_OPENMP 1)
+set(USE_MB_XY_GRID 1)
+set(GRID 1)
+set(PROJECT_DEFINE_GRID_STEP_PIXEL 50)
+set(PROJECT_DEFINE_GRID_STEP_SIZE 5)
+set(TEXT 1)
+set(PROJECT_DEFINE_TEXT_OFFSET_X 5)
+set(PROJECT_DEFINE_TEXT_OFFSET_Y 5)
+set(PROJECT_DEFINE_COLOR_MIN 1)
+set(PROJECT_DEFINE_COLOR_MAX 255)
+
 
 set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
 set(CMAKE_C_FLAGS "-Wall -O3 -funroll-loops -fopenmp")
@@ -13,27 +25,40 @@ set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
-#execute_process(COMMAND imlib2-config --cflags OUTPUT_VARIABLE IMLIB_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process(COMMAND imlib2-config --libs OUTPUT_VARIABLE IMLIB_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h")
+if(DEBUG)
+	set(PROJECT_DEFINE_DEBUG "#define DEBUG")
+endif()
+if(USE_OPENMP)
+	set(PROJECT_DEFINE_USE_OPENMP "#define USE_OPENMP")
+endif()
+if(USE_MB_XY_GRID)
+	set(PROJECT_DEFINE_USE_MB_XY_GRID "#define USE_MB_XY_GRID")
+endif()
+if(GRID)
+	set(PROJECT_DEFINE_GRID "#define GRID")
+endif()
+if(TEXT)
+	set(PROJECT_DEFINE_TEXT "#define TEXT")
+endif()
+configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h" NEWLINE_STYLE LF)
 
 
 
-file(GLOB_RECURSE Mandelbrot_SOURCES "src/*.c" "src/*.cpp")
-file(GLOB_RECURSE Mandelbrot_HEADERS "src/*.h")
+file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
+file(GLOB_RECURSE PROJECT_HEADERS "src/*.h")
 
 find_path(STDIO_INCLUDE_PATH stdio.h)
 
-set(Mandelbrot_INCLUDE_DIRS "")
-foreach(_headerFile ${Mandelbrot_HEADERS})
+set(PROJECT_INCLUDE_DIRS "")
+foreach(_headerFile ${PROJECT_HEADERS})
 	get_filename_component(_dir ${_headerFile} PATH)
-	list(APPEND Mandelbrot_INCLUDE_DIRS ${_dir})
+	list(APPEND PROJECT_INCLUDE_DIRS ${_dir})
 endforeach()
-list(REMOVE_DUPLICATES Mandelbrot_INCLUDE_DIRS)
+list(REMOVE_DUPLICATES PROJECT_INCLUDE_DIRS)
 
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${Mandelbrot_INCLUDE_DIRS})
+include_directories(${PROJECT_INCLUDE_DIRS})
 include_directories(${STDIO_INCLUDE_PATH})
 
 # Imlib2 includes
@@ -49,7 +74,7 @@ link_directories("/usr/local/Cellar/gcc49/4.9.2/lib/gcc/x86_64-apple-darwin14.0.
 #add_definitions(-v)
 #add_definitions(-fopenmp)
 
-add_executable(mandelbrot ${Mandelbrot_SOURCES})
+add_executable(mandelbrot ${PROJECT_SOURCES})
 target_link_libraries(mandelbrot m)
 target_link_libraries(mandelbrot Imlib2)
 

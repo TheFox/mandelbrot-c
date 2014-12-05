@@ -26,10 +26,10 @@ int main(int argc, char const *argv[]){
 	*/
 	
 	
-	printf("%s %d.%d.%d (%s %s)\n", Mandelbrot_NAME,
-		Mandelbrot_VERSION_MAJOR, Mandelbrot_VERSION_MINOR, Mandelbrot_VERSION_PATCH,
+	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
+		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
 		__DATE__, __TIME__);
-	printf("%s\n", Mandelbrot_COPYRIGHT);
+	printf("%s\n", PROJECT_COPYRIGHT);
 	printf("\n");
 	
 	if(argc <= 8){
@@ -436,7 +436,7 @@ int main(int argc, char const *argv[]){
 			//imlib_text_draw(TEXT_OFFSET_X, TEXT_OFFSET_Y, text);
 			
 			int text_offset_y = TEXT_OFFSET_Y;
-			strcpy(text, Mandelbrot_COPYRIGHT);
+			strcpy(text, PROJECT_COPYRIGHT);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;

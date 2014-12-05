@@ -3,10 +3,10 @@
 
 int main(int argc, char **argv){
 	
-	printf("%s %d.%d.%d (%s %s)\n", Mandelbrot_NAME,
-		Mandelbrot_VERSION_MAJOR, Mandelbrot_VERSION_MINOR, Mandelbrot_VERSION_PATCH,
+	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
+		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
 		__DATE__, __TIME__);
-	printf("%s\n", Mandelbrot_COPYRIGHT);
+	printf("%s\n", PROJECT_COPYRIGHT);
 	printf("\n");
 	
 	printf("strcpy: %p\n", strcpy);
