@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 project(Mandelbrot)
 
 set(PROJECT_VERSION_MAJOR 1)
@@ -16,15 +16,12 @@ set(PROJECT_DEFINE_TEXT_OFFSET_Y 5)
 set(PROJECT_DEFINE_COLOR_MIN 1)
 set(PROJECT_DEFINE_COLOR_MAX 255)
 
-
-set(CMAKE_C_COMPILER "/usr/local/bin/gcc-4.9")
-set(CMAKE_C_FLAGS "-Wall -O3 -funroll-loops -fopenmp")
-
-set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-4.9")
+#set(CMAKE_C_COMPILER "/usr/local/bin/gcc")
+set(CMAKE_C_FLAGS "-v -Wall -O3 -funroll-loops -fopenmp")
+#set(CMAKE_CXX_COMPILER "/usr/local/bin/g++")
 set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/lib")
 
 if(DEBUG)
 	set(PROJECT_DEFINE_DEBUG "#define DEBUG")
@@ -48,7 +45,7 @@ configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/sr
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
 file(GLOB_RECURSE PROJECT_HEADERS "src/*.h")
 
-find_path(STDIO_INCLUDE_PATH stdio.h)
+#find_path(STDIO_INCLUDE_PATH stdio.h)
 
 set(PROJECT_INCLUDE_DIRS "")
 foreach(_headerFile ${PROJECT_HEADERS})
@@ -57,30 +54,44 @@ foreach(_headerFile ${PROJECT_HEADERS})
 endforeach()
 list(REMOVE_DUPLICATES PROJECT_INCLUDE_DIRS)
 
+find_package(Imlib REQUIRED)
+find_package(OpenMP REQUIRED)
+
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_INCLUDE_DIRS})
-include_directories(${STDIO_INCLUDE_PATH})
+#include_directories(${STDIO_INCLUDE_PATH})
 
 # Imlib2 includes
-include_directories("/opt/X11/include")
-include_directories("/usr/local/Cellar/imlib2/1.4.6_1/include")
-link_directories("/usr/local/Cellar/imlib2/1.4.6_1/lib")
+#include_directories("/opt/X11/include")
+#include_directories("/usr/local/Cellar/imlib2/1.4.6_1/include")
+include_directories(${X11_X11_INCLUDE_PATH})
+include_directories(${Imlib_INCLUDE_DIRS})
+#link_directories("/usr/local/Cellar/imlib2/1.4.6_1/lib")
+#link_directories(${Imlib_LIBRARIES})
 
 # OpenMP includes
-include_directories("/usr/local/Cellar/gcc49/4.9.2/lib/gcc/x86_64-apple-darwin14.0.0/4.9.2/include")
-link_directories("/usr/local/Cellar/gcc49/4.9.2/lib/gcc/x86_64-apple-darwin14.0.0/4.9.2")
+#include_directories("")
+include_directories(${OpenMP_INCLUDE_DIRS})
+#link_directories("")
+#link_directories("/usr/lib/gcc/x86_64-linux-gnu/4.7")
+#link_directories(${OpenMP_LIBRARIES})
 
 
-#add_definitions(-v)
+
+add_definitions(-v)
 #add_definitions(-fopenmp)
 
 add_executable(mandelbrot ${PROJECT_SOURCES})
-target_link_libraries(mandelbrot m)
-target_link_libraries(mandelbrot Imlib2)
+#target_link_libraries(mandelbrot Imlib2)
+target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
+#target_link_libraries(mandelbrot gomp)
+target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
 add_executable(mandelbrot_test tests/mandelbrot_test.cpp)
-target_link_libraries(mandelbrot m)
-target_link_libraries(mandelbrot_test Imlib2)
+#target_link_libraries(mandelbrot_test Imlib2)
+target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
+#target_link_libraries(mandelbrot_test gomp)
+target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
 
 enable_testing()
@@ -101,33 +112,56 @@ if(USE_OPENMP)
 	set_tests_properties(TestOmp3 PROPERTIES PASS_REGULAR_EXPRESSION "omp_get_thread_num: 0x")
 
 	add_test(NAME TestOmp4 COMMAND mandelbrot_test)
-	set_tests_properties(TestOmp4 PROPERTIES PASS_REGULAR_EXPRESSION "OMP i=[0-9] ID=[0-9]")
+	set_tests_properties(TestOmp4 PROPERTIES PASS_REGULAR_EXPRESSION "OMP i=[0-9] ID=[1-9]")
 endif()
 
-MESSAGE(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
-MESSAGE(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
-MESSAGE(STATUS "PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+MESSAGE(STATUS "cmake version: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
+MESSAGE(STATUS "PROJECT_SOURCE_DIR: '${PROJECT_SOURCE_DIR}'")
+MESSAGE(STATUS "PROJECT_BINARY_DIR: '${PROJECT_BINARY_DIR}'")
 MESSAGE("")
 
-MESSAGE(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
-MESSAGE(STATUS "CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
-MESSAGE(STATUS "CMAKE_C_FLAGS_DEBUG_INIT: ${CMAKE_C_FLAGS_DEBUG_INIT}")
+MESSAGE(STATUS "PROJECT_NAME: '${PROJECT_NAME}'")
+MESSAGE(STATUS "PROJECT_SOURCE_DIR: '${PROJECT_SOURCE_DIR}'")
+MESSAGE(STATUS "PROJECT_BINARY_DIR: '${PROJECT_BINARY_DIR}'")
 MESSAGE("")
 
-MESSAGE(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-MESSAGE(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
-MESSAGE(STATUS "CMAKE_CXX_FLAGS_DEBUG_INIT: ${CMAKE_CXX_FLAGS_DEBUG_INIT}")
+MESSAGE(STATUS "Imlib_FOUND: '${Imlib_FOUND}'")
+MESSAGE(STATUS "Imlib_INCLUDE_DIRS: '${Imlib_INCLUDE_DIRS}'")
+MESSAGE(STATUS "Imlib_LIBRARIES: '${Imlib_LIBRARIES}'")
+MESSAGE(STATUS "Imlib_DEFINITIONS: '${Imlib_DEFINITIONS}'")
 MESSAGE("")
 
-MESSAGE(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
-MESSAGE(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+MESSAGE(STATUS "OpenMP_FOUND: '${OpenMP_FOUND}'")
+MESSAGE(STATUS "OpenMP_INCLUDE_DIRS: '${OpenMP_INCLUDE_DIRS}'")
+MESSAGE(STATUS "OpenMP_LIBRARIES: '${OpenMP_LIBRARIES}'")
+MESSAGE(STATUS "OpenMP_DEFINITIONS: '${OpenMP_DEFINITIONS}'")
 MESSAGE("")
 
-#MESSAGE(STATUS "IMLIB_CFLAGS: ${IMLIB_CFLAGS}")
-#MESSAGE(STATUS "IMLIB_LIBS: ${IMLIB_LIBS}")
-#MESSAGE("")
+MESSAGE(STATUS "CMAKE_C_COMPILER: '${CMAKE_C_COMPILER}'")
+MESSAGE(STATUS "CMAKE_C_FLAGS: '${CMAKE_C_FLAGS}'")
+MESSAGE(STATUS "CMAKE_C_FLAGS_DEBUG_INIT: '${CMAKE_C_FLAGS_DEBUG_INIT}'")
+MESSAGE("")
 
-#MESSAGE(STATUS "TARGET: ${TARGET}")
-#MESSAGE(STATUS "TARGET_BASE: ${TARGET_BASE}")
-#MESSAGE(STATUS "FLAGS: ${FLAGS}")
+MESSAGE(STATUS "CMAKE_CXX_COMPILER: '${CMAKE_CXX_COMPILER}'")
+MESSAGE(STATUS "CMAKE_CXX_FLAGS: '${CMAKE_CXX_FLAGS}'")
+MESSAGE(STATUS "CMAKE_CXX_FLAGS_DEBUG_INIT: '${CMAKE_CXX_FLAGS_DEBUG_INIT}'")
+MESSAGE("")
+
+MESSAGE(STATUS "CMAKE_PREFIX_PATH: '${CMAKE_PREFIX_PATH}'")
+MESSAGE(STATUS "CMAKE_MODULE_PATH: '${CMAKE_MODULE_PATH}'")
+MESSAGE(STATUS "CMAKE_BINARY_DIR: '${CMAKE_BINARY_DIR}'")
+MESSAGE(STATUS "CMAKE_BUILD_TYPE: '${CMAKE_BUILD_TYPE}'")
+MESSAGE(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: '${CMAKE_RUNTIME_OUTPUT_DIRECTORY}'")
+MESSAGE(STATUS "CMAKE_COMMAND: '${CMAKE_COMMAND}'")
+MESSAGE(STATUS "CMAKE_CONFIGURATION_TYPES: '${CMAKE_CONFIGURATION_TYPES}'")
+MESSAGE(STATUS "CMAKE_FRAMEWORK_PATH: '${CMAKE_FRAMEWORK_PATH}'")
+MESSAGE(STATUS "CMAKE_APPBUNDLE_PATH: '${CMAKE_APPBUNDLE_PATH}'")
+MESSAGE(STATUS "CMAKE_SYSTEM_PREFIX_PATH: '${CMAKE_APPBUNDLE_PATH}'")
+MESSAGE(STATUS "CMAKE_SYSTEM_FRAMEWORK_PATH: '${CMAKE_SYSTEM_FRAMEWORK_PATH}'")
+MESSAGE(STATUS "CMAKE_SYSTEM_APPBUNDLE_PATH: '${CMAKE_SYSTEM_APPBUNDLE_PATH}'")
+MESSAGE("")
+
+#MESSAGE(STATUS "TARGET: '${TARGET}'")
+#MESSAGE(STATUS "TARGET_BASE: '${TARGET_BASE}'")
+#MESSAGE(STATUS "FLAGS: '${FLAGS}'")
 #MESSAGE("")

@@ -256,7 +256,7 @@ int main(int argc, char const *argv[]){
 	return 0;
 	*/
 	
-#ifdef _OMP_H
+#ifdef USE_OPENMP
 	puts("OpenMP is active");
 	omp_set_num_threads(8);
 #endif

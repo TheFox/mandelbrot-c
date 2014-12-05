@@ -1,6 +1,15 @@
 # Mandelbrot
 This script create a picture by using the [Mantelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
 
+# Build
+- Basic
+	
+		( rm -rf build && mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test ) #cmake
+	
+	(On **Mac**) use GCC not Clang because Clang doesn't support OpenMP:
+	
+		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make VERBOSE=1 && make test ) #cmake
+
 ## License
 Copyright (C) 2014 Christian Mayer <http://fox21.at>
 

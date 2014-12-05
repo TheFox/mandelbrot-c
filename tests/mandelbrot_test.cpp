@@ -25,7 +25,7 @@ int main(int argc, char **argv){
 	printf("imlib_context_set_font: %p\n", imlib_context_set_font);
 	printf("imlib_text_draw: %p\n", imlib_text_draw);
 	
-#ifdef _OMP_H
+#ifdef USE_OPENMP
 	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	printf("omp_get_thread_num: %p\n", omp_get_thread_num);
@@ -36,8 +36,11 @@ int main(int argc, char **argv){
 	#pragma omp parallel for
 	for(iter_x = 0; iter_x < 8; iter_x++){
 		const int id_x = omp_get_thread_num();
-		printf("OMP i=%d ID=%d\n", iter_x, id_x);
+		if(id_x)
+			printf("OMP i=%d ID=%d\n", iter_x, id_x);
 	}
+#else
+	puts("OpenMP header not found");
 #endif
 	
 	return EXIT_SUCCESS;
