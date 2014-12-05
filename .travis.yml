@@ -3,7 +3,8 @@ compiler:
     - clang
     - gcc
 install:
-    - sudo apt-get install -y libimlib2-dev libgomp1
+    - sudo apt-get install -y libimlib2-dev
+    - sudo apt-get install -y libgomp1
     - mkdir build
     - cd build
     - cmake .. 
