@@ -16,6 +16,9 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	
 		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make VERBOSE=1 && make test ) #cmake
 
+## Project Links
+- [Travis CI Repository](https://travis-ci.org/TheFox/mandelbrot-c)
+
 ## License
 Copyright (C) 2014 Christian Mayer <http://fox21.at>
 
