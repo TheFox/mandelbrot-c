@@ -510,7 +510,8 @@ int main(int argc, char const *argv[]){
 		int image_size = imlib_get_cache_size();
 		printf("size: %d\n", image_size);
 		
-		char file_name[100];
+		char *file_name = (char *)malloc(128);
+		memset(file_name, 0, 128);
 		sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
 			image_width, image_height,
 			depth_min, depth_max,
