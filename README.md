@@ -1,6 +1,12 @@
 # Mandelbrot
 This script create a picture by using the [Mantelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
 
+# Mac Requirements
+- X11: <http://xquartz.macosforge.org/>
+- Homebrew
+	- `brew install homebrew/versions/gcc49`
+	- `brew install imlib2`
+
 # Build
 - Basic
 	
