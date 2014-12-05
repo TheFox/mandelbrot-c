@@ -29,6 +29,15 @@ int main(int argc, char **argv){
 	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	printf("omp_get_thread_num: %p\n", omp_get_thread_num);
+	
+	int iter_x;
+	omp_set_num_threads(8);
+	
+	#pragma omp parallel for
+	for(iter_x = 0; iter_x < 8; iter_x++){
+		const int id_x = omp_get_thread_num();
+		printf("OMP i=%d ID=%d\n", iter_x, id_x);
+	}
 #endif
 	
 	return EXIT_SUCCESS;

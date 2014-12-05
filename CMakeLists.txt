@@ -90,8 +90,19 @@ set_tests_properties(StdRuns PROPERTIES WILL_FAIL true)
 
 add_test(NAME TestRuns COMMAND mandelbrot_test)
 
+if(USE_OPENMP)
+	add_test(NAME TestOmp1 COMMAND mandelbrot_test)
+	set_tests_properties(TestOmp1 PROPERTIES PASS_REGULAR_EXPRESSION "omp_set_num_threads: 0x")
 
+	add_test(NAME TestOmp2 COMMAND mandelbrot_test)
+	set_tests_properties(TestOmp2 PROPERTIES PASS_REGULAR_EXPRESSION "omp_get_num_threads: 0x")
 
+	add_test(NAME TestOmp3 COMMAND mandelbrot_test)
+	set_tests_properties(TestOmp3 PROPERTIES PASS_REGULAR_EXPRESSION "omp_get_thread_num: 0x")
+
+	add_test(NAME TestOmp4 COMMAND mandelbrot_test)
+	set_tests_properties(TestOmp4 PROPERTIES PASS_REGULAR_EXPRESSION "OMP i=[0-9] ID=[0-9]")
+endif()
 
 MESSAGE(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
 MESSAGE(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
