@@ -22,7 +22,7 @@ find_library(OpenMP_LIBRARY_PATH gomp
 		#/usr/lib/x86_64-linux-gnu
 		#/usr/lib/gcc/x86_64-linux-gnu/4.8
 		#/usr/lib/gcc/x86_64-linux-gnu/4.7
-		#/usr/lib/gcc/x86_64-linux-gnu/4.6
+		/usr/lib/gcc/x86_64-linux-gnu/4.6
 		#/usr/local/Cellar/gcc49/4.9.2/lib/gcc/x86_64-apple-darwin14.0.0/4.9.2
 )
 
