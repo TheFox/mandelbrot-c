@@ -25,10 +25,11 @@ int main(int argc, char **argv){
 	printf("imlib_context_set_font: %p\n", imlib_context_set_font);
 	printf("imlib_text_draw: %p\n", imlib_text_draw);
 	
-	
+#ifdef _OMP_H
 	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	printf("omp_get_thread_num: %p\n", omp_get_thread_num);
+#endif
 	
 	return EXIT_SUCCESS;
 }

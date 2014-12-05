@@ -15,7 +15,9 @@
 #include <X11/Xlib.h>
 #include <Imlib2.h>
 
+#ifdef USE_OPENMP
 #include <omp.h>
+#endif
 
 typedef void* voidp;
 typedef void** voidpp;

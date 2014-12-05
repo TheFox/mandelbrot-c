@@ -81,6 +81,14 @@ int main(int argc, char const *argv[]){
 #endif
 	printf("\n");
 	
+	printf("USE_OPENMP: ");
+#ifdef USE_OPENMP
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
 	printf("USE_MB_XY_GRID: ");
 #ifdef USE_MB_XY_GRID
 	printf("yes");
@@ -108,14 +116,6 @@ int main(int argc, char const *argv[]){
 	printf("\n");
 	printf("TEXT_OFFSET_X: %d\n", TEXT_OFFSET_X);
 	printf("TEXT_OFFSET_Y: %d\n", TEXT_OFFSET_Y);
-	
-	printf("OMP: ");
-#ifdef _OMP_H
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
 	
 	printf("image_width: %d (%d)\n", image_width, image_width_mid);
 	printf("image_height: %d (%d)\n", image_height, image_height_mid);
@@ -256,8 +256,11 @@ int main(int argc, char const *argv[]){
 	return 0;
 	*/
 	
-	
+#ifdef _OMP_H
+	puts("OpenMP is active");
 	omp_set_num_threads(8);
+#endif
+	
 	
 	
 	/*
