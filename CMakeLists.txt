@@ -48,8 +48,6 @@ configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/sr
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
 file(GLOB_RECURSE PROJECT_HEADERS "src/*.h")
 
-#find_path(STDIO_INCLUDE_PATH stdio.h)
-
 set(PROJECT_INCLUDE_DIRS "")
 foreach(_headerFile ${PROJECT_HEADERS})
 	get_filename_component(_dir ${_headerFile} PATH)
@@ -60,40 +58,26 @@ list(REMOVE_DUPLICATES PROJECT_INCLUDE_DIRS)
 find_package(Imlib REQUIRED)
 find_package(OpenMP REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_INCLUDE_DIRS})
-#include_directories(${STDIO_INCLUDE_PATH})
 
 # Imlib2 includes
-#include_directories("/opt/X11/include")
-#include_directories("/usr/local/Cellar/imlib2/1.4.6_1/include")
 include_directories(${X11_X11_INCLUDE_PATH})
 include_directories(${Imlib_INCLUDE_DIRS})
-#link_directories("/usr/local/Cellar/imlib2/1.4.6_1/lib")
-#link_directories(${Imlib_LIBRARIES})
 
 # OpenMP includes
-#include_directories("")
 include_directories(${OpenMP_INCLUDE_DIRS})
-#link_directories("")
-#link_directories("/usr/lib/gcc/x86_64-linux-gnu/4.7")
-#link_directories(${OpenMP_LIBRARIES})
 
 
 
-add_definitions(-v)
+#add_definitions(-v)
 #add_definitions(-fopenmp)
 
 add_executable(mandelbrot ${PROJECT_SOURCES})
-#target_link_libraries(mandelbrot Imlib2)
 target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
-#target_link_libraries(mandelbrot gomp)
 target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
 add_executable(mandelbrot_test tests/mandelbrot_test.cpp)
-#target_link_libraries(mandelbrot_test Imlib2)
 target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
-#target_link_libraries(mandelbrot_test gomp)
 target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
 
