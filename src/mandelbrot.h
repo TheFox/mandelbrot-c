@@ -5,11 +5,14 @@
 #include "config.h"
 
 #include <iostream>
+#include <cmath>
+#include <complex>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <math.h>
+//#include <math.h>
 #include <time.h>
 
 #include <X11/Xlib.h>
