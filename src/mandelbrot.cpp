@@ -529,8 +529,8 @@ int main(int argc, char const *argv[]){
 		sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
 			image_width, image_height,
 			depth_min, depth_max,
-			mb_width_min, mb_width_max,
-			mb_height_min, mb_height_max);
+			mb_width_mid, mb_width_zoom,
+			mb_height_mid, mb_height_zoom);
 		
 		
 		puts("save image: pic.png");
