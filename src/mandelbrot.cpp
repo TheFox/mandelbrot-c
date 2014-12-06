@@ -315,7 +315,7 @@ int main(int argc, char const *argv[]){
 		
 #ifdef DEBUG
 		//printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
-		printf("\rdepth_i: %d/%d %f ", depth_i, depth_diff, depth_percent);
+		printf("\rdepth_i: %d/%d %f", depth_i, depth_diff, depth_percent);
 		fflush(stdout);
 #endif
 		
@@ -541,8 +541,14 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 	float x = 0;
 	float y = 0;
 	
+	//printf("\n");
+	
 	float x_sqr = x * x;
 	float y_sqr = y * y;
+	float log_x;
+	float log_y;
+	float x_sqr2;
+	float y_sqr2;
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
 		y = x * y;
 		y += y;
@@ -550,8 +556,19 @@ int point_iteration(const float cx, const float cy, const int depth_max){
 		
 		x = x_sqr - y_sqr + cx;
 		
-		x_sqr = sqr(x);
-		y_sqr = sqr(y);
+		x_sqr = x * x;
+		y_sqr = y * y;
+		
+		/*
+		log_x = log(x);
+		log_y = log(y);
+		x_sqr2 = exp(log_x + log_x);
+		y_sqr2 = exp(log_y + log_y);
+		
+		printf("point: %f %f\n", cx, cy);
+		printf("\t A %f %f\n", x_sqr, y_sqr);
+		printf("\t B %f %f %d\n\n", x_sqr2, y_sqr2, x_sqr == x_sqr2 && y_sqr == y_sqr2 ? 1 : 0);
+		*/
 	}
 	
 	return step;
