@@ -17,7 +17,7 @@ set(PROJECT_DEFINE_COLOR_MIN 1)
 set(PROJECT_DEFINE_COLOR_MAX 255)
 
 #set(CMAKE_C_COMPILER "/usr/local/bin/gcc")
-set(CMAKE_C_FLAGS "-Wall -O3 -funroll-loops -fopenmp")
+set(CMAKE_C_FLAGS "-Wall -Wno-unknown-pragmas -O3 -std=c++11 -funroll-loops -ffast-math")
 #set(CMAKE_CXX_COMPILER "/usr/local/bin/g++")
 set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
