@@ -71,6 +71,12 @@ int main(int argc, char const *argv[]){
 #endif
 #endif
 	
+	char *start_time_text = (char *)malloc(128);
+	memset(start_time_text, 0, 128);
+	time_t start_time = time(NULL);
+	struct tm *start_time_tm = localtime(&start_time);
+	strftime(start_time_text, 128, "S time: %F %T %z %Z", start_time_tm);
+	
 	printf("PID: %d\n", getpid());
 	
 	printf("DEBUG: ");
@@ -421,10 +427,9 @@ int main(int argc, char const *argv[]){
 			printf("font ok\n");
 			imlib_context_set_font(font);
 			
-			time_t current_time;
-			current_time = time(NULL);
-			//struct tm *current_time_tm = gmtime(&current_time);
-			struct tm *current_time_tm = localtime(&current_time);
+			
+			time_t picture_time = time(NULL);
+			struct tm *picture_time_tm = localtime(&picture_time);
 			
 			
 			char *text = (char *)malloc(128);
@@ -442,8 +447,12 @@ int main(int argc, char const *argv[]){
 			strcpy(text, PROJECT_COPYRIGHT);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
+			
 			text_offset_y += text_h;
-			strftime(text, 128, "%F %T %z %Z", current_time_tm);
+			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, start_time_text);
+			
+			text_offset_y += text_h;
+			strftime(text, 128, "P time: %F %T %z %Z", picture_time_tm);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 			
 			text_offset_y += text_h;
