@@ -25,8 +25,9 @@
 typedef void* voidp;
 typedef void** voidpp;
 typedef unsigned char* ucharp;
+typedef double mbnum;
 
 float sqr(const float x);
-int point_iteration(const float cx, const float cy, const int depth_max);
+int point_iteration(const mbnum cx, const mbnum cy, const int depth_max);
 
 #endif /* _MANDELBROT_H */

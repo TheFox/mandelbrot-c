@@ -41,22 +41,22 @@ int main(int argc, char const *argv[]){
 	const int image_height = atof(argv[2]);
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
-	const float mb_width_mid = atof(argv[5]);
-	const float mb_width_zoom = atof(argv[6]) / 2.0;
-	const float mb_height_mid = atof(argv[7]);
-	const float mb_height_zoom = atof(argv[8]) / 2.0;
+	const mbnum mb_width_mid = atof(argv[5]);
+	const mbnum mb_width_zoom = atof(argv[6]) / 2.0;
+	const mbnum mb_height_mid = atof(argv[7]);
+	const mbnum mb_height_zoom = atof(argv[8]) / 2.0;
 	
 	const int image_width_mid = image_width / 2;
 	const int image_height_mid = image_height / 2;
 	const int color_diff = COLOR_MAX - COLOR_MIN;
 	
-	const float mb_width_min = mb_width_mid - mb_width_zoom;
-	const float mb_width_max = mb_width_mid + mb_width_zoom;
-	const float mb_width_step = (mb_width_max - mb_width_min) / image_width;
+	const mbnum mb_width_min = mb_width_mid - mb_width_zoom;
+	const mbnum mb_width_max = mb_width_mid + mb_width_zoom;
+	const mbnum mb_width_step = (mb_width_max - mb_width_min) / image_width;
 	
-	const float mb_height_min = mb_height_mid - mb_height_zoom;
-	const float mb_height_max = mb_height_mid + mb_height_zoom;
-	const float mb_height_step = (mb_height_max - mb_height_min) / image_height;
+	const mbnum mb_height_min = mb_height_mid - mb_height_zoom;
+	const mbnum mb_height_max = mb_height_mid + mb_height_zoom;
+	const mbnum mb_height_step = (mb_height_max - mb_height_min) / image_height;
 	
 	const int depth_diff = depth_max - depth_min;
 	const float depth_step = 1.0 / (float)depth_diff;
@@ -274,10 +274,11 @@ int main(int argc, char const *argv[]){
 	int pos_y = 0;
 	
 #ifdef USE_MB_XY_GRID
-	size_t mb_x_grid_s = image_width * float_s;
-	size_t mb_y_grid_s = image_height * float_s;
-	float *mb_x_grid_w = (float *)malloc(mb_x_grid_s);
-	float *mb_y_grid_w = (float *)malloc(mb_y_grid_s);
+	size_t mbnum_s = sizeof(mbnum);
+	size_t mb_x_grid_s = image_width * mbnum_s;
+	size_t mb_y_grid_s = image_height * mbnum_s;
+	mbnum *mb_x_grid_w = (mbnum *)malloc(mb_x_grid_s);
+	mbnum *mb_y_grid_w = (mbnum *)malloc(mb_y_grid_s);
 	printf("mb_x_grid_s: %lu\n", mb_x_grid_s);
 	printf("mb_y_grid_s: %lu\n", mb_y_grid_s);
 	
@@ -289,8 +290,8 @@ int main(int argc, char const *argv[]){
 	for(pos_y = 0; pos_y < image_height; pos_y++)
 		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * (image_height - pos_y);
 	
-	const float *mb_x_grid_r = (const float *)mb_x_grid_w;
-	const float *mb_y_grid_r = (const float *)mb_y_grid_w;
+	const mbnum *mb_x_grid_r = (const mbnum *)mb_x_grid_w;
+	const mbnum *mb_y_grid_r = (const mbnum *)mb_y_grid_w;
 #endif
 	
 	//for(pos_x = 0; pos_x < image_width; pos_x++) printf("x: %d %f\n", pos_x, mb_x_grid_r[pos_x]);
@@ -323,9 +324,9 @@ int main(int argc, char const *argv[]){
 		
 		for(pos_x = 0; pos_x < image_width; pos_x++){
 #ifdef USE_MB_XY_GRID
-			const float mb_x = mb_x_grid_r[pos_x];
+			const mbnum mb_x = mb_x_grid_r[pos_x];
 #else
-			const float mb_x = mb_width_min + mb_width_step * pos_x;
+			const mbnum mb_x = mb_width_min + mb_width_step * pos_x;
 #endif
 			
 			//printf("\t mb_x: %d %f\n", pos_x, mb_x);
@@ -333,9 +334,9 @@ int main(int argc, char const *argv[]){
 			#pragma omp parallel for
 			for(pos_y = 0; pos_y < image_height; pos_y++){
 #ifdef USE_MB_XY_GRID
-				const float mb_y = mb_y_grid_r[pos_y];
+				const mbnum mb_y = mb_y_grid_r[pos_y];
 #else
-				const float mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
+				const mbnum mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
 #endif
 				
 				//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
@@ -541,19 +542,19 @@ float sqr(const float x){
 	return(x * x);
 }
 
-int point_iteration(const float cx, const float cy, const int depth_max){
+int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 	int step = 0;
-	float x = 0;
-	float y = 0;
+	mbnum x = 0;
+	mbnum y = 0;
 	
 	//printf("\n");
 	
-	float x_sqr = x * x;
-	float y_sqr = y * y;
-	float log_x;
-	float log_y;
-	float x_sqr2;
-	float y_sqr2;
+	mbnum x_sqr = x * x;
+	mbnum y_sqr = y * y;
+	mbnum log_x;
+	mbnum log_y;
+	mbnum x_sqr2;
+	mbnum y_sqr2;
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
 		y = x * y;
 		y += y;
