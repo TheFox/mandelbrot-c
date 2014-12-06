@@ -70,7 +70,9 @@ include_directories(${OpenMP_INCLUDE_DIRS})
 
 
 #add_definitions(-v)
-#add_definitions(-fopenmp)
+if(USE_OPENMP)
+	add_definitions(-fopenmp)
+endif()
 
 add_executable(mandelbrot ${PROJECT_SOURCES})
 target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
