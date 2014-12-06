@@ -43,12 +43,8 @@ int main(int argc, char const *argv[]){
 	const int depth_max = atof(argv[4]);
 	const float mb_width_mid = atof(argv[5]);
 	const float mb_width_zoom = atof(argv[6]) / 2.0;
-	//const float mb_width_min = atof(argv[5]);
-	//const float mb_width_max = atof(argv[6]);
 	const float mb_height_mid = atof(argv[7]);
 	const float mb_height_zoom = atof(argv[8]) / 2.0;
-	//const float mb_height_min = atof(argv[7]);
-	//const float mb_height_max = atof(argv[8]);
 	
 	const int image_width_mid = image_width / 2;
 	const int image_height_mid = image_height / 2;
