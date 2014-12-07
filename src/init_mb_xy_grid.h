@@ -1,6 +1,6 @@
 #ifdef USE_MB_XY_GRID
-	size_t mb_x_grid_s = image_width * mbnum_s;
-	size_t mb_y_grid_s = image_height * mbnum_s;
+	const size_t mb_x_grid_s = image_width * mbnum_s;
+	const size_t mb_y_grid_s = image_height * mbnum_s;
 	mbnum *mb_x_grid_w = (mbnum *)malloc(mb_x_grid_s);
 	mbnum *mb_y_grid_w = (mbnum *)malloc(mb_y_grid_s);
 	printf("mb_x_grid_s: %lu\n", mb_x_grid_s);
