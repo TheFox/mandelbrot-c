@@ -1,6 +1,6 @@
 
-#ifndef _MANDELBROT_FUNCTIONS_H
-#define _MANDELBROT_FUNCTIONS_H 1
+#ifndef _MANDELBROT_TEST_H
+#define _MANDELBROT_TEST_H 1
 
 #include "../src/config.h"
 #include "../src/functions.hpp"
