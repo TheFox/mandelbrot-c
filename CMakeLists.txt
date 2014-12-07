@@ -48,6 +48,7 @@ endif()
 configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h" NEWLINE_STYLE LF)
 
 
+file(MAKE_DIRECTORY pics)
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
 #file(GLOB_RECURSE PROJECT_HEADERS "src/*.h" "src/*.hpp")
