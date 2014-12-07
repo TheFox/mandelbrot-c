@@ -26,11 +26,7 @@ int main(int argc, char const *argv[]){
 	*/
 	
 	
-	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
-		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
-		__DATE__, __TIME__);
-	printf("%s\n", PROJECT_COPYRIGHT);
-	printf("\n");
+	print_copyright();
 	
 	if(argc <= 8){
 		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
@@ -46,26 +42,7 @@ int main(int argc, char const *argv[]){
 	const mbnum mb_height_mid = atof(argv[7]);
 	const mbnum mb_height_zoom = atof(argv[8]) / 2.0;
 	
-	const int image_width_mid = image_width / 2;
-	const int image_height_mid = image_height / 2;
-	const int color_diff = COLOR_MAX - COLOR_MIN;
-	
-	const mbnum mb_width_min = mb_width_mid - mb_width_zoom;
-	const mbnum mb_width_max = mb_width_mid + mb_width_zoom;
-	const mbnum mb_width_step = (mb_width_max - mb_width_min) / image_width;
-	
-	const mbnum mb_height_min = mb_height_mid - mb_height_zoom;
-	const mbnum mb_height_max = mb_height_mid + mb_height_zoom;
-	const mbnum mb_height_step = (mb_height_max - mb_height_min) / image_height;
-	
-	const int depth_diff = depth_max - depth_min;
-	const float depth_step = 1.0 / (float)depth_diff;
-	
-#ifdef TEXT
-#ifdef GRID
-	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
-#endif
-#endif
+#include "init_default_vars.h"
 	
 	char *start_time_text = (char *)malloc(128);
 	memset(start_time_text, 0, 128);
@@ -73,90 +50,7 @@ int main(int argc, char const *argv[]){
 	struct tm *start_time_tm = localtime(&start_time);
 	strftime(start_time_text, 128, "S time: %F %T %z %Z", start_time_tm);
 	
-	printf("PID: %d\n", getpid());
-	
-	printf("DEBUG: ");
-#ifdef DEBUG
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("USE_OPENMP: ");
-#ifdef USE_OPENMP
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-#ifdef USE_OPENMP
-	//printf("threads: %d\n", omp_get_num_threads());
-	printf("OPENMP_NUM_THREADS: %d\n", OPENMP_NUM_THREADS);
-#endif
-	
-	printf("USE_MB_XY_GRID: ");
-#ifdef USE_MB_XY_GRID
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("USE_LOG: ");
-#ifdef USE_LOG
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("GRID: ");
-#ifdef GRID
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	printf("GRID_STEP_PIXEL: %d\n", GRID_STEP_PIXEL);
-	printf("GRID_STEP_SIZE: %d\n", GRID_STEP_SIZE);
-	
-	printf("TEXT: ");
-#ifdef TEXT
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	printf("TEXT_OFFSET_X: %d\n", TEXT_OFFSET_X);
-	printf("TEXT_OFFSET_Y: %d\n", TEXT_OFFSET_Y);
-	
-	printf("image_width:  %d (%d)\n", image_width, image_width_mid);
-	printf("image_height: %d (%d)\n", image_height, image_height_mid);
-	printf("color_diff: %d\n", color_diff);
-	printf("\n");
-	
-	printf("depth_min:  %d\n", depth_min);
-	printf("depth_max:  %d\n", depth_max);
-	printf("depth_diff: %d\n", depth_diff);
-	printf("depth_step: %f\n", depth_step);
-	printf("\n");
-	
-	printf("mb_width mid:   %.32f\n", mb_width_mid);
-	printf("mb_width zoom:  %.32f\n", mb_width_zoom);
-	printf("mb_width min:   %.32f\n", mb_width_min);
-	printf("mb_width max:   %.32f\n", mb_width_max);
-	printf("mb_width step:  %.32f\n", mb_width_step);
-	printf("\n");
-	
-	printf("mb_height mid:  %.32f\n", mb_height_mid);
-	printf("mb_height zoom: %.32f\n", mb_height_zoom);
-	printf("mb_height min:  %.32f\n", mb_height_min);
-	printf("mb_height max:  %.32f\n", mb_height_max);
-	printf("mb_height step: %.32f\n", mb_height_step);
-	printf("\n");
-	
-	//return 0;
+	print_config(image_width, image_width_mid, image_height, image_height_mid, color_diff, depth_min, depth_max, depth_diff, depth_step, mb_width_mid, mb_width_zoom, mb_width_min, mb_width_max, mb_width_step, mb_height_mid, mb_height_zoom, mb_height_min, mb_height_max, mb_height_step);
 	
 	printf("find width 0 point\n");
 	float image_width_mb_iter = 0;
@@ -177,98 +71,10 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
-	//return 0;
-	
-	
-	const size_t voidp_s = sizeof(voidp);
-	const size_t voidpp_s = sizeof(voidpp);
-	const size_t ucharp_s = sizeof(char *);
-	//const size_t ucharp_s = sizeof(ucharp);
-	const size_t uchar_s = sizeof(char);
-	const size_t float_s = sizeof(float);
-	const size_t image_plain_s        = image_width * ucharp_s;
-	//const size_t image_plain_width_s  = image_height * ucharp_s;
-	const size_t image_plain_width_s  = image_height * float_s;
-	//const size_t image_plain_height_s = 4 * uchar_s;
-	//const size_t image_plain_item_s   = 4            * ucharp_s;
-	const size_t image_plain_s_total = 
-		image_width * ucharp_s
-		+ image_width * image_height * ucharp_s
-		+ image_width * image_height * 4;
-	// 8192 * 8 + 8192 * 8192 * 8 + 8192 * 8192 * 4
-	
-	printf("size\n");
-	printf("\t voidp_s:  %lu\n", voidp_s);
-	printf("\t voidpp_s: %lu\n", voidpp_s);
-	printf("\t ucharp_s: %lu\n", ucharp_s);
-	printf("\t uchar_s:  %lu\n", uchar_s);
-	printf("\t uchar ***: %lu\n", sizeof(unsigned char ***));
-	
 	printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
-	printf("\t image_plain_s:        %lu\n", image_plain_s);
-	printf("\t image_plain_width_s:  %lu\n", image_plain_width_s);
-	//printf("\t image_plain_height_s: %lu\n", image_plain_height_s);
-	//printf("\t item_s:   %lu\n", image_plain_item_s);
 	
-	/*
-	void **image_plain = (void **)malloc(image_plain_s);
-	memset(image_plain, 0, image_plain_s);
-	
-	void *image_plain_ip0 = (void *)malloc(image_plain_width_s);
-	image_plain[0] = image_plain_ip0;
-	memset(image_plain_ip0, 0, image_plain_width_s);
-	
-	void *image_plain_ip00 = (void *)malloc(image_plain_height_s);
-	image_plain_ip0[0] = image_plain_ip00;
-	memset(image_plain_ip00, 0, image_plain_height_s);
-	*/
-	
-	size_t size = 0;
-	
-	printf("alloc image_plain\n");
-	//char ***image_plain = (char ***)malloc(image_plain_s);
-	//char **image_plain = (char **)malloc(image_plain_s);
-	float **image_plain = (float **)malloc(image_plain_s);
-	memset(image_plain, 0, image_plain_s);
-	size += image_plain_s;
-	int x;
-	int y;
-	#pragma omp parallel for
-	for(x = 0; x < image_width; x++){
-		//printf("\t alloc image_plain[%d]\n", x);
-		//image_plain[x] = (char *)malloc(image_plain_width_s);
-		image_plain[x] = (float *)malloc(image_plain_width_s);
-		memset(image_plain[x], 0, image_plain_width_s);
-		size += image_plain_width_s;
-		
-		/*
-		for(y = 0; y < image_height; y++){
-			//printf("\t\t alloc image_plain[%d][%d]\n", x, y);
-			
-			image_plain[x][y] = (char *)malloc(image_plain_height_s);
-			//memset(image_plain[x][y], 0, image_plain_height_s);
-			//size += image_plain_height_s;
-			image_plain[x][y][0] = 0;
-			size++;
-		}*/
-	}
-	printf("alloc image_plain done\n");
-	printf("size: %lu\n", size);
-	
-	/*
-	//strcpy(image_plain[0], "ABC");
-	//strcpy(image_plain[0][1], "DEF");
-	
-	printf("ip[0]    %p\n", image_plain[0]);
-	printf("ip[0][0] %p '%s'\n", image_plain[0][0], image_plain[0][0]);
-	printf("ip[0][1] %p '%s'\n", image_plain[0][1], image_plain[0][1]);
-	
-	printf("ip[1]    %p\n", image_plain[1]);
-	printf("ip[1][0] %p '%s'\n", image_plain[1][0], image_plain[1][0]);
-	printf("ip[1][1] %p '%s'\n", image_plain[1][1], image_plain[1][1]);
-	
-	return 0;
-	*/
+#include "init_image_plain.h"
+#include "init_mb_xy_grid.h"
 	
 #ifdef USE_OPENMP
 	puts("OpenMP is active");
@@ -276,61 +82,14 @@ int main(int argc, char const *argv[]){
 	omp_set_dynamic(0);
 #endif
 	
-	
-	
-	/*
-	imlib_context_set_color(255, 255, 0, 255);
-	imlib_image_draw_line(0, 0, 1, 1, 0);
-	return 0;*/
-	
-	int pos_x = 0;
-	int pos_y = 0;
-	
-#ifdef USE_MB_XY_GRID
-	size_t mbnum_s = sizeof(mbnum);
-	size_t mb_x_grid_s = image_width * mbnum_s;
-	size_t mb_y_grid_s = image_height * mbnum_s;
-	mbnum *mb_x_grid_w = (mbnum *)malloc(mb_x_grid_s);
-	mbnum *mb_y_grid_w = (mbnum *)malloc(mb_y_grid_s);
-	printf("mb_x_grid_s: %lu\n", mb_x_grid_s);
-	printf("mb_y_grid_s: %lu\n", mb_y_grid_s);
-	
-	#pragma omp parallel for
-	for(pos_x = 0; pos_x < image_width; pos_x++)
-		mb_x_grid_w[pos_x] = mb_width_min + mb_width_step * pos_x;
-	
-	#pragma omp parallel for
-	for(pos_y = 0; pos_y < image_height; pos_y++)
-		mb_y_grid_w[pos_y] = mb_height_min + mb_height_step * (image_height - pos_y);
-	
-	const mbnum *mb_x_grid_r = (const mbnum *)mb_x_grid_w;
-	const mbnum *mb_y_grid_r = (const mbnum *)mb_y_grid_w;
-#endif
-	
-	//for(pos_x = 0; pos_x < image_width; pos_x++) printf("x: %d %f\n", pos_x, mb_x_grid_r[pos_x]);
-	//for(pos_y = 0; pos_y < image_width; pos_y++) printf("y: %d %f\n", pos_y, mb_y_grid_r[pos_y]);
-	
-	//return 0;
-	
 	puts("start");
 	
 	float depth_percent = 0.0;
 	int depth_base = depth_min;
-	//for(int depth_i = depth_min; depth_i <= depth_max; depth_i++){
 	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
 		depth_base++;
-		//const int depth_base = depth_min + depth_i;
-		//const float depth_percent = (float)((float)depth_i / (float)depth_max);
-		//const float depth_percent = (float)((float)depth_i / (float)depth_diff);
-		//const char depth_percent = (char)((float)depth_i / (float)depth_diff * 100.0);
-		//const float depth_percent = (float)((float)depth_i / (float)depth_diff);
-		//const float depth_color = depth_percent * color_diff;
-		//const float blue = COLOR_MIN + depth_color;
-		//imlib_context_set_color(0, 0, 255, blue);
-		//imlib_context_set_color(0, 0, blue, 255);
 		
 #ifdef DEBUG
-		//printf("depth_i: %.2f %3f (%d/%d %d %6.2f)\n", depth_percent, blue, depth_i, depth_max, color_diff, depth_color);
 		printf("\rdepth_i: %d/%d %f", depth_i, depth_diff, depth_percent);
 		fflush(stdout);
 #endif
@@ -356,8 +115,6 @@ int main(int argc, char const *argv[]){
 				
 				const int point_depth = point_iteration(mb_x, mb_y, depth_max);
 				if(point_depth > depth_base)
-					//image_plain[pos_x][pos_y][0] = blue;
-					//image_plain[pos_x][pos_y][0] = depth_percent;
 					image_plain[pos_x][pos_y] = depth_percent;
 			}
 		}
@@ -374,27 +131,20 @@ int main(int argc, char const *argv[]){
 		imlib_context_set_image(image);
 		imlib_image_set_has_alpha(1);
 		
-		//int color_nr = 0;
 		char red = 0;
 		char green = 0;
 		char blue = 0;
 		
-		for(x = 0; x < image_width; x++){
-			//printf("\t x = %d\n", x);
-			
-			//#pragma omp parallel for
-			for(y = 0; y < image_height; y++){
-				//printf("\t\t y = %d %f\n", y, image_plain[x][y]);
+		for(pos_x = 0; pos_x < image_width; pos_x++)
+			for(pos_y = 0; pos_y < image_height; pos_y++){
+				red   = (int)(image_plain[pos_x][pos_y] * 255.0);
+				green = (int)(image_plain[pos_x][pos_y] * 255.0);
+				blue  = (int)(image_plain[pos_x][pos_y] * 255.0);
 				
-				red   = (int)(image_plain[x][y] * 255.0);
-				green = (int)(image_plain[x][y] * 255.0);
-				blue  = (int)(image_plain[x][y] * 255.0);
-				
-				//imlib_context_set_color(image_plain[x][y][0], image_plain[x][y][1], image_plain[x][y][2], image_plain[x][y][3]);
 				imlib_context_set_color(red, green, blue, 255);
-				imlib_image_draw_line(x, y, x, y, 0);
+				imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 0);
 			}
-		}
+		
 		
 #ifdef GRID
 		imlib_context_set_color(255, 0, 0, 255);
@@ -408,20 +158,20 @@ int main(int argc, char const *argv[]){
 		imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
 		
 		#pragma omp parallel for
-		for(x = image_width_mid - GRID_STEP_PIXEL; x > 0; x -= GRID_STEP_PIXEL)
-			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		for(pos_x = image_width_mid - GRID_STEP_PIXEL; pos_x > 0; pos_x -= GRID_STEP_PIXEL)
+			imlib_image_draw_line(pos_x, image_height_mid - GRID_STEP_SIZE, pos_x, image_height_mid + GRID_STEP_SIZE, 0);
 		
 		#pragma omp parallel for
-		for(x = image_width_mid + GRID_STEP_PIXEL; x < image_width; x += GRID_STEP_PIXEL)
-			imlib_image_draw_line(x, image_height_mid - GRID_STEP_SIZE, x, image_height_mid + GRID_STEP_SIZE, 0);
+		for(pos_x = image_width_mid + GRID_STEP_PIXEL; pos_x < image_width; pos_x += GRID_STEP_PIXEL)
+			imlib_image_draw_line(pos_x, image_height_mid - GRID_STEP_SIZE, pos_x, image_height_mid + GRID_STEP_SIZE, 0);
 		
 		#pragma omp parallel for
-		for(y = image_height_mid - GRID_STEP_PIXEL; y > 0; y -= GRID_STEP_PIXEL)
-			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
+		for(pos_y = image_height_mid - GRID_STEP_PIXEL; pos_y > 0; pos_y -= GRID_STEP_PIXEL)
+			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, pos_y, image_width_mid + GRID_STEP_SIZE, pos_y, 0);
 		
 		#pragma omp parallel for
-		for(y = image_height_mid + GRID_STEP_PIXEL; y < image_height; y += GRID_STEP_PIXEL)
-			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, y, image_width_mid + GRID_STEP_SIZE, y, 0);
+		for(pos_y = image_height_mid + GRID_STEP_PIXEL; pos_y < image_height; pos_y += GRID_STEP_PIXEL)
+			imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, pos_y, image_width_mid + GRID_STEP_SIZE, pos_y, 0);
 #endif
 		
 #ifdef TEXT
@@ -517,8 +267,6 @@ int main(int argc, char const *argv[]){
 			text_offset_y += text_h;
 			sprintf(text, "depth step: %f", depth_step);
 			imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-			
-			
 			
 			imlib_free_font();
 		}

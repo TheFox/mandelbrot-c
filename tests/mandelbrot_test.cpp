@@ -3,12 +3,9 @@
 
 int main(int argc, char **argv){
 	
-	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
-		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
-		__DATE__, __TIME__);
-	printf("%s\n", PROJECT_COPYRIGHT);
-	printf("\n");
+	print_copyright();
 	
+	printf("getpid: %p\n", getpid);
 	printf("strcpy: %p\n", strcpy);
 	printf("sqrt: %p\n", sqrt);
 	printf("time: %p\n", time);
