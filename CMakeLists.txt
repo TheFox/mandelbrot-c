@@ -101,7 +101,7 @@ if(USE_OPENMP)
 	set_target_properties(mandelbrot mandelbrot_test PROPERTIES COMPILE_FLAGS "-fopenmp")
 endif()
 
-add_executable(test1 test1.cpp)
+#add_executable(test1 test1.cpp)
 
 
 enable_testing()
