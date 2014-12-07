@@ -85,6 +85,10 @@ add_executable(mandelbrot src/mandelbrot.cpp src/functions.cpp)
 target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
+add_executable(mandelbrot_mt src/mandelbrot_mt.cpp src/functions.cpp)
+target_link_libraries(mandelbrot_mt ${Imlib_LIBRARIES})
+target_link_libraries(mandelbrot_mt ${OpenMP_LIBRARIES})
+
 add_executable(mandelbrot_test tests/mandelbrot_test.cpp src/functions.cpp)
 target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot_test ${OpenMP_LIBRARIES})
@@ -96,6 +100,9 @@ enable_testing()
 
 add_test(NAME StdRuns COMMAND mandelbrot)
 set_tests_properties(StdRuns PROPERTIES WILL_FAIL true)
+
+add_test(NAME MtRuns COMMAND mandelbrot_mt)
+set_tests_properties(MtRuns PROPERTIES WILL_FAIL true)
 
 add_test(NAME TestRuns COMMAND mandelbrot_test)
 
