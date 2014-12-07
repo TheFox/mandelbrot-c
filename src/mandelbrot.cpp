@@ -130,7 +130,7 @@ int main(int argc, char const *argv[]){
 	printf("TEXT_OFFSET_X: %d\n", TEXT_OFFSET_X);
 	printf("TEXT_OFFSET_Y: %d\n", TEXT_OFFSET_Y);
 	
-	printf("image_width: %d (%d)\n", image_width, image_width_mid);
+	printf("image_width:  %d (%d)\n", image_width, image_width_mid);
 	printf("image_height: %d (%d)\n", image_height, image_height_mid);
 	printf("color_diff: %d\n", color_diff);
 	printf("\n");
