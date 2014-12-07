@@ -6,6 +6,7 @@
 #include "functions.hpp"
 
 #include <cmath>
+#include <fstream>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,6 +17,7 @@
 #include <X11/Xlib.h>
 #include <Imlib2.h>
 
+#undef USE_OPENMP
 #undef GRID
 #undef TEXT
 

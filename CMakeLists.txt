@@ -50,7 +50,9 @@ endif()
 configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h" NEWLINE_STYLE LF)
 
 
+file(MAKE_DIRECTORY logs)
 file(MAKE_DIRECTORY pics)
+file(MAKE_DIRECTORY data)
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
 #file(GLOB_RECURSE PROJECT_HEADERS "src/*.h" "src/*.hpp")
@@ -77,9 +79,7 @@ include_directories(${OpenMP_INCLUDE_DIRS})
 
 
 #add_definitions(-v)
-if(USE_OPENMP)
-	add_definitions(-fopenmp)
-endif()
+#add_definitions(-fopenmp)
 
 add_executable(mandelbrot src/mandelbrot.cpp src/functions.cpp)
 target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
@@ -93,7 +93,11 @@ add_executable(mandelbrot_test tests/mandelbrot_test.cpp src/functions.cpp)
 target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot_test ${OpenMP_LIBRARIES})
 
-#add_executable(test1 test1.cpp)
+if(USE_OPENMP)
+	set_target_properties(mandelbrot mandelbrot_test PROPERTIES COMPILE_FLAGS "-fopenmp")
+endif()
+
+add_executable(test1 test1.cpp)
 
 
 enable_testing()

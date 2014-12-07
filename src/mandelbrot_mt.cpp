@@ -1,11 +1,13 @@
 
 #include "mandelbrot_mt.hpp"
 
+using namespace std;
+
 int main(int argc, char const *argv[]){
 	print_copyright();
 	
-	if(argc <= 8){
-		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
+	if(argc <= 10){
+		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX THREAD_ID THREAD_MAX\n", *argv);
 		return 1;
 	}
 	
@@ -17,8 +19,11 @@ int main(int argc, char const *argv[]){
 	const mbnum mb_width_zoom = atof(argv[6]) / 2.0;
 	const mbnum mb_height_mid = atof(argv[7]);
 	const mbnum mb_height_zoom = atof(argv[8]) / 2.0;
+	const int thread_id = atof(argv[9]);
+	const int thread_max = atof(argv[10]);
 	
 #include "init_default_vars.h"
+	printf("thread: %d/%d\n", thread_id, thread_max);
 	
 	print_config(image_width, image_width_mid, image_height, image_height_mid, color_diff, depth_min, depth_max, depth_diff, depth_step, mb_width_mid, mb_width_zoom, mb_width_min, mb_width_max, mb_width_step, mb_height_mid, mb_height_zoom, mb_height_min, mb_height_max, mb_height_step);
 	
@@ -27,16 +32,19 @@ int main(int argc, char const *argv[]){
 #include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
 	
+	const size_t file_name_s = 128;
+	char *file_name = (char *)malloc(file_name_s);
+	memset(file_name, 0, file_name_s);
 	
 	puts("start");
 	
 	float depth_percent = 0.0;
 	int depth_base = depth_min;
-	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
+	for(int depth_i = thread_id - 1; depth_i <= depth_diff; depth_i += thread_max){
 		depth_base++;
 		
 #ifdef DEBUG
-		printf("\rdepth_i: %d/%d %f", depth_i, depth_diff, depth_percent);
+		printf("depth_i: %d/%d %f\n", depth_i, depth_diff, depth_percent);
 		fflush(stdout);
 #endif
 		
@@ -49,7 +57,6 @@ int main(int argc, char const *argv[]){
 			
 			//printf("\t mb_x: %d %f\n", pos_x, mb_x);
 			
-			#pragma omp parallel for
 			for(pos_y = 0; pos_y < image_height; pos_y++){
 #ifdef USE_MB_XY_GRID
 				const mbnum mb_y = mb_y_grid_r[pos_y];
@@ -59,35 +66,56 @@ int main(int argc, char const *argv[]){
 				
 				//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
 				
+				
 				const int point_depth = point_iteration(mb_x, mb_y, depth_max);
 				if(point_depth > depth_base)
 					image_plain[pos_x][pos_y] = depth_percent;
+				
 			}
 		}
+		
+		sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f_%08d_%08d-%08d.txt",
+			image_width, image_height,
+			depth_min, depth_max,
+			mb_width_mid, mb_width_zoom,
+			mb_height_mid, mb_height_zoom,
+			depth_i,
+			thread_id, thread_max
+		);
+		
+		printf("- write data file: %s\n", file_name);
+		
+		ofstream data_file;
+		data_file.open(file_name);
+		
+		
+		for(pos_x = 0; pos_x < image_width; pos_x++){
+			for(pos_y = 0; pos_y < image_height; pos_y++){
+				//image_plain[pos_x][pos_y]
+				data_file << image_plain[pos_x][pos_y] << ",";
+				image_plain[pos_x][pos_y] = 0;
+			}
+			data_file.seekp(data_file.tellp() - (streamoff)1);
+			data_file << endl;
+		}
+		
+		data_file.close();
 		
 		depth_percent += depth_step;
 	}
 	puts("");
 	
 	/*
-	for(pos_x = 0; pos_x < image_width; pos_x++)
-		for(pos_y = 0; pos_y < image_height; pos_y++){
-			red   = (int)(image_plain[pos_x][pos_y] * 255.0);
-			green = (int)(image_plain[pos_x][pos_y] * 255.0);
-			blue  = (int)(image_plain[pos_x][pos_y] * 255.0);
-			
-			imlib_context_set_color(red, green, blue, 255);
-			imlib_image_draw_line(pos_x, pos_y, pos_x, pos_y, 0);
-		}
 	
-	char *file_name = (char *)malloc(128);
-	memset(file_name, 0, 128);
+	
+	
 	sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
 		image_width, image_height,
 		depth_min, depth_max,
 		mb_width_mid, mb_width_zoom,
 		mb_height_mid, mb_height_zoom);
 	*/
+	
 	
 	
 	puts("end");
