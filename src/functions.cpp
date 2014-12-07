@@ -159,3 +159,13 @@ int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 	
 	return step;
 }
+
+void data_file_name(char *file_name, int image_width, int image_height, int depth_min, int depth_max, mbnum mb_width_mid, mbnum mb_width_zoom, mbnum mb_height_mid, mbnum mb_height_zoom, int depth_i){
+	sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f_%08d.txt",
+		image_width, image_height,
+		depth_min, depth_max,
+		mb_width_mid, mb_width_zoom,
+		mb_height_mid, mb_height_zoom,
+		depth_i
+	);
+}

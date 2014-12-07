@@ -1,30 +1,13 @@
 
-#include "mandelbrot.hpp"
+/*
+	Read the data files and draw the image.
+*/
+
+#include "mandelbrot_ci.hpp"
+
+using namespace std;
 
 int main(int argc, char const *argv[]){
-	/*
-	Imlib_Image img1;
-	img1 = imlib_create_image(15, 15);
-	imlib_context_set_image(img1);
-	//imlib_image_set_has_alpha(1);
-	
-	int o = 2;
-	int test_y = 15-o;
-	
-	imlib_context_set_color(255, 0, 0, 255);
-	imlib_image_draw_line(0, test_y, 0, test_y, 0);
-	
-	
-	Imlib_Color color;
-	imlib_image_query_pixel(0, 0, &color);
-	
-	printf("pix: %d %d %d %d\n", color.red, color.green, color.blue, color.alpha);
-	
-	imlib_save_image("pic.png");
-	
-	return 0;
-	*/
-	
 	
 	print_copyright();
 	
@@ -74,13 +57,22 @@ int main(int argc, char const *argv[]){
 	printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
 	
 #include "init_image_plain.h"
-#include "init_mb_xy_grid.h"
 	
 #ifdef USE_OPENMP
 	puts("OpenMP is active");
 	omp_set_num_threads(OPENMP_NUM_THREADS);
 	omp_set_dynamic(0);
 #endif
+	
+	const size_t file_name_s = 128;
+	char *file_name = (char *)malloc(file_name_s);
+	memset(file_name, 0, file_name_s);
+	
+	const size_t num_str_s = 128;
+	char *num_str = (char *)malloc(num_str_s);
+	memset(num_str, 0, num_str_s);
+	size_t num_str_len = 0;
+	mbnum num = 0;
 	
 	puts("start");
 	
@@ -89,13 +81,64 @@ int main(int argc, char const *argv[]){
 	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
 		depth_base++;
 		
+		data_file_name(file_name, image_width, image_height, depth_min, depth_max, mb_width_mid, mb_width_zoom, mb_height_mid, mb_height_zoom, depth_i);
+		
 #ifdef DEBUG
-		printf("\rdepth_i: %d/%d %f", depth_i, depth_diff, depth_percent);
+		printf("depth_i: %d/%d %f %s\n", depth_i, depth_diff, depth_percent, file_name);
 		fflush(stdout);
 #endif
 		
-#include "calc_depth_step.h"
 		
+		ifstream data_file;
+		data_file.open(file_name);
+		if(data_file.is_open()){
+			string line;
+			for(pos_x = 0; getline(data_file, line); pos_x++){
+				char *line_c = (char *)line.c_str();
+				char *str;
+				
+				pos_y = 0;
+				while(line_c[0] != 0){
+					//printf("%d\n", pos_x);
+					//printf("- '%s'\n", line_c);
+					
+					str = strchr(line_c, ',');
+					if(str){
+						//printf("- str\n");
+						num_str_len = str - line_c;
+						if(num_str_len){
+							memcpy(num_str, line_c, num_str_len);
+							num = atof(num_str);
+							//printf("- %lu '%s' %f %d\n", num_str_len, num_str, num, line_c[0]);
+							image_plain[pos_x][pos_y] = num;
+						}
+						line_c = str + 1;
+						pos_y++;
+					}
+					else{
+						//printf("EOL\n");
+						num = atof(line_c);
+						image_plain[pos_x][pos_y] = num;
+						//printf("- %lu %f\n", num_str_len, num);
+						break;
+					}
+					
+					//sleep(1);
+				}
+				
+				
+				//printf("%d '%s'\n", str, line_c);
+				
+				//break;
+			}
+			data_file.close();
+		}
+		else{
+			puts("file open failed");
+			return EXIT_FAILURE;
+		}
+		
+		//break;
 		depth_percent += depth_step;
 	}
 	puts("");

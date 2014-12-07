@@ -1,4 +1,9 @@
 
+/*
+	Run multiple processes to generate data files.
+	Compile all data files with mandelbrot_ci.
+*/
+
 #include "mandelbrot_mt.hpp"
 
 using namespace std;
@@ -48,75 +53,76 @@ int main(int argc, char const *argv[]){
 		fflush(stdout);
 #endif
 		
-		for(pos_x = 0; pos_x < image_width; pos_x++){
-#ifdef USE_MB_XY_GRID
-			const mbnum mb_x = mb_x_grid_r[pos_x];
-#else
-			const mbnum mb_x = mb_width_min + mb_width_step * pos_x;
-#endif
-			
-			//printf("\t mb_x: %d %f\n", pos_x, mb_x);
-			
-			for(pos_y = 0; pos_y < image_height; pos_y++){
-#ifdef USE_MB_XY_GRID
-				const mbnum mb_y = mb_y_grid_r[pos_y];
-#else
-				const mbnum mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
-#endif
-				
-				//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
-				
-				
-				const int point_depth = point_iteration(mb_x, mb_y, depth_max);
-				if(point_depth > depth_base)
-					image_plain[pos_x][pos_y] = depth_percent;
-				
-			}
-		}
+//#include "calc_depth_step.h"
 		
-		sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f_%08d_%08d-%08d.txt",
-			image_width, image_height,
-			depth_min, depth_max,
-			mb_width_mid, mb_width_zoom,
-			mb_height_mid, mb_height_zoom,
-			depth_i,
-			thread_id, thread_max
-		);
-		
-		printf("- write data file: %s\n", file_name);
+		data_file_name(file_name, image_width, image_height, depth_min, depth_max, mb_width_mid, mb_width_zoom, mb_height_mid, mb_height_zoom, depth_i);
 		
 		ofstream data_file;
 		data_file.open(file_name);
-		
-		
-		for(pos_x = 0; pos_x < image_width; pos_x++){
-			for(pos_y = 0; pos_y < image_height; pos_y++){
-				//image_plain[pos_x][pos_y]
-				data_file << image_plain[pos_x][pos_y] << ",";
-				image_plain[pos_x][pos_y] = 0;
+		if(data_file.is_open()){
+			for(pos_x = 0; pos_x < image_width; pos_x++){
+#ifdef USE_MB_XY_GRID
+				const mbnum mb_x = mb_x_grid_r[pos_x];
+#else
+				const mbnum mb_x = mb_width_min + mb_width_step * pos_x;
+#endif
+				
+				//printf("\t mb_x: %d %f\n", pos_x, mb_x);
+
+#ifdef USE_OPENMP
+	#pragma omp parallel for
+#endif
+				for(pos_y = 0; pos_y < image_height; pos_y++){
+#ifdef USE_MB_XY_GRID
+					const mbnum mb_y = mb_y_grid_r[pos_y];
+#else
+					const mbnum mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
+#endif
+					
+					//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
+					
+					
+					const int point_depth = point_iteration(mb_x, mb_y, depth_max);
+					if(point_depth > depth_base)
+						//image_plain[pos_x][pos_y] = depth_percent;
+						data_file << depth_percent;
+					
+					data_file << ",";
+				}
+				
+				data_file.seekp(data_file.tellp() - (streamoff)1);
+				data_file << endl;
 			}
-			data_file.seekp(data_file.tellp() - (streamoff)1);
-			data_file << endl;
+		}
+		else{
+			puts("file open failed");
+			return EXIT_FAILURE;
 		}
 		
-		data_file.close();
-		
+		/*
+		printf("- write data file: %s\n", file_name);
+		ofstream data_file;
+		data_file.open(file_name);
+		if(data_file.is_open()){
+			for(pos_x = 0; pos_x < image_width; pos_x++){
+				for(pos_y = 0; pos_y < image_height; pos_y++){
+					//image_plain[pos_x][pos_y]
+					data_file << image_plain[pos_x][pos_y] << ",";
+					image_plain[pos_x][pos_y] = 0;
+				}
+				data_file.seekp(data_file.tellp() - (streamoff)1);
+				data_file << endl;
+			}
+			data_file.close();
+		}
+		else{
+			puts("file open failed");
+			return EXIT_FAILURE;
+		}
+		*/
 		depth_percent += depth_step;
 	}
 	puts("");
-	
-	/*
-	
-	
-	
-	sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
-		image_width, image_height,
-		depth_min, depth_max,
-		mb_width_mid, mb_width_zoom,
-		mb_height_mid, mb_height_zoom);
-	*/
-	
-	
 	
 	puts("end");
 	return EXIT_SUCCESS;

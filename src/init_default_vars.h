@@ -14,7 +14,11 @@ const mbnum mb_height_max = mb_height_mid + mb_height_zoom;
 const mbnum mb_height_step = (mb_height_max - mb_height_min) / image_height;
 
 const int depth_diff = depth_max - depth_min;
+#ifdef _MANDELBROT_MT_H
+const float depth_step = 1.0 / (float)depth_diff * thread_max;
+#else
 const float depth_step = 1.0 / (float)depth_diff;
+#endif
 
 const size_t mbnum_s = sizeof(mbnum);
 const size_t image_plain_s        = image_width  * mbnum_s;
