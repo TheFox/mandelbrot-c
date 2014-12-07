@@ -25,6 +25,7 @@ set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/lib")
 
+
 if(${CMAKE_C_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 	set(USE_OPENMP Off)
 endif()
@@ -80,11 +81,11 @@ if(USE_OPENMP)
 	add_definitions(-fopenmp)
 endif()
 
-add_executable(mandelbrot ${PROJECT_SOURCES})
+add_executable(mandelbrot src/mandelbrot.cpp src/functions.cpp)
 target_link_libraries(mandelbrot ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot ${OpenMP_LIBRARIES})
 
-add_executable(mandelbrot_test tests/mandelbrot_test.cpp)
+add_executable(mandelbrot_test tests/mandelbrot_test.cpp src/functions.cpp)
 target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot_test ${OpenMP_LIBRARIES})
 

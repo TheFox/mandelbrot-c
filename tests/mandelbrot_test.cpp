@@ -1,5 +1,5 @@
 
-#include "../src/mandelbrot.hpp"
+#include "mandelbrot_test.hpp"
 
 int main(int argc, char **argv){
 	
@@ -44,6 +44,9 @@ int main(int argc, char **argv){
 #else
 	puts("OpenMP header not found");
 #endif
+	
+	printf("sqr: %p\n", sqr);
+	printf("point_iteration: %p\n", point_iteration);
 	
 	return EXIT_SUCCESS;
 }

@@ -1,13 +1,11 @@
 
-#ifndef _MANDELBROT_H
-#define _MANDELBROT_H 1
+#ifndef _MANDELBROT_FUNCTIONS_H
+#define _MANDELBROT_FUNCTIONS_H 1
 
-#include "config.h"
-#include "functions.hpp"
+#include "../src/config.h"
+#include "../src/functions.hpp"
 
-//#include <iostream>
 #include <cmath>
-//#include <complex>
 
 #include <stdlib.h>
 #include <stdio.h>
