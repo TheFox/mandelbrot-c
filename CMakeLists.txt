@@ -50,10 +50,10 @@ configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/sr
 
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
-file(GLOB_RECURSE PROJECT_HEADERS "src/*.h" "src/*.hpp")
+#file(GLOB_RECURSE PROJECT_HEADERS "src/*.h" "src/*.hpp")
 
 set(PROJECT_INCLUDE_DIRS "")
-foreach(_headerFile ${PROJECT_HEADERS})
+foreach(_headerFile ${PROJECT_SOURCES})
 	get_filename_component(_dir ${_headerFile} PATH)
 	list(APPEND PROJECT_INCLUDE_DIRS ${_dir})
 endforeach()
