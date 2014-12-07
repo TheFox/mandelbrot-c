@@ -90,6 +90,9 @@ int main(int argc, char const *argv[]){
 	printf("no");
 #endif
 	printf("\n");
+#ifdef USE_OPENMP
+	printf("threads: %d\n", omp_get_num_threads());
+#endif
 	
 	printf("USE_MB_XY_GRID: ");
 #ifdef USE_MB_XY_GRID
@@ -267,8 +270,9 @@ int main(int argc, char const *argv[]){
 	*/
 	
 #ifdef USE_OPENMP
-	puts("OpenMP is active");
-	omp_set_num_threads(8);
+	//puts("OpenMP is active");
+	//omp_set_num_threads(8);
+	omp_set_dynamic(0);
 #endif
 	
 	

@@ -29,6 +29,8 @@ int main(int argc, char **argv){
 	printf("omp_set_num_threads: %p\n", omp_set_num_threads);
 	printf("omp_get_num_threads: %p\n", omp_get_num_threads);
 	printf("omp_get_thread_num: %p\n", omp_get_thread_num);
+	printf("omp_set_dynamic: %p\n", omp_set_dynamic);
+	
 	
 	int iter_x;
 	omp_set_num_threads(8);
