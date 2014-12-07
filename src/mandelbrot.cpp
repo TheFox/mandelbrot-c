@@ -1,5 +1,5 @@
 
-#include "mandelbrot.h"
+#include "mandelbrot.hpp"
 
 int main(int argc, char const *argv[]){
 	/*
