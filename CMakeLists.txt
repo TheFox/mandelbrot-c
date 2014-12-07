@@ -93,7 +93,7 @@ add_executable(mandelbrot_test tests/mandelbrot_test.cpp src/functions.cpp)
 target_link_libraries(mandelbrot_test ${Imlib_LIBRARIES})
 target_link_libraries(mandelbrot_test ${OpenMP_LIBRARIES})
 
-add_executable(test1 test1.cpp)
+#add_executable(test1 test1.cpp)
 
 
 enable_testing()
