@@ -1,9 +1,9 @@
 
-const size_t image_plain_s        = image_width  * mbnum_s;
-const size_t image_plain_width_s  = image_height * mbnum_s;
+const size_t image_plain_s        = image_width  * sizeof(mbnum);
+const size_t image_plain_width_s  = image_height * sizeof(mbnum);
 const size_t image_plain_s_total = 
-	image_width * mbnum_s
-	+ image_width * image_height * mbnum_s
+	image_width * sizeof(mbnum)
+	+ image_width * image_height * sizeof(mbnum)
 	+ image_width * image_height * 4;
 
 printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);

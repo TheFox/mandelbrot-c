@@ -21,8 +21,6 @@ const float depth_step = (1.0 / (float)depth_diff) * (float)thread_max;
 const float depth_step = 1.0 / (float)depth_diff;
 #endif
 
-const size_t mbnum_s = sizeof(mbnum);
-
 #ifdef TEXT
 #ifdef GRID
 	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
