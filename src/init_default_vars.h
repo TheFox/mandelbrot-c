@@ -18,9 +18,9 @@ const mbnum mb_height_step = (mb_height_max - mb_height_min) / image_height;
 
 const int depth_diff = depth_max - depth_min;
 #ifdef _MANDELBROT_MT_H
-const float depth_step = (1.0 / (float)depth_diff) * (float)thread_max;
+	const float depth_step = (1.0 / (float)depth_diff);
 #else
-const float depth_step = 1.0 / (float)depth_diff;
+	const float depth_step = 1.0 / (float)depth_diff;
 #endif
 
 #ifdef TEXT

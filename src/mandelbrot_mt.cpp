@@ -51,8 +51,6 @@ int main(int argc, char const *argv[]){
 		fflush(stdout);
 #endif
 		
-//#include "calc_depth_step.h"
-		
 		data_file_name(file_name, image_width, image_height, depth_min, depth_max, mb_width_mid, mb_width_zoom_org, mb_height_mid, mb_height_zoom_org, depth_i);
 		
 		ofstream data_file;
@@ -98,27 +96,6 @@ int main(int argc, char const *argv[]){
 			return EXIT_FAILURE;
 		}
 		
-		/*
-		printf("- write data file: %s\n", file_name);
-		ofstream data_file;
-		data_file.open(file_name);
-		if(data_file.is_open()){
-			for(pos_x = 0; pos_x < image_width; pos_x++){
-				for(pos_y = 0; pos_y < image_height; pos_y++){
-					//image_plain[pos_x][pos_y]
-					data_file << image_plain[pos_x][pos_y] << ",";
-					image_plain[pos_x][pos_y] = 0;
-				}
-				data_file.seekp(data_file.tellp() - (streamoff)1);
-				data_file << endl;
-			}
-			data_file.close();
-		}
-		else{
-			puts("file open failed");
-			return EXIT_FAILURE;
-		}
-		*/
 		depth_percent += depth_step;
 	}
 	puts("");

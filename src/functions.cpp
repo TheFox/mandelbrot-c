@@ -24,6 +24,22 @@ void print_config(int image_width, int image_width_mid, int image_height, int im
 #endif
 	printf("\n");
 	
+	printf("USE_OPENMP: ");
+#ifdef USE_OPENMP
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
+	printf("OPENMP_NUM_THREADS: ");
+#ifdef OPENMP_NUM_THREADS
+	printf("%d", OPENMP_NUM_THREADS);
+#else
+	printf("N/A");
+#endif
+	printf("\n");
+	
 	printf("USE_MB_XY_GRID: ");
 #ifdef USE_MB_XY_GRID
 	printf("yes");

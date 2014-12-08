@@ -85,15 +85,15 @@ int main(int argc, char const *argv[]){
 	float depth_percent = 0.0;
 	int depth_base = depth_min;
 	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
-		depth_base++;
 		
 #ifdef DEBUG
-		printf("\rdepth_i: %d/%d %f", depth_i, depth_diff, depth_percent);
+		printf("\rdepth_i: %d/%d %d %f", depth_i, depth_diff, depth_base, depth_percent);
 		fflush(stdout);
 #endif
 		
 #include "calc_depth_step.h"
 		
+		depth_base++;
 		depth_percent += depth_step;
 	}
 	puts("");
