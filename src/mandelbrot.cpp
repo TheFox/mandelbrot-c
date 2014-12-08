@@ -71,8 +71,6 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
-	printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
-	
 #include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
 	

@@ -54,8 +54,6 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
-	printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 / (float)1024, image_plain_s_total);
-	
 #include "init_image_plain.h"
 	
 #ifdef USE_OPENMP
@@ -71,8 +69,6 @@ int main(int argc, char const *argv[]){
 	const size_t num_str_s = 128;
 	char *num_str = (char *)malloc(num_str_s);
 	memset(num_str, 0, num_str_s);
-	size_t num_str_len = 0;
-	mbnum num = 0;
 	
 	puts("start");
 	
@@ -95,40 +91,25 @@ int main(int argc, char const *argv[]){
 			string line;
 			for(pos_x = 0; getline(data_file, line); pos_x++){
 				char *line_c = (char *)line.c_str();
-				char *str;
 				
 				pos_y = 0;
-				while(line_c[0] != 0){
-					//printf("%d\n", pos_x);
-					//printf("- '%s'\n", line_c);
+				while(true){
+					//printf("%d '%s'\n", pos_x, line_c);
 					
-					str = strchr(line_c, ',');
-					if(str){
-						//printf("- str\n");
-						num_str_len = str - line_c;
-						if(num_str_len){
-							memcpy(num_str, line_c, num_str_len);
-							num = atof(num_str);
-							//printf("- %lu '%s' %f %d\n", num_str_len, num_str, num, line_c[0]);
-							image_plain[pos_x][pos_y] = num;
-						}
-						line_c = str + 1;
-						pos_y++;
+					if(line_c[0] == 'x'){
+						//printf("\t - found\n");
+						image_plain[pos_x][pos_y] = depth_percent;
+						line_c++;
 					}
-					else{
-						//printf("EOL\n");
-						num = atof(line_c);
-						image_plain[pos_x][pos_y] = num;
-						//printf("- %lu %f\n", num_str_len, num);
+					
+					if(line_c[0] == 0)
 						break;
-					}
 					
+					line_c++;
+					
+					pos_y++;
 					//sleep(1);
 				}
-				
-				
-				//printf("%d '%s'\n", str, line_c);
-				
 				//break;
 			}
 			data_file.close();
@@ -143,9 +124,13 @@ int main(int argc, char const *argv[]){
 	}
 	puts("");
 	
-#include "draw_image.h"
+	for(pos_x = 0; pos_x < 2; pos_x++){
+		for(pos_y = 0; pos_y < 2; pos_y++){
+			printf("%d %d = %f\n", pos_x, pos_y, image_plain[pos_x][pos_y]);
+		}
+	}
 	
-	//sleep(10);
+#include "draw_image.h"
 	
 	puts("end");
 	return EXIT_SUCCESS;
