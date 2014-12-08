@@ -1,3 +1,4 @@
+
 const size_t image_plain_s        = image_width  * mbnum_s;
 const size_t image_plain_width_s  = image_height * mbnum_s;
 const size_t image_plain_s_total = 

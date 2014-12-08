@@ -1,3 +1,4 @@
+
 int pos_x = 0;
 int pos_y = 0;
 

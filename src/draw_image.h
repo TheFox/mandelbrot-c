@@ -1,3 +1,4 @@
+
 Imlib_Image image;
 image = imlib_create_image(image_width, image_height);
 if(image){

@@ -1,3 +1,4 @@
+
 for(pos_x = 0; pos_x < image_width; pos_x++){
 #ifdef USE_MB_XY_GRID
 	const mbnum mb_x = mb_x_grid_r[pos_x];

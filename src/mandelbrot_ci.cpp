@@ -84,7 +84,6 @@ int main(int argc, char const *argv[]){
 		fflush(stdout);
 #endif
 		
-		
 		ifstream data_file;
 		data_file.open(file_name);
 		if(data_file.is_open()){

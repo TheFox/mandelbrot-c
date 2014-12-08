@@ -1,3 +1,4 @@
+
 #ifdef USE_MB_XY_GRID
 	const size_t mb_x_grid_s = image_width * mbnum_s;
 	const size_t mb_y_grid_s = image_height * mbnum_s;
