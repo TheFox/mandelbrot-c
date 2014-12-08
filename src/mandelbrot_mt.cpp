@@ -21,16 +21,16 @@ int main(int argc, char const *argv[]){
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
 	const mbnum mb_width_mid = atof(argv[5]);
-	const mbnum mb_width_zoom = atof(argv[6]) / 2.0;
+	const mbnum mb_width_zoom_org = atof(argv[6]);
 	const mbnum mb_height_mid = atof(argv[7]);
-	const mbnum mb_height_zoom = atof(argv[8]) / 2.0;
+	const mbnum mb_height_zoom_org = atof(argv[8]);
 	const int thread_id = atof(argv[9]);
 	const int thread_max = atof(argv[10]);
 	
 #include "init_default_vars.h"
 	printf("thread: %d/%d\n", thread_id, thread_max);
 	
-	print_config(image_width, image_width_mid, image_height, image_height_mid, color_diff, depth_min, depth_max, depth_diff, depth_step, mb_width_mid, mb_width_zoom, mb_width_min, mb_width_max, mb_width_step, mb_height_mid, mb_height_zoom, mb_height_min, mb_height_max, mb_height_step);
+	print_config(image_width, image_width_mid, image_height, image_height_mid, color_diff, depth_min, depth_max, depth_diff, depth_step, mb_width_mid, mb_width_zoom_org, mb_width_min, mb_width_max, mb_width_step, mb_height_mid, mb_height_zoom_org, mb_height_min, mb_height_max, mb_height_step);
 	
 //#include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[]){
 		
 //#include "calc_depth_step.h"
 		
-		data_file_name(file_name, image_width, image_height, depth_min, depth_max, mb_width_mid, mb_width_zoom, mb_height_mid, mb_height_zoom, depth_i);
+		data_file_name(file_name, image_width, image_height, depth_min, depth_max, mb_width_mid, mb_width_zoom_org, mb_height_mid, mb_height_zoom_org, depth_i);
 		
 		ofstream data_file;
 		data_file.open(file_name);

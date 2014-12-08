@@ -111,7 +111,7 @@ if(image){
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr zoom: %f", mb_width_zoom);
+		sprintf(text, "cr zoom: %f", mb_width_zoom_org);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
@@ -128,7 +128,7 @@ if(image){
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "ci zoom: %f", mb_height_zoom);
+		sprintf(text, "ci zoom: %f", mb_height_zoom_org);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
@@ -158,8 +158,8 @@ if(image){
 	sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
 		image_width, image_height,
 		depth_min, depth_max,
-		mb_width_mid, mb_width_zoom,
-		mb_height_mid, mb_height_zoom);
+		mb_width_mid, mb_width_zoom_org,
+		mb_height_mid, mb_height_zoom_org);
 	
 	
 	puts("save image: pic.png");
