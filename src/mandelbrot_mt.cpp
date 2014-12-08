@@ -41,10 +41,15 @@ int main(int argc, char const *argv[]){
 	
 	puts("start");
 	
-	float depth_percent = 0.0;
+	
+	const float depth_step_mt = depth_step * (float)thread_max;
+	float depth_percent = depth_step * (float)(thread_id - 1);
 	int depth_base = depth_min;
+	
+	printf("depth_step_mt: %f\n", depth_step_mt);
+	
 	for(int depth_i = thread_id - 1; depth_i <= depth_diff; depth_i += thread_max){
-		depth_base++;
+		depth_base += thread_max;
 		
 #ifdef DEBUG
 		printf("depth_i: %d/%d %f\n", depth_i, depth_diff, depth_percent);
@@ -96,7 +101,7 @@ int main(int argc, char const *argv[]){
 			return EXIT_FAILURE;
 		}
 		
-		depth_percent += depth_step;
+		depth_percent += depth_step_mt;
 	}
 	puts("");
 	
