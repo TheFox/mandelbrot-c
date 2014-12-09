@@ -97,42 +97,54 @@ if(image){
 		
 #ifdef GRID
 		text_offset_y += text_h;
-		sprintf(text, "grid step xy: %f %f", mb_width_step * grid_step_pixel_f, mb_height_step * grid_step_pixel_f);
+		sprintf(text, "grid step x: %.16" MBNUM_FORMAT, mb_width_step * grid_step_pixel_f);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "grid step y: %.16" MBNUM_FORMAT, mb_height_step * grid_step_pixel_f);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 #endif
 		
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr(x): %f %f", mb_width_min, mb_width_max);
+		sprintf(text, "cr min: %.16" MBNUM_FORMAT, mb_width_min);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr mid: %f", mb_width_mid);
+		sprintf(text, "cr max: %.16" MBNUM_FORMAT, mb_width_max);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr zoom: %f", mb_width_zoom_org);
+		sprintf(text, "cr mid: %.16" MBNUM_FORMAT, mb_width_mid);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr step: %f", mb_width_step);
+		sprintf(text, "cr zoom: %.16" MBNUM_FORMAT, mb_width_zoom_org);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "cr step: %.16" MBNUM_FORMAT, mb_width_step);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		
 		text_offset_y += text_h;
-		sprintf(text, "ci(y): %f %f", mb_height_min, mb_height_max);
+		sprintf(text, "ci min: %.16" MBNUM_FORMAT, mb_height_min);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "ci mid: %f", mb_height_mid);
+		sprintf(text, "ci max: %.16" MBNUM_FORMAT, mb_height_max);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "ci zoom: %f", mb_height_zoom_org);
+		sprintf(text, "ci mid: %.16" MBNUM_FORMAT, mb_height_mid);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "ci step: %f", mb_height_step);
+		sprintf(text, "ci zoom: %.16" MBNUM_FORMAT, mb_height_zoom_org);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "ci step: %.16" MBNUM_FORMAT, mb_height_step);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		
@@ -141,7 +153,7 @@ if(image){
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "depth step: %f", depth_step);
+		sprintf(text, "depth step: %.16f", depth_step);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		imlib_free_font();
@@ -155,7 +167,7 @@ if(image){
 	
 	char *file_name = (char *)malloc(128);
 	memset(file_name, 0, 128);
-	sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f.png",
+	sprintf(file_name, "pics/mbs_r%dx%d_d%d-%d_x%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_y%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT ".png",
 		image_width, image_height,
 		depth_min, depth_max,
 		mb_width_mid, mb_width_zoom_org,

@@ -13,7 +13,8 @@
 typedef void* voidp;
 typedef void** voidpp;
 typedef unsigned char* ucharp;
-typedef double mbnum;
+typedef long double mbnum;
+#define MBNUM_FORMAT "Lf"
 
 float sqr(const float);
 void print_copyright();

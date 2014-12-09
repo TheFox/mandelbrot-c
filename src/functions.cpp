@@ -87,18 +87,18 @@ void print_config(int image_width, int image_width_mid, int image_height, int im
 	printf("depth_step: %f\n", depth_step);
 	printf("\n");
 	
-	printf("mb_width mid:   %.32f\n", mb_width_mid);
-	printf("mb_width zoom:  %.32f\n", mb_width_zoom_org);
-	printf("mb_width min:   %.32f\n", mb_width_min);
-	printf("mb_width max:   %.32f\n", mb_width_max);
-	printf("mb_width step:  %.32f\n", mb_width_step);
+	printf("mb_width mid:   %.32" MBNUM_FORMAT "\n", mb_width_mid);
+	printf("mb_width zoom:  %.32" MBNUM_FORMAT "\n", mb_width_zoom_org);
+	printf("mb_width min:   %.32" MBNUM_FORMAT "\n", mb_width_min);
+	printf("mb_width max:   %.32" MBNUM_FORMAT "\n", mb_width_max);
+	printf("mb_width step:  %.32" MBNUM_FORMAT "\n", mb_width_step);
 	printf("\n");
 	
-	printf("mb_height mid:  %.32f\n", mb_height_mid);
-	printf("mb_height zoom: %.32f\n", mb_height_zoom_org);
-	printf("mb_height min:  %.32f\n", mb_height_min);
-	printf("mb_height max:  %.32f\n", mb_height_max);
-	printf("mb_height step: %.32f\n", mb_height_step);
+	printf("mb_height mid:  %.32" MBNUM_FORMAT "\n", mb_height_mid);
+	printf("mb_height zoom: %.32" MBNUM_FORMAT "\n", mb_height_zoom_org);
+	printf("mb_height min:  %.32" MBNUM_FORMAT "\n", mb_height_min);
+	printf("mb_height max:  %.32" MBNUM_FORMAT "\n", mb_height_max);
+	printf("mb_height step: %.32" MBNUM_FORMAT "\n", mb_height_step);
 	printf("\n");
 }
 
@@ -177,7 +177,7 @@ int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 }
 
 void data_file_name(char *file_name, int image_width, int image_height, int depth_min, int depth_max, mbnum mb_width_mid, mbnum mb_width_zoom_org, mbnum mb_height_mid, mbnum mb_height_zoom_org, int depth_i){
-	sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2f-%.2f_y%.2f-%.2f_%08d.txt",
+	sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_y%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_%08d.txt",
 		image_width, image_height,
 		depth_min, depth_max,
 		mb_width_mid, mb_width_zoom_org,
