@@ -123,11 +123,13 @@ int main(int argc, char const *argv[]){
 	}
 	puts("");
 	
+	/*
 	for(pos_x = 0; pos_x < 2; pos_x++){
 		for(pos_y = 0; pos_y < 2; pos_y++){
 			printf("%d %d = %f\n", pos_x, pos_y, image_plain[pos_x][pos_y]);
 		}
 	}
+	*/
 	
 #include "draw_image.h"
 	
