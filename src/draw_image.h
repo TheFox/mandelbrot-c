@@ -55,7 +55,7 @@ if(image){
 	imlib_add_path_to_font_path("/usr/local/share/fonts");
 	imlib_add_path_to_font_path("/Library/Fonts");
 	
-	Imlib_Font font = imlib_load_font("Arial/10");
+	Imlib_Font font = imlib_load_font("Courier New/10");
 	//Imlib_Font font = imlib_load_font("notepad/30");
 	if(font){
 		imlib_context_set_color(255, 0, 0, 255);
@@ -92,68 +92,68 @@ if(image){
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "img wh: %d %d px", image_width, image_height);
+		sprintf(text, "img     w h:  %d %d px", image_width, image_height);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 #ifdef GRID
 		text_offset_y += text_h;
-		sprintf(text, "grid step x: %.16" MBNUM_FORMAT, mb_width_step * grid_step_pixel_f);
+		sprintf(text, "grid step x: % .16" MBNUM_FORMAT, mb_width_step * grid_step_pixel_f);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "grid step y: %.16" MBNUM_FORMAT, mb_height_step * grid_step_pixel_f);
+		sprintf(text, "grid step y: % .16" MBNUM_FORMAT, mb_height_step * grid_step_pixel_f);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 #endif
 		
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr min: %.16" MBNUM_FORMAT, mb_width_min);
+		sprintf(text, "cr      min: % .16" MBNUM_FORMAT, mb_width_min);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr max: %.16" MBNUM_FORMAT, mb_width_max);
+		sprintf(text, "        max: % .16" MBNUM_FORMAT, mb_width_max);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr mid: %.16" MBNUM_FORMAT, mb_width_mid);
+		sprintf(text, "        mid: % .16" MBNUM_FORMAT, mb_width_mid);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr zoom: %.16" MBNUM_FORMAT, mb_width_zoom_org);
+		sprintf(text, "       zoom: % .16" MBNUM_FORMAT, mb_width_zoom_org);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "cr step: %.16" MBNUM_FORMAT, mb_width_step);
-		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-		
-		
-		text_offset_y += text_h;
-		sprintf(text, "ci min: %.16" MBNUM_FORMAT, mb_height_min);
-		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-		
-		text_offset_y += text_h;
-		sprintf(text, "ci max: %.16" MBNUM_FORMAT, mb_height_max);
-		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-		
-		text_offset_y += text_h;
-		sprintf(text, "ci mid: %.16" MBNUM_FORMAT, mb_height_mid);
-		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-		
-		text_offset_y += text_h;
-		sprintf(text, "ci zoom: %.16" MBNUM_FORMAT, mb_height_zoom_org);
-		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
-		
-		text_offset_y += text_h;
-		sprintf(text, "ci step: %.16" MBNUM_FORMAT, mb_height_step);
+		sprintf(text, "       step: % .16" MBNUM_FORMAT, mb_width_step);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		
 		text_offset_y += text_h;
-		sprintf(text, "depth: %d %d", depth_min, depth_max);
+		sprintf(text, "ci      min: % .16" MBNUM_FORMAT, mb_height_min);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		text_offset_y += text_h;
-		sprintf(text, "depth step: %.16f", depth_step);
+		sprintf(text, "        max: % .16" MBNUM_FORMAT, mb_height_max);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "        mid: % .16" MBNUM_FORMAT, mb_height_mid);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "       zoom: % .16" MBNUM_FORMAT, mb_height_zoom_org);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "       step: % .16" MBNUM_FORMAT, mb_height_step);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		
+		text_offset_y += text_h;
+		sprintf(text, "depth   B E:  %d %d", depth_min, depth_max);
+		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
+		
+		text_offset_y += text_h;
+		sprintf(text, "       step:  %.16f", depth_step);
 		imlib_text_draw(TEXT_OFFSET_X, text_offset_y, text);
 		
 		imlib_free_font();
