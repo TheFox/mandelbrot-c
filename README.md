@@ -25,7 +25,7 @@ Example:
 
 	./build/bin/mandelbrot 1024 1024 1 100 -.5 2 0 2
 
-This will generate an 1024x1024 pixel image with depth 1 to 100.
+This will generate an 1024x1024 pixel image with depth 1 to 100. The real part coordinate -.5 and the imaginary part coordinate 0 will be centered to the image.
 
 ### Arguments
 - `I_WIDTH`: The width of the image.
