@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]){
 	print_copyright();
 	
 	if(argc <= 8){
-		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
+		printf("Usage: %s I_WIDTH I_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX\n", *argv);
 		return 1;
 	}
 	
