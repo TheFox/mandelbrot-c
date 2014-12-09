@@ -1,13 +1,13 @@
 # Mandelbrot
 This script create a picture by using the [Mantelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
 
-# Mac Requirements
+## Mac Requirements
 - X11: <http://xquartz.macosforge.org/>
 - Homebrew
 	- `brew install homebrew/versions/gcc49`
 	- `brew install imlib2`
 
-# Build
+## Build
 - Basic
 	
 		( rm -rf build && mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test ) #cmake
@@ -16,7 +16,29 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	
 		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make VERBOSE=1 && make test ) #cmake
 
+## Usage
+After building you can generate with `./build/bin/mandelbrot` an image:
+
+	./build/bin/mandelbrot I_WIDTH I_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX
+
+Example:
+
+	./build/bin/mandelbrot 1024 1024 1 100 -.5 2 0 2
+
+This will generate an 1024x1024 pixel image with depth 1 to 100.
+
+### Arguments
+- `I_WIDTH`: The width of the image.
+- `I_HEIGHT`: The height of the image.
+- `DEPTH_MIN`: The minimum depth. Default 1.
+- `DEPTH_MAX`: The maximum depth.
+- `MB_WIDTH_MID`: Real part (CR).
+- `MB_WIDTH_ZOOM`: Zoom of CR.
+- `MB_HEIGHT_MID`: Imaginary part (CI).
+- `MB_HEIGHT_MAX`: Zoom of CI.
+
 ## Project Links
+- [Blog Post about IMAPd](http://blog.fox21.at/2014/12/04/mandelbrot-again.html)
 - [Travis CI Repository](https://travis-ci.org/TheFox/mandelbrot-c)
 
 ## License
