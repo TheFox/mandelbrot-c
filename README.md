@@ -38,7 +38,6 @@ This will generate an 1024x1024 pixel image with depth 1 to 100.
 - `MB_HEIGHT_MAX`: Zoom of CI.
 
 ## Project Links
-- [Blog Post about IMAPd](http://blog.fox21.at/2014/12/04/mandelbrot-again.html)
 - [Travis CI Repository](https://travis-ci.org/TheFox/mandelbrot-c)
 
 ## License
