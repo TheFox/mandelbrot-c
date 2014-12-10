@@ -10,67 +10,8 @@ void print_copyright(){
 }
 
 void print_config(int image_width, int image_width_mid, int image_height, int image_height_mid, int color_diff, int depth_min, int depth_max, int depth_diff, float depth_step, mbnum mb_width_mid, mbnum mb_width_zoom_org, mbnum mb_width_min, mbnum mb_width_max, mbnum mb_width_step, mbnum mb_height_mid, mbnum mb_height_zoom_org, mbnum mb_height_min, mbnum mb_height_max, mbnum mb_height_step){
-	printf("PID: %d\n", getpid());
 	
-	printf("DEBUG: ");
-#ifdef DEBUG
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("USE_OPENMP: ");
-#ifdef USE_OPENMP
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("OPENMP_NUM_THREADS: ");
-#ifdef OPENMP_NUM_THREADS
-	printf("%d", OPENMP_NUM_THREADS);
-#else
-	printf("N/A");
-#endif
-	printf("\n");
-	
-	printf("USE_MB_XY_GRID: ");
-#ifdef USE_MB_XY_GRID
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("USE_LOG: ");
-#ifdef USE_LOG
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	
-	printf("GRID: ");
-#ifdef GRID
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	printf("GRID_STEP_PIXEL: %d\n", GRID_STEP_PIXEL);
-	printf("GRID_STEP_SIZE: %d\n", GRID_STEP_SIZE);
-	
-	printf("TEXT: ");
-#ifdef TEXT
-	printf("yes");
-#else
-	printf("no");
-#endif
-	printf("\n");
-	printf("TEXT_OFFSET_X: %d\n", TEXT_OFFSET_X);
-	printf("TEXT_OFFSET_Y: %d\n", TEXT_OFFSET_Y);
+#include "print_config.h"
 	
 	printf("image_width:  %d (%d)\n", image_width, image_width_mid);
 	printf("image_height: %d (%d)\n", image_height, image_height_mid);

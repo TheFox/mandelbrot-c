@@ -5,6 +5,8 @@ int main(int argc, char **argv){
 	
 	print_copyright();
 	
+#include "print_config.h"
+	
 	printf("getpid: %p\n", getpid);
 	printf("strcpy: %p\n", strcpy);
 	printf("sqrt: %p\n", sqrt);
