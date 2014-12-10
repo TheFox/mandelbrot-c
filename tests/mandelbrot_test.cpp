@@ -42,8 +42,10 @@ int main(int argc, char **argv){
 	puts("OpenMP header not found");
 #endif
 	
-	printf("sqr: %p\n", sqr);
+	printf("print_copyright: %p\n", print_copyright);
+	printf("print_config: %p\n", print_config);
 	printf("point_iteration: %p\n", point_iteration);
+	printf("data_file_name: %p\n", data_file_name);
 	
 	return EXIT_SUCCESS;
 }
