@@ -1,10 +1,6 @@
 
 #include "functions.hpp"
 
-float sqr(const float x){
-	return(x * x);
-}
-
 void print_copyright(){
 	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
 		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
@@ -102,22 +98,91 @@ void print_config(int image_width, int image_width_mid, int image_height, int im
 	printf("\n");
 }
 
+#ifdef USE_LOG
 int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 	int step = 0;
 	mbnum x = 0;
 	mbnum y = 0;
 	
-	//printf("\n");
+	mbnum x_sqr = x * x;
+	mbnum y_sqr = y * y;
+	
+	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
+		mbnum log_x;
+		mbnum log_y;
+		mbnum abs_x;
+		mbnum abs_y;
+		char sign = 0;
+		
+		if(x > 0){
+			abs_x = fabs(x);
+		}
+		else{
+			abs_x = x;
+			sign = 1;
+		}
+		
+		if(y > 0){
+			abs_y = fabs(y);
+		}
+		else{
+			abs_y = y;
+			sign = sign == 1 ? 0 : 1;
+		}
+		
+		if(sign == 1)
+			y = -exp(log(abs_x) + log(abs_y));
+		else
+			y = exp(log(abs_x) + log(abs_y));
+		
+		y += y;
+		y += cy;
+		
+		x = x_sqr - y_sqr + cx;
+		
+		if(x > 0){
+			abs_x = fabs(x);
+		}
+		else{
+			abs_x = x;
+			sign = 1;
+		}
+		
+		if(y > 0){
+			abs_y = fabs(y);
+		}
+		else{
+			abs_y = y;
+			sign = sign == 1 ? 0 : 1;
+		}
+		
+		log_x = log(abs_x);
+		log_y = log(abs_y);
+		
+		if(sign == 1){
+			x_sqr = -exp(log_x + log_x);
+			y_sqr = -exp(log_y + log_y);
+		}
+		else{
+			x_sqr = exp(log_x + log_x);
+			y_sqr = exp(log_y + log_y);
+		}
+		
+	}
+	
+	return step;
+}
+#else
+int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
+	//puts("point_iteration");
+	
+	int step = 0;
+	mbnum x = 0;
+	mbnum y = 0;
 	
 	mbnum x_sqr = x * x;
 	mbnum y_sqr = y * y;
 	
-#ifdef USE_LOG
-	mbnum log_x;
-	mbnum log_y;
-#endif
-	//mbnum x_sqr2;
-	//mbnum y_sqr2;
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
 		y = x * y;
 		y += y;
@@ -125,56 +190,15 @@ int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 		
 		x = x_sqr - y_sqr + cx;
 		
-		//if(x > 0 && y > 0)
-		//x_sqr = x * x;
-		//y_sqr = y * y;
-		
-#ifdef USE_LOG
-		/*if(x < 0){
-			x_sqr = x * x;
-		}
-		else{
-			log_x = log(x);
-			x_sqr = exp(log_x + log_x);
-		}
-		
-		if(y < 0){
-			y_sqr = y * y;
-		}
-		else{
-			log_y = log(y);
-			y_sqr = exp(log_y + log_y);
-		}*/
-		
-		if(x < 0)
-			x = abs(x);
-		log_x = log(x);
-		x_sqr = exp(log_x + log_x);
-		
-		if(y < 0)
-			y = abs(y);
-		log_y = log(y);
-		y_sqr = exp(log_y + log_y);
-		
-#else
 		x_sqr = x * x;
 		y_sqr = y * y;
-#endif
-		
-		
-		//x_sqr = exp(log_x + log_x);
-		//y_sqr = exp(log_y + log_y);
-		
-		/*
-		printf("point: %f %f - %f %f\n", cx, cy, x, y);
-		printf("\t A %f %f\n", x_sqr, y_sqr);
-		printf("\t B %f %f %d\n\n", x_sqr2, y_sqr2, x_sqr == x_sqr2 && y_sqr == y_sqr2 ? 1 : 0);
-		*/
-		
 	}
+	
+	//puts("point_iteration end");
 	
 	return step;
 }
+#endif
 
 void data_file_name(char *file_name, int image_width, int image_height, int depth_min, int depth_max, mbnum mb_width_mid, mbnum mb_width_zoom_org, mbnum mb_height_mid, mbnum mb_height_zoom_org, int depth_i){
 	sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_y%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_%08d.txt",

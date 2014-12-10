@@ -42,6 +42,12 @@ int main(int argc, char const *argv[]){
 	const mbnum mb_height_mid = atof(argv[7]);
 	const mbnum mb_height_zoom_org = atof(argv[8]);
 	
+#ifdef USE_OPENMP
+	puts("OpenMP is active");
+	omp_set_num_threads(OPENMP_NUM_THREADS);
+	omp_set_dynamic(0);
+#endif
+	
 #include "init_default_vars.h"
 	
 	char *start_time_text = (char *)malloc(128);
@@ -74,12 +80,6 @@ int main(int argc, char const *argv[]){
 #include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
 	
-#ifdef USE_OPENMP
-	puts("OpenMP is active");
-	omp_set_num_threads(OPENMP_NUM_THREADS);
-	omp_set_dynamic(0);
-#endif
-	
 	puts("start");
 	
 	float depth_percent = 0.0;
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[]){
 	for(int depth_i = 0; depth_i <= depth_diff; depth_i++){
 		
 #ifdef DEBUG
-		printf("\rdepth_i: %d/%d %d %f", depth_i, depth_diff, depth_base, depth_percent);
+		printf("  depth_i: %d/%d %d %f \r", depth_i, depth_diff, depth_base, depth_percent);
 		fflush(stdout);
 #endif
 		
