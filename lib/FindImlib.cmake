@@ -7,10 +7,10 @@
 
 find_package(X11 REQUIRED)
 
-MESSAGE(STATUS "Find Imlib2 header files")
+MESSAGE(STATUS "Find Imlib header files")
 find_path(Imlib_HEADER_INCLUDE_PATH Imlib2.h)
 
-MESSAGE(STATUS "Find Imlib2 library files")
+MESSAGE(STATUS "Find Imlib library files")
 find_library(Imlib_LIBRARY_PATH Imlib2)
 
 if(Imlib_HEADER_INCLUDE_PATH AND Imlib_LIBRARY_PATH)
