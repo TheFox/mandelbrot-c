@@ -12,12 +12,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
-typedef float mbnum;
-//typedef double mbnum;
-//typedef long double mbnum;
+typedef long double mbnum;
 
-#define MBNUM_FORMAT "f"
-//#define MBNUM_FORMAT "Lf"
+#define MBNUM_FORMAT "Lf"
 
 void print_copyright();
 void print_config(int, int, int, int, int, int, int, int, float, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum);
