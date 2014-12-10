@@ -1,5 +1,5 @@
 
-const size_t image_plain_s        = image_width  * sizeof(mbnum *);
+const size_t image_plain_s        = image_width  * sizeof(mbnum_p);
 const size_t image_plain_width_s  = image_height * sizeof(mbnum);
 const size_t image_plain_s_total = 
 	image_plain_s
@@ -8,8 +8,8 @@ const size_t image_plain_s_total =
 	;
 
 printf("sizeof(mbnum):   %lu\n", sizeof(mbnum));
-printf("sizeof(mbnum*):  %lu\n", sizeof(mbnum*));
-printf("sizeof(mbnum**): %lu\n", sizeof(mbnum**));
+printf("sizeof(mbnum*):  %lu\n", sizeof(mbnum_p));
+printf("sizeof(mbnum**): %lu\n", sizeof(mbnum_p*));
 
 printf("image_plain_s:       %lu\n", image_plain_s);
 printf("image_plain_width_s: %lu\n", image_plain_width_s);
@@ -19,7 +19,7 @@ printf("image plain: %.2f MB (%lu)\n", (float)image_plain_s_total / (float)1024 
 size_t image_plain_size = 0;
 
 printf("alloc image_plain: %lu\n", image_plain_s);
-mbnum **image_plain = (mbnum **)malloc(image_plain_s);
+mbnum_p *image_plain = (mbnum_p *)malloc(image_plain_s);
 
 printf("memset image_plain\n");
 memset(image_plain, 0, image_plain_s);
@@ -31,7 +31,7 @@ printf("create image_plain\n");
 #endif
 for(pos_x = 0; pos_x < image_width; pos_x++){
 	//printf("create image_plain: malloc\n");
-	image_plain[pos_x] = (mbnum *)malloc(image_plain_width_s);
+	image_plain[pos_x] = (mbnum_p)malloc(image_plain_width_s);
 	if(!image_plain[pos_x]){
 		puts("malloc failed");
 		exit(1);
@@ -49,21 +49,3 @@ for(pos_x = 0; pos_x < image_width; pos_x++){
 	//sleep(1);
 }
 printf("alloc image_plain done: %lu\n", image_plain_size);
-
-
-mbnum **image_plain_p = (mbnum **)image_plain;
-
-mbnum *image_plain_p0 = image_plain_p[0];
-mbnum *image_plain_p1 = image_plain_p[1];
-
-//printf("image_plain_p: %lu\n", **image_plain_p[1] - **image_plain_p[0]);
-
-printf("image_plain_p0: %p\n", image_plain_p0);
-printf("image_plain_p1: %p\n", image_plain_p1);
-printf("d: %lu\n", image_plain_p1 - image_plain_p0);
-
-for(pos_x = 0; pos_x < image_width; pos_x++){
-	//printf("x[%d]: %p\n", pos_x, image_plain_p[pos_x]);
-}
-
-//return 0;

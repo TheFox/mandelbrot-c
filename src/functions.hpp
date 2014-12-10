@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 typedef long double mbnum;
+typedef mbnum* mbnum_p;
 
 #define MBNUM_FORMAT "Lf"
 
