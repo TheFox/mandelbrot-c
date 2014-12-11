@@ -33,19 +33,27 @@ if(image){
 	imlib_image_draw_line(image_width_mid, 0, image_width_mid, image_height, 0);
 	imlib_image_draw_line(0, image_height_mid, image_width, image_height_mid, 0);
 	
+#ifdef USE_OPENMP
 	#pragma omp parallel for
+#endif
 	for(pos_x = image_width_mid - GRID_STEP_PIXEL; pos_x > 0; pos_x -= GRID_STEP_PIXEL)
 		imlib_image_draw_line(pos_x, image_height_mid - GRID_STEP_SIZE, pos_x, image_height_mid + GRID_STEP_SIZE, 0);
 	
+#ifdef USE_OPENMP
 	#pragma omp parallel for
+#endif
 	for(pos_x = image_width_mid + GRID_STEP_PIXEL; pos_x < image_width; pos_x += GRID_STEP_PIXEL)
 		imlib_image_draw_line(pos_x, image_height_mid - GRID_STEP_SIZE, pos_x, image_height_mid + GRID_STEP_SIZE, 0);
-	
+
+#ifdef USE_OPENMP
 	#pragma omp parallel for
+#endif
 	for(pos_y = image_height_mid - GRID_STEP_PIXEL; pos_y > 0; pos_y -= GRID_STEP_PIXEL)
 		imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, pos_y, image_width_mid + GRID_STEP_SIZE, pos_y, 0);
-	
+
+#ifdef USE_OPENMP
 	#pragma omp parallel for
+#endif
 	for(pos_y = image_height_mid + GRID_STEP_PIXEL; pos_y < image_height; pos_y += GRID_STEP_PIXEL)
 		imlib_image_draw_line(image_width_mid - GRID_STEP_SIZE, pos_y, image_width_mid + GRID_STEP_SIZE, pos_y, 0);
 #endif
