@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-BIN_MT=./build/bin/mandelbrot_mt
-BIN_CI=./build/bin/mandelbrot_ci
+BIN_MT=./build_$(uname -s)/bin/mandelbrot_mt
+BIN_CI=./build_$(uname -s)/bin/mandelbrot_ci
 
 set +x
 
