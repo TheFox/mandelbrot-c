@@ -32,7 +32,8 @@ int main(int argc, char **argv){
 	
 	
 	int iter_x;
-	omp_set_num_threads(8);
+	omp_set_num_threads(OPENMP_NUM_THREADS);
+	omp_set_dynamic(0);
 	
 	#pragma omp parallel for
 	for(iter_x = 0; iter_x < 8; iter_x++){
