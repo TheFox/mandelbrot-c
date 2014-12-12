@@ -45,6 +45,30 @@ int main(int argc, char **argv){
 	puts("OpenMP header not found");
 #endif
 	
+#ifdef USE_OPENCL
+	printf("clGetDeviceIDs: %p\n", clGetDeviceIDs);
+	printf("clGetDeviceInfo: %p\n", clGetDeviceInfo);
+	printf("clCreateContext: %p\n", clCreateContext);
+	printf("clCreateCommandQueue: %p\n", clCreateCommandQueue);
+	printf("clCreateProgramWithSource: %p\n", clCreateProgramWithSource);
+	printf("clBuildProgram: %p\n", clBuildProgram);
+	printf("clGetProgramBuildInfo: %p\n", clGetProgramBuildInfo);
+	printf("clCreateKernel: %p\n", clCreateKernel);
+	printf("clCreateBuffer: %p\n", clCreateBuffer);
+	printf("clEnqueueWriteBuffer: %p\n", clEnqueueWriteBuffer);
+	printf("clSetKernelArg: %p\n", clSetKernelArg);
+	printf("clGetKernelWorkGroupInfo: %p\n", clGetKernelWorkGroupInfo);
+	printf("clEnqueueNDRangeKernel: %p\n", clEnqueueNDRangeKernel);
+	printf("clEnqueueReadBuffer: %p\n", clEnqueueReadBuffer);
+	printf("clReleaseMemObject: %p\n", clReleaseMemObject);
+	printf("clReleaseProgram: %p\n", clReleaseProgram);
+	printf("clReleaseKernel: %p\n", clReleaseKernel);
+	printf("clReleaseCommandQueue: %p\n", clReleaseCommandQueue);
+	printf("clReleaseContext: %p\n", clReleaseContext);
+#else
+	puts("OpenCL header not found");
+#endif
+	
 	printf("print_copyright: %p\n", print_copyright);
 	printf("print_config: %p\n", print_config);
 	printf("point_iteration: %p\n", point_iteration);

@@ -25,6 +25,14 @@ printf("PID: %d\n", getpid());
 #endif
 	printf("\n");
 	
+	printf("USE_OPENCL: ");
+#ifdef USE_OPENCL
+	printf("yes");
+#else
+	printf("no");
+#endif
+	printf("\n");
+	
 	printf("USE_MB_XY_GRID: ");
 #ifdef USE_MB_XY_GRID
 	printf("yes");

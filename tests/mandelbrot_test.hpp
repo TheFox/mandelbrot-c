@@ -20,4 +20,10 @@
 #include <omp.h>
 #endif
 
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
+#include <CL/cl.h>
+#endif
+
 #endif

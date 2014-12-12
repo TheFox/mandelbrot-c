@@ -77,6 +77,243 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
+#ifdef USE_OPENCL
+	puts("OpenCL is active");
+	
+	int ocl_err;
+	
+	size_t ocl_global;
+	size_t ocl_local;
+	cl_device_id ocl_device_id;
+	cl_context ocl_context;
+	cl_command_queue ocl_commands;
+	cl_program ocl_program;
+	cl_kernel ocl_kernel;
+	cl_mem ocl_input;
+	cl_mem ocl_output;
+	
+	char *ocl_kernel_source = NULL;
+	char *ocl_kernel_source_write = NULL;
+	
+	printf("OpenCL malloc data\n");
+	float *ocl_data = (float *)malloc(DATA_SIZE * sizeof(float));
+	
+	printf("OpenCL malloc results\n");
+	float *ocl_results = (float *)malloc(DATA_SIZE * sizeof(float));
+	
+	char *ocl_buffer = (char *)malloc(4096);
+	memset(ocl_buffer, 0, 4096);
+	
+	size_t ocl_nread;
+	long ocl_file_size = 0;
+	
+	/*
+	
+	char *binary_buf;
+	cl_int binary_status;
+	fp = fopen(fileName, "r");
+	if (!fp) {
+		fprintf(stderr, "Failed to load kernel.\n");
+		exit(1);
+	}
+	binary_buf = (char *)malloc(MAX_BINARY_SIZE);
+	binary_size = fread(binary_buf, 1, MAX_BINARY_SIZE, fp);
+	fclose(fp);
+	
+	*/
+	
+	
+	char the_path[256];
+    getcwd(the_path, 255);
+    printf("the_path: '%s'\n", the_path);
+    
+    
+	
+	FILE *ocl_file = fopen("src/kernel.cl", "r");
+	if(ocl_file){
+		fseek(ocl_file, 0L, SEEK_END);
+		ocl_file_size = ftell(ocl_file);
+		fseek(ocl_file, 0L, SEEK_SET);
+
+		ocl_kernel_source = (char *)malloc(ocl_file_size + 1);
+		if (ocl_kernel_source == NULL) {
+			printf("ERROR: cant malloc ocl_kernel_source\n");
+			return EXIT_FAILURE;
+		}
+		memset(ocl_kernel_source, 0, ocl_file_size + 1);
+		ocl_kernel_source_write = ocl_kernel_source;
+		
+		printf("OpenCL ocl_file_size = %lu\n", ocl_file_size);
+		
+		while((ocl_nread = fread(ocl_buffer, 1, 4096, ocl_file)) > 0){
+			memcpy(ocl_kernel_source_write, ocl_buffer, ocl_nread);
+			ocl_kernel_source_write += ocl_nread;
+		}
+		fclose(ocl_file);
+	}
+
+	if(!ocl_kernel_source){
+		printf("OpenCL ERROR: cant read kernel source code\n");
+		return EXIT_FAILURE;
+	}
+	
+	// Fill our data set with random float values
+	printf("OpenCL fill data %ld\n", (unsigned long)DATA_SIZE);
+	int ocl_i = 0;
+	unsigned int ocl_count = DATA_SIZE;
+	for(ocl_i = 0; ocl_i < ocl_count; ocl_i++){
+		ocl_data[ocl_i] = rand() / (float)RAND_MAX;
+	}
+	printf("OpenCL fill data done\n");
+	
+	// Connect to a compute device
+	ocl_err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &ocl_device_id, NULL);
+	//ocl_err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_CPU, 1, &ocl_device_id, NULL);
+	if(ocl_err != CL_SUCCESS){
+		ocl_err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_CPU, 1, &ocl_device_id, NULL);
+		if(ocl_err != CL_SUCCESS){
+			printf("OpenCL ERROR: Failed to create a device group\n");
+			return EXIT_FAILURE;
+		}
+	}
+	
+	char *ocl_device_name = (char *)malloc(512);
+	clGetDeviceInfo(ocl_device_id, CL_DEVICE_NAME, 512, ocl_device_name, NULL);
+	printf("OpenCL ocl_device_name: '%s'\n", ocl_device_name);
+	
+	// Create a compute context
+	printf("OpenCL create a compute context\n");
+	ocl_context = clCreateContext(0, 1, &ocl_device_id, NULL, NULL, &ocl_err);
+	if(!ocl_context){
+		printf("OpenCL ERROR: Failed to create a compute context\n");
+		return EXIT_FAILURE;
+	}
+	
+	// Create a command commands
+	printf("OpenCL create a command commands\n");
+	ocl_commands = clCreateCommandQueue(ocl_context, ocl_device_id, 0, &ocl_err);
+	if(!ocl_commands){
+		printf("OpenCL ERROR: Failed to create a command commands\n");
+		return EXIT_FAILURE;
+	}
+	
+	printf("OpenCL create program with source\n");
+	ocl_program = clCreateProgramWithSource(ocl_context, 1, (const char **)&ocl_kernel_source, NULL, &ocl_err);
+	//ocl_program = clCreateProgramWithBinary(ocl_context, 1, &ocl_device_id, (const size_t *)&ocl_binary_size, (const unsigned char **)&ocl_binary_buf, &ocl_binary_status, &ocl_err);
+	if(!ocl_program){
+		printf("OpenCL ERROR: Failed to create compute program. %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+
+	// Build the program executable
+	printf("OpenCL build the program executable\n");
+	ocl_err = clBuildProgram(ocl_program, 0, NULL, NULL, NULL, NULL);
+	if(ocl_err != CL_SUCCESS){
+		size_t ocl_len;
+		memset(ocl_buffer, 0, 4096);
+
+		printf("OpenCL ERROR: Failed to build program executable\n");
+		clGetProgramBuildInfo(ocl_program, ocl_device_id, CL_PROGRAM_BUILD_LOG, sizeof(ocl_buffer), ocl_buffer, &ocl_len);
+		printf("%s\n", ocl_buffer);
+		return EXIT_FAILURE;
+	}
+
+	// Create the compute kernel in the program we wish to run
+	printf("OpenCL create kernel\n");
+	ocl_kernel = clCreateKernel(ocl_program, "square", &ocl_err);
+	if(!ocl_kernel || ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to create compute kernel\n");
+		return EXIT_FAILURE;
+	}
+
+	// Create the input and output arrays in device memory for our calculation
+	printf("OpenCL create the input and output\n");
+	ocl_input = clCreateBuffer(ocl_context, CL_MEM_READ_ONLY, sizeof(float) * ocl_count, NULL, NULL);
+	ocl_output = clCreateBuffer(ocl_context, CL_MEM_WRITE_ONLY, sizeof(float) * ocl_count, NULL, NULL);
+	if(!ocl_input || !ocl_output){
+		printf("OpenCL ERROR: Failed to allocate device memory\n");
+		return EXIT_FAILURE;
+	}    
+
+	// Write our data set into the input array in device memory 
+	printf("OpenCL write our data set into the input array\n");
+	ocl_err = clEnqueueWriteBuffer(ocl_commands, ocl_input, CL_TRUE, 0, sizeof(float) * ocl_count, ocl_data, 0, NULL, NULL);
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to write to source array\n");
+		return EXIT_FAILURE;
+	}
+
+	// Set the arguments to our compute kernel
+	printf("OpenCL set the arguments\n");
+	ocl_err = 0;
+	ocl_err = clSetKernelArg(ocl_kernel, 0, sizeof(cl_mem), &ocl_input);
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to set kernel arguments. 0 %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+	ocl_err |= clSetKernelArg(ocl_kernel, 1, sizeof(cl_mem), &ocl_output);
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to set kernel arguments. 1 %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+	ocl_err |= clSetKernelArg(ocl_kernel, 2, sizeof(unsigned int), &ocl_count);
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to set kernel arguments. 2 %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+
+	// Get the maximum work group size for executing the kernel on the device
+	printf("OpenCL get maximum work group size\n");
+	ocl_err = clGetKernelWorkGroupInfo(ocl_kernel, ocl_device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(ocl_local), &ocl_local, NULL);
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to retrieve kernel work group info. %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+	
+	// Execute the kernel over the entire range of our 1d input data set
+	// using the maximum number of work group items for this device
+	ocl_global = ocl_count;
+	printf("OpenCL execute the kernel: %zu, %zu\n", ocl_global, ocl_local);
+	ocl_err = clEnqueueNDRangeKernel(ocl_commands, ocl_kernel, 1, NULL, &ocl_global, &ocl_local, 0, NULL, NULL);
+	if(ocl_err){
+		printf("OpenCL ERROR: Failed to execute kernel\n");
+		return EXIT_FAILURE;
+	}
+
+	// Wait for the command commands to get serviced before reading back results
+	printf("OpenCL wait...\n");
+	clFinish(ocl_commands);
+	printf("OpenCL wait done\n");
+
+	// Read back the results from the device to verify the output
+	printf("OpenCL read back\n");
+	ocl_err = clEnqueueReadBuffer(ocl_commands, ocl_output, CL_TRUE, 0, sizeof(float) * ocl_count, ocl_results, 0, NULL, NULL);  
+	if(ocl_err != CL_SUCCESS){
+		printf("OpenCL ERROR: Failed to read output array. %d\n", ocl_err);
+		return EXIT_FAILURE;
+	}
+
+	// Validate our results
+	printf("OpenCL validate\n");
+	unsigned int ocl_correct = 0;
+	for(ocl_i = 0; ocl_i < ocl_count; ocl_i++){
+		if(ocl_results[ocl_i] == ocl_data[ocl_i] * ocl_data[ocl_i]){
+			ocl_correct++;
+		}
+	}
+
+	// Print a brief summary detailing the results
+	printf("OpenCL computed %d/%d correct values\n", ocl_correct, ocl_count);
+	clReleaseMemObject(ocl_input);
+	clReleaseMemObject(ocl_output);
+	clReleaseProgram(ocl_program);
+	clReleaseKernel(ocl_kernel);
+	clReleaseCommandQueue(ocl_commands);
+	clReleaseContext(ocl_context);
+	
+	return 0;
+#endif
+	
 #include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
 	
