@@ -12,6 +12,12 @@ int main(int argc, char **argv){
 	printf("sqrt: %p\n", sqrt);
 	printf("time: %p\n", time);
 	printf("localtime: %p\n", localtime);
+	printf("access: %p\n", access);
+	printf("fopen: %p\n", fopen);
+	printf("fseek: %p\n", fseek);
+	printf("fclose: %p\n", fclose);
+	printf("memset: %p\n", memset);
+	
 	
 	printf("imlib_create_image: %p\n", imlib_create_image);
 	printf("imlib_context_set_image: %p\n", imlib_context_set_image);
@@ -38,8 +44,9 @@ int main(int argc, char **argv){
 	#pragma omp parallel for
 	for(iter_x = 0; iter_x < 8; iter_x++){
 		const int id_x = omp_get_thread_num();
-		if(id_x)
+		//if(id_x)
 			printf("OMP i=%d ID=%d\n", iter_x, id_x);
+		//sleep(1);
 	}
 #else
 	puts("OpenMP header not found");
