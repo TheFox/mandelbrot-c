@@ -151,6 +151,9 @@ if(USE_OPENCL AND OpenCL_FOUND)
 	if(${CMAKE_C_COMPILER_ID} MATCHES "GNU")
 		set_target_properties(mandelbrot mandelbrot_test PROPERTIES LINK_FLAGS "-lOpenCL")
 	endif()
+	
+	MESSAGE(STATUS "Compile kernel")
+	add_custom_target(kernel ALL ${OpenCL_COMPILER_PATH} -O3 -emit-llvm-bc ${PROJECT_SOURCE_DIR}/src/kernel.cl -o kernel.s WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} SOURCES ${PROJECT_SOURCE_DIR}/src/kernel.cl)
 endif()
 
 #add_executable(test1 test1.cpp)
