@@ -24,3 +24,8 @@ const float depth_step = 1.0 / (float)(depth_diff + 1);
 	const float grid_step_pixel_f = (float)GRID_STEP_PIXEL;
 #endif
 #endif
+
+const char *program_dirname = (const char *)dirname((char *)argv[0]);
+
+char *program_cwd = (char *)malloc(1024);
+getcwd(program_cwd, 1024);
