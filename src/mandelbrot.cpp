@@ -134,7 +134,7 @@ int main(int argc, char const *argv[]){
 	}
 	
 	if(!ocl_kernel_source){
-		printf("OpenCL ERROR: cant read kernel source code\n");
+		printf("OpenCL ERROR: can't read kernel source code\n");
 		return EXIT_FAILURE;
 	}
 	
@@ -173,6 +173,7 @@ int main(int argc, char const *argv[]){
 		printf("OpenCL ERROR: Failed to create a compute context\n");
 		return EXIT_FAILURE;
 	}
+	printf("OpenCL create a compute context: %p\n", ocl_context);
 	
 	// Create a command commands
 	printf("OpenCL create a command commands\n");
@@ -181,21 +182,6 @@ int main(int argc, char const *argv[]){
 		printf("OpenCL ERROR: Failed to create a command commands\n");
 		return EXIT_FAILURE;
 	}
-	
-	/*
-	
-	char *ocl_binary_buf;
-	cl_int ocl_binary_status;
-	fp = fopen(fileName, "r");
-	if (!fp) {
-		fprintf(stderr, "Failed to load kernel.\n");
-		exit(1);
-	}
-	ocl_binary_buf = (char *)malloc(MAX_BINARY_SIZE);
-	binary_size = fread(ocl_binary_buf, 1, MAX_BINARY_SIZE, fp);
-	fclose(fp);
-	
-	*/
 	
 	printf("OpenCL create program\n");
 	cl_int ocl_binary_status;
