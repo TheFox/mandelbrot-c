@@ -37,10 +37,10 @@ int main(int argc, char const *argv[]){
 	const int image_height = atof(argv[2]);
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
-	const mbnum mb_width_mid = atof(argv[5]);
-	const mbnum mb_width_zoom_org = atof(argv[6]);
-	const mbnum mb_height_mid = atof(argv[7]);
-	const mbnum mb_height_zoom_org = atof(argv[8]);
+	const mbnum_t mb_width_mid = atof(argv[5]);
+	const mbnum_t mb_width_zoom_org = atof(argv[6]);
+	const mbnum_t mb_height_mid = atof(argv[7]);
+	const mbnum_t mb_height_zoom_org = atof(argv[8]);
 	
 #ifdef USE_OPENMP
 	puts("OpenMP is active");

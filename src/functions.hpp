@@ -12,14 +12,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-typedef long double mbnum;
-typedef mbnum* mbnum_p;
 
-#define MBNUM_FORMAT "Lf"
+#include "types.h"
 
 void print_copyright();
 void print_config(int, int, int, int, int, int, int, int, float, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum, mbnum);
-int point_iteration(const mbnum, const mbnum, const int);
-void data_file_name(char *, int, int, int, int, mbnum, mbnum, mbnum, mbnum, int);
+int point_iteration(const mbnum_t, const mbnum_t, const int);
+void data_file_name(char *, int, int, int, int, mbnum_t, mbnum_t, mbnum_t, mbnum_t, int);
 
 #endif

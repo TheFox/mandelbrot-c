@@ -20,10 +20,10 @@ int main(int argc, char const *argv[]){
 	const int image_height = atof(argv[2]);
 	const int depth_min = atof(argv[3]);
 	const int depth_max = atof(argv[4]);
-	const mbnum mb_width_mid = atof(argv[5]);
-	const mbnum mb_width_zoom_org = atof(argv[6]);
-	const mbnum mb_height_mid = atof(argv[7]);
-	const mbnum mb_height_zoom_org = atof(argv[8]);
+	const mbnum_t mb_width_mid = atof(argv[5]);
+	const mbnum_t mb_width_zoom_org = atof(argv[6]);
+	const mbnum_t mb_height_mid = atof(argv[7]);
+	const mbnum_t mb_height_zoom_org = atof(argv[8]);
 	const int thread_id = atof(argv[9]);
 	const int thread_max = atof(argv[10]);
 	
@@ -63,9 +63,9 @@ int main(int argc, char const *argv[]){
 		if(data_file.is_open()){
 			for(pos_x = 0; pos_x < image_width; pos_x++){
 #ifdef USE_MB_XY_GRID
-				const mbnum mb_x = mb_x_grid_r[pos_x];
+				const mbnum_t mb_x = mb_x_grid_r[pos_x];
 #else
-				const mbnum mb_x = mb_width_min + mb_width_step * pos_x;
+				const mbnum_t mb_x = mb_width_min + mb_width_step * pos_x;
 #endif
 				
 				//printf("\t mb_x: %d %f\n", pos_x, mb_x);
@@ -75,9 +75,9 @@ int main(int argc, char const *argv[]){
 #endif
 				for(pos_y = 0; pos_y < image_height; pos_y++){
 #ifdef USE_MB_XY_GRID
-					const mbnum mb_y = mb_y_grid_r[pos_y];
+					const mbnum_t mb_y = mb_y_grid_r[pos_y];
 #else
-					const mbnum mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
+					const mbnum_t mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
 #endif
 					
 					//printf("\t\t mb_y %d %f\n", pos_y, mb_y);

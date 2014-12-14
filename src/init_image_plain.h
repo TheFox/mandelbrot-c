@@ -1,15 +1,15 @@
 
 const size_t image_plain_s        = image_width  * sizeof(mbnum_p);
-const size_t image_plain_width_s  = image_height * sizeof(mbnum);
+const size_t image_plain_width_s  = image_height * sizeof(mbnum_t);
 const size_t image_plain_s_total = 
 	image_plain_s
-	+ image_width * image_height * sizeof(mbnum)
+	+ image_width * image_height * sizeof(mbnum_t)
 	//+ image_width * image_height * 4
 	;
 
-printf("sizeof(mbnum):   %lu\n", sizeof(mbnum));
-printf("sizeof(mbnum*):  %lu\n", sizeof(mbnum_p));
-printf("sizeof(mbnum**): %lu\n", sizeof(mbnum_p*));
+printf("sizeof(mbnum_t):  %lu\n", sizeof(mbnum_t));
+printf("sizeof(mbnum_p):  %lu\n", sizeof(mbnum_p));
+printf("sizeof(mbnum_p*): %lu\n", sizeof(mbnum_p*));
 
 printf("image_plain_s:       %lu\n", image_plain_s);
 printf("image_plain_width_s: %lu\n", image_plain_width_s);

@@ -6,15 +6,15 @@ const int image_width_mid = image_width / 2;
 const int image_height_mid = image_height / 2;
 const int color_diff = COLOR_MAX - COLOR_MIN;
 
-const mbnum mb_width_zoom = mb_width_zoom_org / 2.0;
-const mbnum mb_width_min = mb_width_mid - mb_width_zoom;
-const mbnum mb_width_max = mb_width_mid + mb_width_zoom;
-const mbnum mb_width_step = (mb_width_max - mb_width_min) / image_width;
+const mbnum_t mb_width_zoom = mb_width_zoom_org / 2.0;
+const mbnum_t mb_width_min = mb_width_mid - mb_width_zoom;
+const mbnum_t mb_width_max = mb_width_mid + mb_width_zoom;
+const mbnum_t mb_width_step = (mb_width_max - mb_width_min) / image_width;
 
-const mbnum mb_height_zoom = mb_height_zoom_org / 2.0;
-const mbnum mb_height_min = mb_height_mid - mb_height_zoom;
-const mbnum mb_height_max = mb_height_mid + mb_height_zoom;
-const mbnum mb_height_step = (mb_height_max - mb_height_min) / image_height;
+const mbnum_t mb_height_zoom = mb_height_zoom_org / 2.0;
+const mbnum_t mb_height_min = mb_height_mid - mb_height_zoom;
+const mbnum_t mb_height_max = mb_height_mid + mb_height_zoom;
+const mbnum_t mb_height_step = (mb_height_max - mb_height_min) / image_height;
 
 const int depth_diff = depth_max - depth_min;
 const float depth_step = 1.0 / (float)(depth_diff + 1);
