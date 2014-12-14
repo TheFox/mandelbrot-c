@@ -8,6 +8,7 @@ set(DEBUG 1)
 set(USE_OPENMP 0)
 set(PROJECT_DEFINE_OPENMP_NUM_THREADS 8)
 set(USE_OPENCL 1)
+set(USE_OPENCL_BINARY 0)
 set(USE_LLVM 0)
 set(USE_MB_XY_GRID 1)
 set(USE_LOG 0)
@@ -42,6 +43,9 @@ if(USE_OPENMP)
 endif()
 if(USE_OPENCL)
 	set(PROJECT_DEFINE_USE_OPENCL "#define USE_OPENCL 1")
+endif()
+if(USE_OPENCL_BINARY)
+	set(PROJECT_DEFINE_USE_OPENCL_BINARY "#define USE_OPENCL_BINARY 1")
 endif()
 if(USE_MB_XY_GRID)
 	set(PROJECT_DEFINE_USE_MB_XY_GRID "#define USE_MB_XY_GRID 1")
@@ -152,8 +156,21 @@ if(USE_OPENCL AND OpenCL_FOUND)
 		set_target_properties(mandelbrot mandelbrot_test PROPERTIES LINK_FLAGS "-lOpenCL")
 	endif()
 	
+	execute_process(COMMAND uname -m OUTPUT_VARIABLE UNAME_M OUTPUT_STRIP_TRAILING_WHITESPACE)
+	
 	MESSAGE(STATUS "Compile kernel")
-	add_custom_target(kernel ALL ${OpenCL_COMPILER_PATH} -O3 -emit-llvm-bc ${PROJECT_SOURCE_DIR}/src/kernel.cl -o kernel.s WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} SOURCES ${PROJECT_SOURCE_DIR}/src/kernel.cl)
+	#add_custom_target(kernel ALL ${OpenCL_COMPILER_PATH} -Os -emit-llvm-bc ${PROJECT_SOURCE_DIR}/src/kernel.cl -o kernel.s WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} SOURCES ${PROJECT_SOURCE_DIR}/src/kernel.cl)
+	add_custom_target(kernel_ln ALL
+		ln -sf ${PROJECT_SOURCE_DIR}/src/kernel.cl
+	#	DEPENDS ${PROJECT_SOURCE_DIR}/src/kernel.cl
+		WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+	#	SOURCES ${PROJECT_SOURCE_DIR}/src/kernel.cl
+	)
+	
+	add_custom_target(kernel ALL
+		${OpenCL_COMPILER_PATH} -Os -emit-llvm-bc ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kernel.cl -o kernel.s
+		DEPENDS kernel_ln
+		WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif()
 
 #add_executable(test1 test1.cpp)

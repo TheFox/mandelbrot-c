@@ -12,10 +12,17 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
+#include <CL/cl.h>
+#endif
 
 #include "types.h"
 
 int point_iteration(const mbnum_t, const mbnum_t, const int);
 void data_file_name(char *, int, int, int, int, mbnum_t, mbnum_t, mbnum_t, mbnum_t, int);
+//void pfn_notify(const char *, const void *, size_t, void *);
+void pfn_notify(cl_program, void *);
 
 #endif

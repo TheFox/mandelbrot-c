@@ -112,3 +112,8 @@ void data_file_name(char *file_name, int image_width, int image_height, int dept
 		depth_i
 	);
 }
+
+//void pfn_notify(const char *errinfo, const void *private_info, size_t cb, void *user_data){
+void pfn_notify(cl_program ocl_program, void *user_data){
+	fprintf(stderr, "OpenCL Error (via pfn_notify): %p\n", user_data);
+}
