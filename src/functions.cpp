@@ -2,19 +2,19 @@
 #include "functions.hpp"
 
 #ifdef USE_LOG
-int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
+int point_iteration(const mbnum_t cx, const mbnum_t cy, const int depth_max){
 	int step = 0;
-	mbnum x = 0;
-	mbnum y = 0;
+	mbnum_t x = 0;
+	mbnum_t y = 0;
 	
-	mbnum x_sqr = x * x;
-	mbnum y_sqr = y * y;
+	mbnum_t x_sqr = x * x;
+	mbnum_t y_sqr = y * y;
 	
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
-		mbnum log_x;
-		mbnum log_y;
-		mbnum abs_x;
-		mbnum abs_y;
+		mbnum_t log_x;
+		mbnum_t log_y;
+		mbnum_t abs_x;
+		mbnum_t abs_y;
 		char sign = 0;
 		
 		if(x > 0){
@@ -76,15 +76,15 @@ int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 	return step;
 }
 #else
-int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
+int point_iteration(const mbnum_t cx, const mbnum_t cy, const int depth_max){
 	//puts("point_iteration");
 	
 	int step = 0;
-	mbnum x = 0;
-	mbnum y = 0;
+	mbnum_t x = 0;
+	mbnum_t y = 0;
 	
-	mbnum x_sqr = x * x;
-	mbnum y_sqr = y * y;
+	mbnum_t x_sqr = x * x;
+	mbnum_t y_sqr = y * y;
 	
 	for(step = 0; step < depth_max && x_sqr + y_sqr < 4.0; step++){
 		y = x * y;
@@ -103,7 +103,7 @@ int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 }
 #endif
 
-void data_file_name(char *file_name, int image_width, int image_height, int depth_min, int depth_max, mbnum mb_width_mid, mbnum mb_width_zoom_org, mbnum mb_height_mid, mbnum mb_height_zoom_org, int depth_i){
+void data_file_name(char *file_name, int image_width, int image_height, int depth_min, int depth_max, mbnum_t mb_width_mid, mbnum_t mb_width_zoom_org, mbnum_t mb_height_mid, mbnum_t mb_height_zoom_org, int depth_i){
 	sprintf(file_name, "data/mbs_r%dx%d_d%d-%d_x%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_y%.2" MBNUM_FORMAT "-%.2" MBNUM_FORMAT "_%08d.txt",
 		image_width, image_height,
 		depth_min, depth_max,
