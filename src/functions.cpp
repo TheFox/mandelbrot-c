@@ -1,44 +1,6 @@
 
 #include "functions.hpp"
 
-void print_copyright(){
-	printf("%s %d.%d.%d (%s %s)\n", PROJECT_NAME,
-		PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH,
-		__DATE__, __TIME__);
-	printf("%s\n", PROJECT_COPYRIGHT);
-	printf("\n");
-}
-
-void print_config(int image_width, int image_width_mid, int image_height, int image_height_mid, int color_diff, int depth_min, int depth_max, int depth_diff, float depth_step, mbnum mb_width_mid, mbnum mb_width_zoom_org, mbnum mb_width_min, mbnum mb_width_max, mbnum mb_width_step, mbnum mb_height_mid, mbnum mb_height_zoom_org, mbnum mb_height_min, mbnum mb_height_max, mbnum mb_height_step){
-	
-#include "print_config.h"
-	
-	printf("image_width:  %d (%d)\n", image_width, image_width_mid);
-	printf("image_height: %d (%d)\n", image_height, image_height_mid);
-	printf("color_diff: %d\n", color_diff);
-	printf("\n");
-	
-	printf("depth_min:  %d\n", depth_min);
-	printf("depth_max:  %d\n", depth_max);
-	printf("depth_diff: %d\n", depth_diff);
-	printf("depth_step: %f\n", depth_step);
-	printf("\n");
-	
-	printf("mb_width mid:   %.32" MBNUM_FORMAT "\n", mb_width_mid);
-	printf("mb_width zoom:  %.32" MBNUM_FORMAT "\n", mb_width_zoom_org);
-	printf("mb_width min:   %.32" MBNUM_FORMAT "\n", mb_width_min);
-	printf("mb_width max:   %.32" MBNUM_FORMAT "\n", mb_width_max);
-	printf("mb_width step:  %.32" MBNUM_FORMAT "\n", mb_width_step);
-	printf("\n");
-	
-	printf("mb_height mid:  %.32" MBNUM_FORMAT "\n", mb_height_mid);
-	printf("mb_height zoom: %.32" MBNUM_FORMAT "\n", mb_height_zoom_org);
-	printf("mb_height min:  %.32" MBNUM_FORMAT "\n", mb_height_min);
-	printf("mb_height max:  %.32" MBNUM_FORMAT "\n", mb_height_max);
-	printf("mb_height step: %.32" MBNUM_FORMAT "\n", mb_height_step);
-	printf("\n");
-}
-
 #ifdef USE_LOG
 int point_iteration(const mbnum cx, const mbnum cy, const int depth_max){
 	int step = 0;

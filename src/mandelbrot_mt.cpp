@@ -9,7 +9,8 @@
 using namespace std;
 
 int main(int argc, char const *argv[]){
-	print_copyright();
+	
+#include "print_copyright.h"
 	
 	if(argc <= 10){
 		printf("Usage: %s P_WIDTH P_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX THREAD_ID THREAD_MAX\n", *argv);
@@ -30,7 +31,7 @@ int main(int argc, char const *argv[]){
 #include "init_default_vars.h"
 	printf("thread: %d/%d\n", thread_id, thread_max);
 	
-	print_config(image_width, image_width_mid, image_height, image_height_mid, color_diff, depth_min, depth_max, depth_diff, depth_step, mb_width_mid, mb_width_zoom_org, mb_width_min, mb_width_max, mb_width_step, mb_height_mid, mb_height_zoom_org, mb_height_min, mb_height_max, mb_height_step);
+#include "print_config.h"
 	
 //#include "init_image_plain.h"
 #include "init_mb_xy_grid.h"

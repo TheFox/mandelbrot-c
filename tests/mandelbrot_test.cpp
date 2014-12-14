@@ -3,9 +3,9 @@
 
 int main(int argc, char **argv){
 	
-	print_copyright();
+#include "print_copyright.h"
 	
-#include "print_config.h"
+#include "print_const.h"
 	
 	printf("getpid: %p\n", getpid);
 	printf("strcpy: %p\n", strcpy);
@@ -76,8 +76,6 @@ int main(int argc, char **argv){
 	puts("OpenCL header not found");
 #endif
 	
-	printf("print_copyright: %p\n", print_copyright);
-	printf("print_config: %p\n", print_config);
 	printf("point_iteration: %p\n", point_iteration);
 	printf("data_file_name: %p\n", data_file_name);
 	
