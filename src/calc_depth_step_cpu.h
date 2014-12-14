@@ -1,9 +1,9 @@
 
 for(pos_x = 0; pos_x < image_width; pos_x++){
 #ifdef USE_MB_XY_GRID
-	const mbnum mb_x = mb_x_grid_r[pos_x];
+	const mbnum_t mb_x = mb_x_grid_r[pos_x];
 #else
-	const mbnum mb_x = mb_width_min + mb_width_step * pos_x;
+	const mbnum_t mb_x = mb_width_min + mb_width_step * pos_x;
 #endif
 	
 	//printf("\t mb_x: %d %f\n", pos_x, mb_x);
@@ -13,9 +13,9 @@ for(pos_x = 0; pos_x < image_width; pos_x++){
 #endif
 	for(pos_y = 0; pos_y < image_height; pos_y++){
 #ifdef USE_MB_XY_GRID
-		const mbnum mb_y = mb_y_grid_r[pos_y];
+		const mbnum_t mb_y = mb_y_grid_r[pos_y];
 #else
-		const mbnum mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
+		const mbnum_t mb_y = mb_height_min + mb_height_step * (image_height - pos_y);
 #endif
 		
 		//printf("\t\t mb_y %d %f\n", pos_y, mb_y);
