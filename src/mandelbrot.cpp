@@ -77,15 +77,18 @@ int main(int argc, char const *argv[]){
 	printf("mb_0 x: %d %f\n", image_width_mb_0, image_width_mb_iter);
 	printf("mb_0 y: %d %f\n", image_height_mb_0, image_height_mb_iter);
 	
-	
-#ifdef USE_OPENCL
-#include "calc_depth_step_gpu.h"
-	
-	return 0;
-#endif
-	
 #include "init_image_plain.h"
 #include "init_mb_xy_grid.h"
+	
+#include "init_opencl.h"
+#ifdef USE_OPENCL
+#include "calc_depth_step_gpu.h"
+#include "free_opencl.h"
+	return 0;
+#endif
+
+	
+	
 	
 	puts("start");
 	
@@ -99,8 +102,7 @@ int main(int argc, char const *argv[]){
 #endif
 		
 #ifdef USE_OPENCL
-//#include "calc_depth_step_gpu.h"
-#include "calc_depth_step_cpu.h"
+#include "calc_depth_step_gpu.h"
 #else
 #include "calc_depth_step_cpu.h"
 #endif
@@ -111,7 +113,7 @@ int main(int argc, char const *argv[]){
 	puts("");
 	
 #include "draw_image.h"
-	
+#include "free_opencl.h"
 	//sleep(10);
 	
 	puts("end");

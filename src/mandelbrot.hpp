@@ -22,10 +22,12 @@
 #include <omp.h>
 #endif
 
+#ifdef USE_OPENCL
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
 #else
 #include <CL/cl.h>
+#endif
 #endif
 
 #endif

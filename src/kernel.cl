@@ -3,13 +3,13 @@
 
 kernel void square(global float *input, global float *output, const unsigned int count){
 //kernel void square(global long double *input, global long double *output, const unsigned int count){
+//kernel void square(global float32 *input, global float32 *output, const unsigned int count){
 	int id = get_global_id(0);
 	
-	printf("square id = %d, count = %d\n", id, count);
+	printf("square id = %d/%d   '%f'\n", id, count, input[id]);
 	
 	if(id < count){
-		//puts("\t compute");
-		printf("\t square. %d\n", 0);
+		//printf("\t square. %d\n", 0);
 		output[id] = input[id] * input[id];
 	}
 }
