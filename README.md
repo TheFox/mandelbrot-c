@@ -48,6 +48,12 @@ This will generate an 1024x1024 pixel image with depth 1 to 100. The real part c
 ## Project Links
 - [Travis CI Repository](https://travis-ci.org/TheFox/mandelbrot-c)
 
+## Related Links
+- <http://openmp.org/>
+- <http://openmp.llvm.org/>
+- <http://stackoverflow.com/questions/7001424/opencl-problem-with-double-type>
+- <http://stackoverflow.com/questions/4644814/are-objective-c-blocks-supported-by-compilers-on-linux>
+
 ## License
 Copyright (C) 2014 Christian Mayer <http://fox21.at>
 
