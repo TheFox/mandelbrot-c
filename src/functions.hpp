@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <libgen.h>
 
 #ifdef USE_OPENCL
 #ifdef __APPLE__
