@@ -51,8 +51,22 @@ This will generate an 1024x1024 pixel image with depth 1 to 100. The real part c
 ## Related Links
 - <http://openmp.org/>
 - <http://openmp.llvm.org/>
+- <http://libcxx.llvm.org/>
+- <http://libcxxabi.llvm.org/>
 - <http://stackoverflow.com/questions/7001424/opencl-problem-with-double-type>
 - <http://stackoverflow.com/questions/4644814/are-objective-c-blocks-supported-by-compilers-on-linux>
+- <http://stackoverflow.com/questions/13805059/dirname-in-c-is-the-manual-wrong>
+- <http://stackoverflow.com/questions/7031126/switching-between-gcc-and-clang-llvm-using-cmake>
+- <http://stackoverflow.com/questions/26791343/using-openmp-with-llvm-clang>
+- <http://stackoverflow.com/questions/2998864/how-to-add-a-or-condition-in-ifdef>
+- <http://stackoverflow.com/questions/5557164/causes-for-cl-invalid-work-group-size>
+- <http://stackoverflow.com/questions/7996537/cl-invalid-work-group-size-error>
+- <http://www.cmake.org/Wiki/CMake_Useful_Variables>
+- <https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html>
+- <http://tersetalk.wordpress.com/2012/04/13/opencl-error-codes/>
+- <https://www.khronos.org/registry/cl/sdk/1.0/docs/man/xhtml/scalarDataTypes.html>
+- <https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/reservedDataTypes.html>
+- <https://www.khronos.org/registry/cl/sdk/1.0/docs/man/xhtml/cl_khr_fp64.html>
 
 ## License
 Copyright (C) 2014 Christian Mayer <http://fox21.at>
