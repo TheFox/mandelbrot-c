@@ -65,6 +65,8 @@ file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/data")
 file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/tools")
 
 if(USE_LLVM)
+	MESSAGE(STATUS "Use LLVM")
+	
 	if(NOT EXISTS "${PROJECT_SOURCE_DIR}/tools/llvm")
 		execute_process(COMMAND git clone https://github.com/clang-omp/llvm WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/tools")
 		execute_process(COMMAND git clone https://github.com/clang-omp/compiler-rt llvm/projects/compiler-rt WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/tools")
