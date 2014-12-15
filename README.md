@@ -16,6 +16,14 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	
 		( rm -rf build_$(uname -s) && mkdir -p build_$(uname -s) && cd build_$(uname -s) && cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make VERBOSE=1 && make test ) #cmake
 
+### Multithreading Support
+- GCC
+	- OpenMP: Yes.
+	- OpenCL for Mac: No, because the default [GCC doesn't include blocks support](http://stackoverflow.com/questions/4644814/are-objective-c-blocks-supported-by-compilers-on-linux).
+- Clang
+	- OpenMP: No, because default Clang doesn't include OpenMP support.
+	- OpenCL: Yes.
+
 ## Usage
 After building you can generate with `./build/bin/mandelbrot` an image:
 
