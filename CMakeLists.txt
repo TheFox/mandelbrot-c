@@ -84,6 +84,12 @@ if(USE_LLVM)
 		execute_process(COMMAND ln -s Debug+Asserts/bin/clang WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/llvm")
 		execute_process(COMMAND ln -s Debug+Asserts/bin/clang++ WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/llvm")
 	endif()
+	
+	set(CMAKE_C_COMPILER "${PROJECT_SOURCE_DIR}/llvm/clang")
+	set(CMAKE_CXX_COMPILER "${PROJECT_SOURCE_DIR}/llvm/clang++")
+	include_directories("${PROJECT_SOURCE_DIR}/tools/llvm/projects/libcxx/include")
+	#include_directories("${PROJECT_SOURCE_DIR}/tools/llvm/projects/compiler-rt/SDKs/darwin/usr/include")
+	#include_directories("${PROJECT_SOURCE_DIR}/tools/llvm/projects/compiler-rt/SDKs/linux/usr/include")
 endif()
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c" "src/*.cpp")
