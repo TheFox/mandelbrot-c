@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <libgen.h>
+#include <time.h>
 
 #ifdef USE_OPENCL
 #ifdef __APPLE__

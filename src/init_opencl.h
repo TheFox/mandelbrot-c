@@ -68,6 +68,8 @@ unsigned int ocl_count = DATA_SIZE;
 printf("OpenCL malloc data: %d\n", ocl_count);
 float *ocl_data = (float *)malloc(ocl_count * sizeof(float));
 
+srand(time(NULL));
+
 printf("OpenCL fill data: %d\n", ocl_count);
 for(ocl_i = 0; ocl_i < ocl_count; ocl_i++){
 	ocl_data[ocl_i] = rand() / (float)RAND_MAX;
