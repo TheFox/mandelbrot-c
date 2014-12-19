@@ -16,6 +16,9 @@
 puts("OpenCL is active");
 
 int ocl_error;
+unsigned int ocl_count = image_height;
+size_t ocl_count_ts = ocl_count * sizeof(float);
+
 
 char *ocl_file_path = (char *)malloc(4096);
 strcpy(ocl_file_path, program_dirname);
@@ -63,19 +66,18 @@ if(!ocl_kernel_source){
 }
 
 // Fill our data set with random float values
-int ocl_i = 0;
-unsigned int ocl_count = DATA_SIZE;
+/*
 printf("OpenCL malloc data: %d\n", ocl_count);
-float *ocl_data = (float *)malloc(ocl_count * sizeof(float));
-
+float *ocl_data = (float *)malloc(ocl_count_ts);
 srand(time(NULL));
-
 printf("OpenCL fill data: %d\n", ocl_count);
+int ocl_i;
 for(ocl_i = 0; ocl_i < ocl_count; ocl_i++){
 	ocl_data[ocl_i] = rand() / (float)RAND_MAX;
 	//printf("OpenCL data: %f\n", ocl_data[ocl_i]);
 }
 printf("OpenCL fill data done\n");
+*/
 
 // Connect to a compute device
 printf("OpenCL find device\n");
@@ -142,7 +144,8 @@ printf("OpenCL program: %d %d\n", ocl_binary_status, ocl_error);
 
 // Build the program executable
 printf("OpenCL build the program executable\n");
-ocl_error = clBuildProgram(ocl_program, 0, NULL, NULL, &pfn_notify, NULL);
+ocl_error = clBuildProgram(ocl_program, 0, NULL, NULL, NULL, NULL);
+//ocl_error = clBuildProgram(ocl_program, 0, NULL, NULL, &pfn_notify, NULL);
 //ocl_error = clBuildProgram(ocl_program, 1, &ocl_device_id, NULL, &pfn_notify, NULL);
 printf("OpenCL build the program executable done\n");
 if(ocl_error != CL_SUCCESS){
@@ -164,7 +167,7 @@ if(ocl_error != CL_SUCCESS){
 
 // Create the compute kernel in the program we wish to run
 printf("OpenCL create kernel\n");
-cl_kernel ocl_kernel = clCreateKernel(ocl_program, "square", &ocl_error);
+cl_kernel ocl_kernel = clCreateKernel(ocl_program, "point_iteration", &ocl_error);
 if(!ocl_kernel || ocl_error != CL_SUCCESS){
 	printf("OpenCL ERROR: Failed to create compute kernel. %d\n", ocl_error);
 	return EXIT_FAILURE;
@@ -172,15 +175,58 @@ if(!ocl_kernel || ocl_error != CL_SUCCESS){
 
 // Create the input and output arrays in device memory for our calculation
 printf("OpenCL create the input and output\n");
-cl_mem ocl_input = clCreateBuffer(ocl_context, CL_MEM_READ_ONLY, ocl_count * sizeof(float), NULL, &ocl_error);
+cl_mem ocl_input = clCreateBuffer(ocl_context, CL_MEM_READ_ONLY, ocl_count_ts, NULL, &ocl_error);
 if(!ocl_input){
 	printf("OpenCL ERROR: Failed to allocate input device memory. %d\n", ocl_error);
 	return EXIT_FAILURE;
 }
-cl_mem ocl_output = clCreateBuffer(ocl_context, CL_MEM_WRITE_ONLY, ocl_count * sizeof(float), NULL, &ocl_error);
+cl_mem ocl_output = clCreateBuffer(ocl_context, CL_MEM_WRITE_ONLY, ocl_count_ts, NULL, &ocl_error);
 if(!ocl_output){
 	printf("OpenCL ERROR: Failed to allocate output device memory. %d\n", ocl_error);
 	return EXIT_FAILURE;
 }
+
+// Set the arguments to our compute kernel
+printf("OpenCL set the arguments\n");
+ocl_error = 0;
+ocl_error |= clSetKernelArg(ocl_kernel, 0, sizeof(cl_mem), &ocl_input);
+if(ocl_error != CL_SUCCESS){
+	printf("OpenCL ERROR: Failed to set kernel arguments. 0 %d\n", ocl_error);
+	return EXIT_FAILURE;
+}
+ocl_error |= clSetKernelArg(ocl_kernel, 1, sizeof(cl_mem), &ocl_output);
+//ocl_error |= clSetKernelArg(ocl_kernel, 1, sizeof(char), &ocl_output);
+if(ocl_error != CL_SUCCESS){
+	printf("OpenCL ERROR: Failed to set kernel arguments. 1 %d\n", ocl_error);
+	return EXIT_FAILURE;
+}
+ocl_error |= clSetKernelArg(ocl_kernel, 2, sizeof(unsigned int), &ocl_count);
+if(ocl_error != CL_SUCCESS){
+	printf("OpenCL ERROR: Failed to set kernel arguments. 2 %d\n", ocl_error);
+	return EXIT_FAILURE;
+}
+ocl_error |= clSetKernelArg(ocl_kernel, 3, sizeof(int), &depth_max);
+if(ocl_error != CL_SUCCESS){
+	printf("OpenCL ERROR: Failed to set kernel arguments. 3 %d\n", ocl_error);
+	switch(ocl_error){
+		case CL_INVALID_ARG_INDEX:
+			puts("\t CL_INVALID_ARG_INDEX");
+			break;
+	}
+	return EXIT_FAILURE;
+}
+
+// Get the maximum work group size for executing the kernel on the device
+printf("OpenCL get maximum work group size\n");
+size_t ocl_local;
+ocl_error = clGetKernelWorkGroupInfo(ocl_kernel, ocl_device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(ocl_local), &ocl_local, NULL);
+if(ocl_error != CL_SUCCESS){
+	printf("OpenCL ERROR: Failed to retrieve kernel work group info. %d\n", ocl_error);
+	return EXIT_FAILURE;
+}
+
+printf("OpenCL malloc results\n");
+//float *ocl_results = (float *)malloc(ocl_count_ts);
+char *ocl_results = (char *)malloc(ocl_count_ts);
 
 #endif

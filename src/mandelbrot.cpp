@@ -81,12 +81,13 @@ int main(int argc, char const *argv[]){
 #include "init_mb_xy_grid.h"
 	
 #include "init_opencl.h"
+/*
 #ifdef USE_OPENCL
 #include "calc_depth_step_gpu.h"
 #include "free_opencl.h"
 	return 0;
 #endif
-
+*/
 	
 	
 	
