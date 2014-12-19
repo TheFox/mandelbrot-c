@@ -159,7 +159,12 @@ target_link_libraries(mandelbrot_test ${OpenMP_LIBRARIES})
 #target_link_libraries(mandelbrot_test ${OpenCL_LIBRARIES})
 
 if(USE_OPENMP)
-	set_target_properties(mandelbrot mandelbrot_test PROPERTIES COMPILE_FLAGS "-fopenmp")
+	if(${CMAKE_C_COMPILER_ID} MATCHES "Clang")
+		set_target_properties(mandelbrot mandelbrot_test PROPERTIES COMPILE_FLAGS "-fopenmp")
+	endif()
+	if(${CMAKE_C_COMPILER_ID} MATCHES "GNU")
+		set_target_properties(mandelbrot mandelbrot_test PROPERTIES COMPILE_FLAGS "-fopenmp")
+	endif()
 endif()
 
 if(USE_OPENCL AND OpenCL_FOUND)
