@@ -10,11 +10,11 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 ## Build
 - Basic
 	
-		( rm -rf build && mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test ) #cmake
+		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make VERBOSE=1 && make test ) #cmake
 	
 	(On **Mac**) use GCC not Clang because Clang doesn't support OpenMP:
 	
-		( rm -rf build && mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test ) #cmake
+		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make VERBOSE=1 && make test ) #cmake
 
 ### Multithreading Support
 - GCC
