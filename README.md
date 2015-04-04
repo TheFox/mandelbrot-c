@@ -14,7 +14,7 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	
 	(On **Mac**) use GCC not Clang because Clang doesn't support OpenMP:
 	
-		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make VERBOSE=1 && make test ) #cmake
+		( rm -rf build && mkdir -p build && cd build && cmake .. && make VERBOSE=1 && make test ) #cmake
 
 ### Multithreading Support
 - GCC
