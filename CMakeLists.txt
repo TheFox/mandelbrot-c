@@ -57,7 +57,7 @@ endif()
 if(TEXT)
 	set(PROJECT_DEFINE_TEXT "#define TEXT 1")
 endif()
-configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_SOURCE_DIR}/src/config.h" NEWLINE_STYLE LF)
+configure_file("${PROJECT_SOURCE_DIR}/src/config.h.in" "${PROJECT_BINARY_DIR}/src/config.h" NEWLINE_STYLE LF)
 
 
 file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/logs")
@@ -123,6 +123,7 @@ if(USE_OPENCL)
 endif()
 
 include_directories(${PROJECT_INCLUDE_DIRS})
+include_directories("${PROJECT_BINARY_DIR}/src")
 #include_directories("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
 #include_directories("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/6.0/include")
 #include_directories("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include")
