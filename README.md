@@ -8,12 +8,14 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	- `brew install imlib2`
 
 ## Build
-On **Mac** use GCC not Clang because Clang doesn't support OpenMP.
 
 - Basic
 	
 		( rm -rf build && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test ) #cmake
 	
+	(On **Mac**) use GCC not Clang because Clang doesn't support OpenMP:
+	
+		( rm -rf build; mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make && make test ) #cmake
 
 ### Multithreading Support
 - GCC

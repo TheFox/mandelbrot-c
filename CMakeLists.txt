@@ -21,8 +21,6 @@ set(PROJECT_DEFINE_TEXT_OFFSET_Y 5)
 set(PROJECT_DEFINE_COLOR_MIN 1)
 set(PROJECT_DEFINE_COLOR_MAX 255)
 
-set(CMAKE_C_COMPILER "/usr/local/bin/gcc")
-set(CMAKE_CXX_COMPILER "/usr/local/bin/g++")
 set(CMAKE_C_FLAGS "-Wall -funroll-loops -ffast-math")
 set(CMAKE_C_FLAGS_DEBUG "-g -O0 -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
