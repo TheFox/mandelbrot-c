@@ -10,14 +10,14 @@
 	"build_systems":[
 		{
 			"name": "CMake",
-			"cmd": [ "rm -rf build; mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make VERBOSE=1 && make test" ],
+			"cmd": [ "rm -rf build; mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test" ],
 			"working_dir": "${project_path:${folder}}",
 			"shell": true,
 			"path": "$PATH:/usr/local/bin"
 		},
 		{
 			"name": "Make",
-			"cmd": [ "cd build && make VERBOSE=1 && bin/mandelbrot" ],
+			"cmd": [ "cd build && make" ],
 			"working_dir": "${project_path:${folder}}",
 			"shell": true,
 			"path": "$PATH:/usr/local/bin"
