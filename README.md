@@ -1,7 +1,9 @@
 # Mandelbrot
+
 This script create a picture by using the [Mantelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
 
 ## Mac Requirements
+
 - X11: <http://xquartz.macosforge.org/>
 - Homebrew
 	- `brew install homebrew/versions/gcc49`
@@ -18,6 +20,7 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 		( rm -rf build; mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ .. && make && make test ) #cmake
 
 ### Multithreading Support
+
 - GCC
 	- OpenMP: Yes.
 	- OpenCL for Mac: No, because the default [GCC doesn't include blocks support](http://stackoverflow.com/questions/4644814/are-objective-c-blocks-supported-by-compilers-on-linux).
@@ -26,17 +29,23 @@ This script create a picture by using the [Mantelbrot set](http://en.wikipedia.o
 	- OpenCL: Yes.
 
 ## Usage
+
 After building you can generate with `./build/bin/mandelbrot` an image:
 
-	./build/bin/mandelbrot I_WIDTH I_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX
+```bash
+./build/bin/mandelbrot I_WIDTH I_HEIGHT DEPTH_MIN DEPTH_MAX MB_WIDTH_MID MB_WIDTH_ZOOM MB_HEIGHT_MID MB_HEIGHT_MAX
+```
 
 Example:
 
-	./build/bin/mandelbrot 1024 1024 1 100 -.5 2 0 2
+```bash
+./build/bin/mandelbrot 1024 1024 1 100 -.5 2 0 2
+```
 
 This will generate an 1024x1024 pixel image with depth 1 to 100. The real part coordinate -.5 and the imaginary part coordinate 0 will be centered to the image.
 
 ### Arguments
+
 - `I_WIDTH`: The width of the image.
 - `I_HEIGHT`: The height of the image.
 - `DEPTH_MIN`: The minimum depth. Default 1.
@@ -47,6 +56,7 @@ This will generate an 1024x1024 pixel image with depth 1 to 100. The real part c
 - `MB_HEIGHT_MAX`: Zoom of CI.
 
 ## Related Links
+
 - <http://openmp.org/>
 - <http://openmp.llvm.org/>
 - <http://libcxx.llvm.org/>
@@ -68,6 +78,7 @@ This will generate an 1024x1024 pixel image with depth 1 to 100. The real part c
 - <https://www.khronos.org/registry/cl/sdk/1.0/docs/man/xhtml/clEnqueueNDRangeKernel.html>
 
 ## License
+
 Copyright (C) 2014 Christian Mayer <http://fox21.at>
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
