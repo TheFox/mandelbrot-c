@@ -46,9 +46,6 @@ This will generate an 1024x1024 pixel image with depth 1 to 100. The real part c
 - `MB_HEIGHT_MID`: Imaginary part (CI).
 - `MB_HEIGHT_MAX`: Zoom of CI.
 
-## Project Links
-- [Travis CI Repository](https://travis-ci.org/TheFox/mandelbrot-c)
-
 ## Related Links
 - <http://openmp.org/>
 - <http://openmp.llvm.org/>
