@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(Mandelbrot)
 
 set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 0)
+set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
 set(PROJECT_COPYRIGHT "Copyright (C) 2014 Christian Mayer <http://fox21.at>")
 set(USE_OPENMP 1)
