@@ -1,6 +1,6 @@
 # Mandelbrot
 
-This script create a picture by using the [Mantelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
+This script create a picture by using the [Mandelbrot set](http://en.wikipedia.org/wiki/Mandelbrot_set). Source code in C.
 
 ## Mac Requirements
 
